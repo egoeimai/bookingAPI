@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app)
+app.config["BUNDLE_ERRORS"] = True
 
 
 @app.route('/api/v1/analytics/pageview', methods=['GET'])
