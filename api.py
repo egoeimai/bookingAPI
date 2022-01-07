@@ -36,6 +36,9 @@ def view():
 
     return xml[0].attrib['authtoken']
 
+@app.route('/')
+def index():
+    return "<h1>Welcome to our server !!</h1>"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(threaded=True, port=5000)
