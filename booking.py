@@ -19,7 +19,7 @@ try:
         print("Table Boat is created....")
 
         cursor.execute(
-            "CREATE TABLE `user7313393746_booking`.`boats_booking` ( `book_id` INT NOT NULL AUTO_INCREMENT , `boat_id` INT(11) NOT NULL , `status` INT(11) NOT NULL , `datestart` DATE NOT NULL , `dateend` DATE NOT NULL , PRIMARY KEY (`book_id`))")
+            "CREATE TABLE `user7313393746_booking`.`boats_booking` ( `book_id` INT NOT NULL AUTO_INCREMENT , `boat_id` INT(11) NOT NULL , `status` INT(11) NOT NULL , `datestart` VARCHAR(255) , `dateend` VARCHAR(255) , PRIMARY KEY (`book_id`))")
         print("Table Boat Bookings is created....")
 
         import requests
@@ -73,7 +73,7 @@ row_headers=[x[0] for x in mycursor.description] #this will extract row headers
 rv = mycursor.fetchall()
 for result in rv:
 
-    reqUrl = "https://demoft.sednasystem.com/api/getBookingData.asp?api_mode=xml&appname=apiboatcharter&token=t0ys13n8cebriub6vcv77a9fou3launk1641551521785&id_boat="+ str(result[2]) +"&date_start=2017-01-01&date_end=2017-08-08"
+    reqUrl = "https://demoft.sednasystem.com/api/getBookingData.asp?api_mode=xml&appname=apiboatcharter&token=t0ys13n8cebriub6vcv77a9fou3launk1641551521785&id_boat="+ str(result[2]) +"&date_start=2018-01-01&date_end=2018-08-08"
 
     headersList = {
         "Accept": "*/*",
