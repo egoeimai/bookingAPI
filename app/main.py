@@ -13,7 +13,7 @@ app.config["BUNDLE_ERRORS"] = True
 
 
 @app.route('/getboats/',  methods=['GET'])
-def getboat_events():
+def getboats():
 
     try:
         conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
