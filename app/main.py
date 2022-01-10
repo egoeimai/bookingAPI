@@ -24,7 +24,7 @@ def getboat_events():
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"status": result[2], "start": result[3], "end": result[4], "allDay": "false"}
+                content = {"status": result[2], "start": result[3], "end": result[4], "allDay": "true"}
                 json_data.append(content)
             return jsonify(json_data)
 
