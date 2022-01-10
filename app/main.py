@@ -12,7 +12,7 @@ CORS(app)
 app.config["BUNDLE_ERRORS"] = True
 
 
-@app.route('/getboats/',  methods=['POST'])
+@app.route('/getboats/',  methods=['GET'])
 def getboat_events():
 
     try:
@@ -20,7 +20,7 @@ def getboat_events():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `boats`')
+            cursor.execute('SELECT * FROM boats')
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
