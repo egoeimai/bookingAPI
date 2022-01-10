@@ -11,6 +11,30 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app)
 app.config["BUNDLE_ERRORS"] = True
 
+
+@app.route('/getboats/',  methods=['POST'])
+def getboat_events():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats`')
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[0]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
+
+
 @app.route('/getboat_events/',  methods=['POST'])
 def getboat_events():
     boatid = request.args.get("boatid", None)
@@ -32,7 +56,7 @@ def getboat_events():
         return (e)
 
 
-    return "test"
+
 
 
 @app.route('/token')
