@@ -11,7 +11,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app)
 app.config["BUNDLE_ERRORS"] = True
 
-@app.route('/getboat_events/',  methods=['GET'])
+@app.route('/getboat_events/',  methods=['POST'])
 def getboat_events():
     boatid = request.args.get("boatid", None)
     try:
