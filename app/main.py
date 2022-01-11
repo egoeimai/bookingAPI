@@ -25,7 +25,7 @@ def getboats():
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"name": result[1], "id": result[3]}
+                content = {"name": result[1], "id": result[2]}
                 json_data.append(content)
             return jsonify(json_data)
 
