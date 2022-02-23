@@ -25,7 +25,7 @@ def getboats():
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[15] }
+                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[15], "bt_comment": result[16] }
                 json_data.append(content)
             return jsonify(json_data)
 
@@ -42,7 +42,7 @@ def getboat_price():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `boat_prices` WHERE `datestart` > "2022-2-23" AND `boat_id` = ' + boatid + ' ORDER BY `boat_prices`.`datestart` ASC')
+            cursor.execute('SELECT * FROM `boat_prices` WHERE `datestart` >= "2022-06-18" AND `boat_id` = ' + boatid + ' ORDER BY `boat_prices`.`datestart` ASC')
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
