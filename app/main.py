@@ -33,6 +33,31 @@ def getboats():
         return (e)
 
 
+
+@app.route('/getboat_price/',  methods=['GET'])
+def getboat_price():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boat_prices` WHERE `datestart` > "2022-2-23" AND `boat_id` = ' + boatid + ' ORDER BY `boat_prices`.`datestart` ASC')
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"datestart": result[2], "dateend": result[3], "price": result[4], "unit": result[5]}
+                json_data.append(content)
+
+
+            return jsonify(json_data)
+
+    except Error as e:
+            return (e)
+
+
+
 @app.route('/getboat_extras/',  methods=['POST'])
 def getboats_extras():
     boatid = request.args.get("boatid", None)
