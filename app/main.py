@@ -20,12 +20,12 @@ def getboats():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats')
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat";')
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"name": result[1], "id": result[2]}
+                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[15] }
                 json_data.append(content)
             return jsonify(json_data)
 

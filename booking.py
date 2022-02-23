@@ -13,6 +13,8 @@ try:
         print("You're connected to database: ", record)
         cursor.execute('DROP TABLE IF EXISTS boats;')
         cursor.execute('DROP TABLE IF EXISTS boats_booking;')
+        cursor.execute('TRUNCATE TABLE boat_characteristics;')
+        cursor.execute('TRUNCATE TABLE boat_prices;')
         cursor.execute('DROP TABLE IF EXISTS boats_extras;')
         print('Creating table....')
         # in the below line please pass the create table statement which you want #to create
@@ -29,7 +31,7 @@ try:
 
         import requests
 
-        reqUrl = "https://demoft.sednasystem.com/API/getaccess.asp?l=demoapifleet&p=demoapifleet&appname=apiboatcharter"
+        reqUrl = "https://api.sednasystem.com/API/getaccess.asp?l=Zonepage&p=Zonepage2022@&appname=apiboatcharter"
 
         headersList = {
             "Accept": "*/*",
@@ -50,7 +52,7 @@ try:
 except Error as e:
     print(e)
 
-reqUrl = "https://demoft.sednasystem.com/API/getBts5.asp?token=x8gti2mjr9dk7o9y4o333y1am7wx5hrp1641900210251&appname=apiboatcharter"
+reqUrl = "https://api.sednasystem.com/API/getBts5.asp?token=g04vf2vvi9ulxiod0dy6tj36zsdqh47v1645612482994&appname=apiboatcharter"
 
 headersList = {
  "Accept": "*/*",
@@ -74,30 +76,49 @@ for holiday in xml.findall('boat'):
 
     print(mycursor.rowcount, "record inserted.")
 
+    sqls = "INSERT INTO `boat_characteristics` (`boat_id`, `bt_type`, `crew`, `model`, `widthboat`, `nbdoucabin`, `nbsimcabin`, `nbper`, `nbbathroom`, `buildyear`, `std_model`, `builder`, `widthboat_feet`, `bt_comment`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+    vals = (holiday.attrib['id_boat'], holiday.attrib['bt_type'], holiday.attrib['crew'], holiday.attrib['model'], holiday.attrib['widthboat'], holiday.attrib['nbdoucabin'], holiday.attrib['nbsimcabin'], holiday.attrib['nbper'], holiday.attrib['nbbathroom'], holiday.attrib['buildyear'], holiday.attrib['std_model'], holiday.attrib['builder'], holiday.attrib['widthboat_feet'], holiday.attrib['bt_comment'])
+    mycursor.execute(sqls, vals)
+
+    conn.commit()
+    #print(holiday.iter('picts'))
+    #images = holiday.findall('picts')
+    #print(type(images))
+    #for pictures in images:
+        #images_inner = pictures.findall('pict')
+       # for pictures_inner in images_inner:
+           # print(pictures_inner.attrib['link'])
+            #sqls_images = "INSERT INTO `boat_images` (`boat_id`, `image_url`) VALUES (%s, %s);"
+            #images_vals = (holiday.attrib['id_boat'], pictures_inner.attrib['link'])
+            #mycursor.execute(sqls_images, images_vals)
+
+            #conn.commit()
+    characteristics = holiday.findall('characteristics')
+    for characteristic_topic in characteristics:
+        characteristic = characteristic_topic.findall('characteristic_topic')
+        for characteristic_inner in characteristic:
+            print(characteristic_inner.attrib['topic'])
+            for characteristic_list in characteristic_inner:
+                print(characteristic_list.attrib['name'])
+
+    prices = holiday.findall('prices')
+    for price in prices:
+        price_inner = price.findall('price')
+        for price_val in price_inner:
+            #print(price_val.attrib['amount'])
+            sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
+            price_vals = (holiday.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
+            mycursor.execute(sqls_price, price_vals)
+
+
+
+
 mycursor.execute('SELECT * FROM boats')
 row_headers = [x[0] for x in mycursor.description] #this will extract row headers
 rv = mycursor.fetchall()
 for result in rv:
 
-    reqUrl = "https://demoft.sednasystem.com/api/getBookingData.asp?api_mode=xml&appname=apiboatcharter&token=x8gti2mjr9dk7o9y4o333y1am7wx5hrp1641900210251&id_boat="+ str(result[2]) +"&date_start=2018-01-01&date_end=2018-08-08"
-
-    headersList = {
-        "Accept": "*/*",
-        "User-Agent": "opa36",
-        "connection": "Keep-alive"
-    }
-
-    payload_bo = ""
-    response_bo = requests.request("GET", reqUrl, data=payload_bo, headers=headersList)
-    xml_bo = ET.fromstring(response_bo.text)
-    for holiday_bo in xml_bo.findall('charter'):
-        sql = "INSERT INTO boats_booking (boat_id, status, datestart, dateend) VALUES (%s, %s, %s, %s)"
-        val = (result[2], holiday_bo.attrib['status'], holiday_bo.attrib['datestart'], holiday_bo.attrib['dateend'])
-        mycursor.execute(sql, val)
-
-        conn.commit()
-
-    extras_url = "https://demoft.sednasystem.com/API/getExtras3.asp?id_boat="+ str(result[2]) +"&refope=demo36"
+    extras_url = "https://api.sednasystem.com/API/getExtras3.asp?id_boat="+ str(result[2]) +"&refope=ysy171"
 
     payload_extras = ""
     response_extras = requests.request("GET", extras_url, data=payload_extras, headers=headersList)
