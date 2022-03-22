@@ -20,12 +20,33 @@ def getboats():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat";')
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat";')
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
                 content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[15], "bt_comment": result[16] }
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
+@app.route('/getboats_destinations/',  methods=['GET'])
+def getboats_destinations():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM boats LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id;')
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[2], "destination_name": result[6]}
                 json_data.append(content)
             return jsonify(json_data)
 
@@ -88,7 +109,7 @@ def getboat_events():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats_booking WHERE boat_id='+boatid)
+            cursor.execute('SELECT * FROM boats_booking WHERE boat_id='+boatid+' AND status=0' )
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
@@ -100,6 +121,38 @@ def getboat_events():
     except Error as e:
         return (e)
 
+@app.route('/sendbooking/',  methods=['GET'])
+def sendbooking():
+    args = request.args
+    return jsonify(args)
+
+
+@app.route('/sendclient/',  methods=['GET'])
+def sendclient():
+    name = request.args.get("name", None)
+    email = request.args.get("email", None)
+    country = request.args.get("country", None)
+    tel = request.args.get("tel", None)
+    reqUrl = "https://api.sednasystem.com/api/insertclient.asp?name=NikosZiozas&email=nziozas@gmail.com&country=Greece&tel=6974733098&choix=ope&refope=ysy171"
+
+    headersList = {
+        "Accept": "*/*",
+        "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+    }
+
+    payload = ""
+    import requests
+    response = requests.request("GET", reqUrl, data=payload, headers=headersList)
+    import xml.etree.ElementTree as ET
+
+    json_data = []
+    xml = ET.fromstring(response.text)
+    print(xml[0].text)
+
+    content = {"cliendid": xml.attrib['id'], "username": xml[0].text, "password": xml[1].text}
+    json_data.append(content)
+
+    return jsonify(json_data)
 
 
 
