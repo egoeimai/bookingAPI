@@ -334,7 +334,26 @@ def getboat_events():
 @app.route('/sendbooking/',  methods=['GET'])
 def sendbooking():
     args = request.args
-    return jsonify(args)
+    reqUrl = "https://api.sednasystem.com/API/insert_charter.asp"
+
+    headersList = {
+        "Accept": "*/*",
+        "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+    }
+
+    payload = ""
+    import requests
+    response = requests.request("GET", reqUrl, params=args, data=payload, headers=headersList)
+    import xml.etree.ElementTree as ET
+
+    json_data = []
+    xml = ET.fromstring(response.text)
+    print(xml[0].text)
+
+    content = {"cliendid": xml.attrib['status'], "messahe": xml[0].attrib['message']}
+    json_data.append(content)
+
+    return jsonify(json_data)
 
 
 @app.route('/sendclient/',  methods=['GET'])
