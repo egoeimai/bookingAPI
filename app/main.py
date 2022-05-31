@@ -311,7 +311,7 @@ def getboats_extras():
     except Error as e:
             return (e)
 
-@app.route('/getboat_events/',  methods=['POST'])
+@app.route('/getboat_events/',  methods=['GET'])
 def getboat_events():
     boatid = request.args.get("boatid", None)
     try:
