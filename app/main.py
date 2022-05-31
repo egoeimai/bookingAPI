@@ -337,7 +337,7 @@ def sendbooking():
     return jsonify(args)
 
 
-@app.route('/sendclient/',  methods=['POST'])
+@app.route('/sendclient/',  methods=['GET'])
 def sendclient():
     name = request.args.get("name", None)
     email = request.args.get("email", None)
