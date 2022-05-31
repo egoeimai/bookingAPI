@@ -14,7 +14,7 @@ try:
         cursor.execute('DROP TABLE IF EXISTS boats;')
         cursor.execute('TRUNCATE TABLE boats_bases;')
         #cursor.execute('DROP TABLE IF EXISTS boats_booking;')
-        #cursor.execute('TRUNCATE TABLE boat_characteristics;')
+        cursor.execute('TRUNCATE TABLE boat_characteristics;')
         #cursor.execute('TRUNCATE TABLE boat_prices;')
         #cursor.execute('TRUNCATE TABLE boats_extras;')
         print('Creating table....')
@@ -80,16 +80,16 @@ for holiday in xml.findall('boat'):
 
     print(mycursor.rowcount, "record inserted.")
 
-    #sqls = "INSERT INTO `boat_characteristics` (`boat_id`, `bt_type`, `crew`, `model`, `widthboat`, `nbdoucabin`, `nbsimcabin`, `nbper`, `nbbathroom`, `buildyear`, `std_model`, `builder`, `widthboat_feet`, `bt_comment`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-    #vals = (holiday.attrib['id_boat'], holiday.attrib['bt_type'], holiday.attrib['crew'], holiday.attrib['model'], holiday.attrib['widthboat'], holiday.attrib['nbdoucabin'], holiday.attrib['nbsimcabin'], holiday.attrib['nbper'], holiday.attrib['nbbathroom'], holiday.attrib['buildyear'], holiday.attrib['std_model'], holiday.attrib['builder'], holiday.attrib['widthboat_feet'], holiday.attrib['bt_comment'])
-    #mycursor.execute(sqls, vals)
+    sqls = "INSERT INTO `boat_characteristics` (`boat_id`, `bt_type`, `crew`, `model`, `widthboat`, `nbdoucabin`, `nbsimcabin`, `nbper`, `nbbathroom`, `buildyear`, `std_model`, `builder`, `widthboat_feet`, `bt_comment`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+    vals = (holiday.attrib['id_boat'], holiday.attrib['bt_type'], holiday.attrib['crew'], holiday.attrib['model'], holiday.attrib['widthboat'], holiday.attrib['nbdoucabin'], holiday.attrib['nbsimcabin'], holiday.attrib['nbper'], holiday.attrib['nbbathroom'], holiday.attrib['buildyear'], holiday.attrib['std_model'], holiday.attrib['builder'], holiday.attrib['widthboat_feet'], holiday.attrib['bt_comment'])
+    mycursor.execute(sqls, vals)
 
     print(holiday.iter('homeport'))
     homeports = holiday.findall('homeport')
     for homeport in homeports:
 
-        sql_bases = "INSERT INTO boats_bases (boat_id, destination_id, destination_name) VALUES (%s, %s, %s)"
-        val_bases = (holiday.attrib['id_boat'], homeport.attrib['id_base'], homeport.attrib['name'])
+        sql_bases = "INSERT INTO boats_bases (boat_id, destination_id, destination_name, id_tbf1) VALUES (%s, %s, %s, %s)"
+        val_bases = (holiday.attrib['id_boat'], homeport.attrib['id_base'], homeport.attrib['name'], homeport.attrib['id_tbf1'])
         mycursor.execute(sql_bases, val_bases)
 
     conn.commit()
