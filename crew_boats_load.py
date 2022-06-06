@@ -16,10 +16,12 @@ try:
 
         # cursor.execute('DROP TABLE IF EXISTS boats_booking;')
         cursor.execute('TRUNCATE TABLE crew_images_boats;')
+        cursor.execute('TRUNCATE TABLE crew_boat_crewd;')
         cursor.execute('TRUNCATE TABLE crew_amenties;')
         cursor.execute('TRUNCATE TABLE crew_water_sports;')
         cursor.execute('TRUNCATE TABLE crew_characteristics;')
         cursor.execute('TRUNCATE TABLE crew_video_boats;')
+        cursor.execute('TRUNCATE TABLE crew_yachtothertoys;')
         cursor.execute('TRUNCATE TABLE crew_sample_menu;')
         print('Creating table....')
         # in the below line please pass the create table statement which you want #to create
@@ -92,6 +94,15 @@ for result in rv:
             val_images = (holiday[0].text, holiday[180].text, all_images)
             mycursor.execute(sql_images, val_images)
 
+
+            sql_yachtotherentertain = "INSERT INTO `crew_yachtotherentertain` (`other_id`, `boat_id`, `yachtotherentertain`) VALUES (NULL, %s, %s);"
+            val_yachtotherentertain = (holiday[0].text, holiday[171].text)
+            mycursor.execute(sql_yachtotherentertain, val_yachtotherentertain)
+
+            sql_othertoys = "INSERT INTO `crew_yachtothertoys` (`id_other`, `boat_id`, `yachtothertoys`) VALUES (NULL, %s, %s);"
+            val_othertoys = (holiday[0].text, holiday[170].text)
+            mycursor.execute(sql_othertoys, val_othertoys)
+
             sql_amenties = "INSERT INTO `crew_amenties`(`amenties_id`, `boat_id`, `yachtSalonStereo`, `yachtSatTv`, `yachtIpod`, `yachtSunAwning`,`yachtHammock`, `yachtWindScoops`, `yachtDeckShower`, `yachtBimini`, `yachtSpecialDiets`, `yachtKosher`, `yachtBBQ`, `yachtNumDineIn`, `yachtNudeCharters`, `yachtHairDryer`, `yachtNumHatch`, `yachtCrewSmoke`, `yachtGuestSmoke`, `yachtGuestPet`, `yachtChildrenAllowed`, `yachtGym`, `yachtElevators`, `yachtWheelChairAccess`, `yachtGenerator`, `yachtInverter`, `yachtWaterMaker`, `yachtIceMaker`, `yachtStabilizers`, `yachtInternet`, `yachtGreenMakeWater`, `yachtGreenReuseBottle`) VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
             val_amenties = (
             holiday[0].text, holiday[48].text, holiday[281].text, holiday[282].text, holiday[55].text, holiday[56].text,
@@ -133,4 +144,5 @@ for result in rv:
             menu_val = (holiday[0].text, holiday[199].text)
             mycursor.execute(menu_sql, menu_val)
 
+            conn.commit()
 
