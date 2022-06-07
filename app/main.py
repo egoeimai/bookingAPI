@@ -119,6 +119,28 @@ def get_crewd_amenties_perboat():
     except Error as e:
         return (e)
 
+@app.route('/get_crewd_watersports_perboat/',  methods=['GET'])
+def get_crewd_watersports_perboat():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`  WHERE  `crew_water_sports`.`boat_id`= "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "dinghy": result[2], "dinghyhp": result[3], "dinghypax": result[4], "adultsskies": result[5], "kidskis": result[6], "jetskies": result[7], "waverun": result[8], "kneeboard": result[9], "paddle": result[10], "windsurf": result[11], "gearsnorkel": result[12], "tubes":result[13], "scurfer":result[14], "wakeboard":result[15], "mankayak":result[16], "mankayak2":result[17], "seabob":result[18], "seascooter":result[19], "kiteboarding":result[20], "fishinggear":result[21], "fishinggeartype":result[22], "fishinggearnum":result[23], "deepseafish":result[24], "underwatercam":result[25], "watervideo":result[26], "other":result[29]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
 
 
 
