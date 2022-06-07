@@ -46,6 +46,7 @@ def getboats():
     except Error as e:
         return (e)
 
+
 @app.route('/get_crewd_boats/',  methods=['GET'])
 def get_crewd_boats():
 
@@ -55,6 +56,32 @@ def get_crewd_boats():
         if conn.is_connected():
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
+                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
+                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
+                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
+
+@app.route('/get_crewd_boat/',  methods=['GET'])
+def get_crewd_boat():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id WHERE `boat_id` = ' + boatid +';')
 
             rv = cursor.fetchall()
             json_data = []

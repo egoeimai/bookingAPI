@@ -22,6 +22,7 @@ try:
         cursor.execute('TRUNCATE TABLE crew_characteristics;')
         cursor.execute('TRUNCATE TABLE crew_video_boats;')
         cursor.execute('TRUNCATE TABLE crew_yachtothertoys;')
+        cursor.execute('TRUNCATE TABLE crew_yachtotherentertain;')
         cursor.execute('TRUNCATE TABLE crew_sample_menu;')
         print('Creating table....')
         # in the below line please pass the create table statement which you want #to create
