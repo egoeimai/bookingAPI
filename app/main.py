@@ -47,6 +47,27 @@ def getboats():
         return (e)
 
 
+@app.route('/getboat_bare/',  methods=['GET'])
+def getboat_bare():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat" AND boats.boat_id = "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[16], "bt_comment": result[17], "port": result[21], "port_id": result[22]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
 @app.route('/get_crewd_boats/',  methods=['GET'])
 def get_crewd_boats():
 
