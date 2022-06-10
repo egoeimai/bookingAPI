@@ -408,6 +408,71 @@ def getboat_amenities():
     except Error as e:
         return (e)
 
+@app.route('/getboat_amenities_per_boat/',  methods=['GET'])
+def getboat_amenities_per_boat():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+            json_data = []
+
+            content = ""
+            cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(boatid) + '" and topic = "Layout";')
+            rv = cursor.fetchall()
+
+            html = "<ul>"
+            for result in rv:
+                html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
+            html = html + "</ul>"
+
+            cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' +str(boatid) + '" and topic = "Amenities";')
+            rv = cursor.fetchall()
+            amenities = "<ul>"
+            for result in rv:
+                amenities = amenities + "<li>" + result[3] + "</li>"
+            amenities = amenities + "</ul>"
+
+            cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' +str(boatid) + '" and topic = "Characteristics";')
+            rv = cursor.fetchall()
+            Characteristics = "<ul>"
+            for result in rv:
+                Characteristics = Characteristics + "<li>" + result[3] + " : " + result[4] + " " + result[5] +"</li>"
+            Characteristics = Characteristics + "</ul>"
+
+            cursor.execute(
+                'SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' +str(boatid) + '" and topic = "Inventory";')
+            rv = cursor.fetchall()
+            Inventory = "<ul>"
+            for result in rv:
+                Inventory = Inventory + "<li>" + result[3] + "</li>"
+            Inventory = Inventory + "</ul>"
+
+            cursor.execute(
+                'SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' +str(boatid) + '" and topic = "Safety Equipment";')
+            rv = cursor.fetchall()
+            Safety_Equipment = "<ul>"
+            for result in rv:
+                Safety_Equipment = Safety_Equipment + "<li>" + result[3] + "</li>"
+            Safety_Equipment = Safety_Equipment + "</ul>"
+
+            cursor.execute('SELECT plan_url FROM `bare_boat_plans` WHERE `boat_id` = "' + str(boatid) + '";')
+            rv_plan = cursor.fetchall()
+
+            content = {"id":boatid, "layout": html, "amenities": amenities, "Characteristics": Characteristics, "Inventory":Inventory, "Safety_Equipment": Safety_Equipment, "plans": rv_plan[0]}
+            json_data.append(content)
+
+
+
+
+
+        return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
 
 
 @app.route('/getboat_extras/',  methods=['POST'])
