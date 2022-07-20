@@ -231,6 +231,29 @@ def get_crewd_videos():
         return (e)
 
 
+
+@app.route('/get_crewd_reviews/',  methods=['GET'])
+def get_crewd_reviews():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats_reviews` WHERE `boat_id`= "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"review1": result[2], "review2": result[3], "review3": result[4]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
 @app.route('/get_crewd_menu/',  methods=['GET'])
 def get_crewd_menu():
     try:
@@ -340,6 +363,63 @@ def getboat_price():
     except Error as e:
             return (e)
 
+@app.route('/get_sedna_to_mmk/',  methods=['GET'])
+def get_sedna_to_mmk():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats_apis_sych`')
+            boats = cursor.fetchall()
+            for result_boas in boats:
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND mmk_booking.status = 1')
+                mmk = cursor.fetchall()
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND boats_booking.status = 0;')
+                sedna = cursor.fetchall()
+                import requests
+                import json
+
+                if len(mmk) < len(sedna):
+                    for result in sedna:
+                        exist = 0
+                        for i, d in enumerate(mmk):
+
+                            if d[14] == result[9]:
+                                exist = 1
+                                break
+                        else:
+                            i = -1
+                        if exist == 0:
+                            url = "https://www.booking-manager.com/api/v2/reservation"
+
+                            payload = json.dumps({
+                                "dateFrom": result[7].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                                "dateTo": result[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                                "yachtId": result_boas[2],
+                                "status": 2
+                            })
+                            headers = {
+                                'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
+                                'Content-Type': 'application/json'
+                            }
+
+                            response = requests.request("POST", url, headers=headers, data=payload)
+
+                            print(response.text)
+                            print(str(exist) + "-" + result[9] + " - " + result[2] + " - " + result[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
+
+
+
+
+
+
+            return "<h1>Welcome to our server !!</h1>"
+
+    except Error as e:
+        return (e)
 
 
 @app.route('/getboat_amenities/',  methods=['GET'])
