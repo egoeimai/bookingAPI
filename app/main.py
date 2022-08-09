@@ -672,6 +672,43 @@ def gettoken():
 
     return xml[0].attrib['authtoken']
 
+@app.route('/api_react/',  methods=['GET'])
+def api_react():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+            cursor.execute('SELECT * FROM boats_booking WHERE boat_id='+boatid+' AND status=0' )
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            sedna = cursor.fetchall()
+            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND mmk_booking.status = 1')
+            mmk = cursor.fetchall()
+            print(mmk)
+
+            json_data = []
+            for result in sedna:
+                content = {"start": result[3], "end": result[4]}
+                json_data.append(content)
+
+            json_data_mmk = []
+            for result_mmk in mmk:
+                content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
+                json_data_mmk.append(content_mmk)
+
+            data = {'sedna': json_data, 'mmk': json_data_mmk}
+            print(data)
+            return jsonify(data)
+
+
+    except Error as e:
+        return (e)
+
+
+
 
 @app.route('/')
 def index():
