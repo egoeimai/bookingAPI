@@ -704,7 +704,7 @@ def api_react():
 
             rv = cursor.fetchall()
             json_data_rv = []
-            for result_rv in rv:
+            for result in rv:
                 content_rv = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7],
                            "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10],
                            "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13],
