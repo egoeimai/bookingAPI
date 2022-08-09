@@ -699,12 +699,11 @@ def api_react():
                 content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
                 json_data_mmk.append(content_mmk)
 
-            cursor.execute(
-                'SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat"  boat_id='+boatid+';')
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boats.boat_id='+boatid)
 
-            rv = cursor.fetchall()
+            rv_data = cursor.fetchall()
             json_data_rv = []
-            for result in rv:
+            for result in rv_data:
                 content_rv = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7],
                            "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10],
                            "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13],
