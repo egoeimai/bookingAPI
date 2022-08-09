@@ -699,7 +699,19 @@ def api_react():
                 content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
                 json_data_mmk.append(content_mmk)
 
-            data = {'sedna': json_data, 'mmk': json_data_mmk}
+            cursor.execute(
+                'SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat"  boat_id='+boatid+';')
+
+            rv = cursor.fetchall()
+            json_data_rv = []
+            for result_rv in rv:
+                content_rv = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7],
+                           "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10],
+                           "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13],
+                           "std_model": result[14], "builder": result[15], "widthboat_feet": result[16],
+                           "bt_comment": result[17], "port": result[21], "port_id": result[22]}
+                json_data_rv.append(content_rv)
+            data = {'sedna': json_data, 'mmk': json_data_mmk, 'data': json_data_rv}
             print(data)
             return jsonify(data)
 
