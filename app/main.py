@@ -734,7 +734,7 @@ def api_react_date():
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             sedna = cursor.fetchall()
 
-            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND mmk_booking.status = 1 ORDER BY `mmk_booking`.`dateFrom` ASC')
+            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND mmk_booking.status = 1 ORDER BY `mmk_booking`.`dateFrom` ASC')
             mmk = cursor.fetchall()
 
 
