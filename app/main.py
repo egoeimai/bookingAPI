@@ -719,6 +719,55 @@ def api_react():
         return (e)
 
 
+@app.route('/api_react_date/',  methods=['GET'])
+def api_react_date():
+    boatid = request.args.get("boat", None)
+    month = request.args.get("month", None)
+    year = request.args.get("year", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+            cursor.execute('SELECT * FROM boats_booking WHERE boat_id='+boatid+' AND  YEAR(datestart)='+year+' AND MONTH(datestart) = '+month+' status=0 ORDER BY `boats_booking`.`datestart` ASC' )
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            sedna = cursor.fetchall()
+            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND mmk_booking.status = 1 ORDER BY `mmk_booking`.`dateFrom` ASC')
+            mmk = cursor.fetchall()
+            print(mmk)
+
+            json_data = []
+            for result in sedna:
+                content = {"start": result[3], "end": result[4]}
+                json_data.append(content)
+
+            json_data_mmk = []
+            for result_mmk in mmk:
+                content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
+                json_data_mmk.append(content_mmk)
+
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boats.boat_id='+boatid)
+
+            rv_data = cursor.fetchall()
+            json_data_rv = []
+            for result in rv_data:
+                content_rv = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7],
+                           "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10],
+                           "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13],
+                           "std_model": result[14], "builder": result[15], "widthboat_feet": result[16],
+                           "bt_comment": result[17], "port": result[21], "port_id": result[22]}
+                json_data_rv.append(content_rv)
+            data = {'sedna': json_data, 'mmk': json_data_mmk, 'data': json_data_rv}
+            print(data)
+            return jsonify(data)
+
+
+    except Error as e:
+        return (e)
+
+
 
 
 @app.route('/')
