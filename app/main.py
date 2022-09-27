@@ -4,6 +4,7 @@ import mysql.connector as mysql
 from mysql.connector import Error
 from flask_cors import CORS
 import json
+import smtplib, ssl
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -368,12 +369,12 @@ def get_sedna_to_mmk():
     boatid = request.args.get("boatid", None)
 
     try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM `boats_apis_sych`')
             boats = cursor.fetchall()
+            mmk_log = ""
             for result_boas in boats:
                 cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND mmk_booking.status = 1')
                 mmk = cursor.fetchall()
@@ -409,14 +410,16 @@ def get_sedna_to_mmk():
                             response = requests.request("POST", url, headers=headers, data=payload)
 
                             print(response.text)
-                            print(str(exist) + "-" + result[9] + " - " + result[2] + " - " + result[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
+                            print("Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " Σφάλμα:  " + response.text)
+                            mmk_log = mmk_log + "<p>Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " Σφάλμα:  " + response.text + "</p>"
+
+        sql_bases = "INSERT INTO api_mmk_sych (log) VALUES ('" + mmk_log + "');"
+        val_bases = mmk_log
+        cursor.execute(sql_bases, val_bases)
+        conn.commit()
 
 
-
-
-
-
-            return "<h1>Welcome to our server !!</h1>"
+        return mmk_log
 
     except Error as e:
         return (e)
@@ -684,14 +687,19 @@ def api_get_boats():
             rv_data = cursor.fetchall()
             json_data_rv = []
             for result in rv_data:
-                content_rv = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7],
-                              "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10],
-                              "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13],
-                              "std_model": result[14], "builder": result[15], "widthboat_feet": result[16],
-                              "bt_comment": result[17], "port": result[21], "port_id": result[22]}
+                content_rv = {"name": result[1], "id": result[2]}
                 json_data_rv.append(content_rv)
+            cursor.execute('SELECT * FROM `api_mmk_sych` ORDER BY sych_id DESC LIMIT 15')
+            mmk_log_data = cursor.fetchall()
+            json_mmk_log_data = []
+            for mmk_result in mmk_log_data:
+                mmk_content_rv = {
+                    "id": mmk_result[0], "log":mmk_result[1], "date":mmk_result[2]
+                }
+                json_mmk_log_data.append(mmk_content_rv)
 
-            data = {'data': json_data_rv}
+
+            data = {'data': json_data_rv, 'mmk_logs': json_mmk_log_data }
             print(data)
             return jsonify(data)
 
