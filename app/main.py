@@ -375,6 +375,7 @@ def get_sedna_to_mmk():
             cursor.execute('SELECT * FROM `boats_apis_sych`')
             boats = cursor.fetchall()
             mmk_log = ""
+            log_count = 1
             for result_boas in boats:
                 cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND mmk_booking.status = 1')
                 mmk = cursor.fetchall()
@@ -384,6 +385,7 @@ def get_sedna_to_mmk():
                 import json
 
                 if len(mmk) < len(sedna):
+
                     for result in sedna:
                         exist = 0
                         for i, d in enumerate(mmk):
@@ -412,8 +414,9 @@ def get_sedna_to_mmk():
                             print(response.text)
                             print("Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " Σφάλμα:  " + response.text)
                             mmk_log = mmk_log + "<p>Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " Σφάλμα:  " + response.text + "</p>"
-
-        sql_bases = "INSERT INTO api_mmk_sych (log) VALUES ('" + mmk_log + "');"
+                            log_count = log_count + 1
+        print(log_count)
+        sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
         val_bases = mmk_log
         cursor.execute(sql_bases, val_bases)
         conn.commit()
@@ -694,7 +697,7 @@ def api_get_boats():
             json_mmk_log_data = []
             for mmk_result in mmk_log_data:
                 mmk_content_rv = {
-                    "id": mmk_result[0], "log":mmk_result[1], "date":mmk_result[2]
+                    "id": mmk_result[0], "log":mmk_result[1], "date":mmk_result[3], "count":mmk_result[2]
                 }
                 json_mmk_log_data.append(mmk_content_rv)
 
