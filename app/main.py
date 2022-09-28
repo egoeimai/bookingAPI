@@ -412,8 +412,8 @@ def get_sedna_to_mmk():
                             response = requests.request("POST", url, headers=headers, data=payload)
 
                             print(response.text)
-                            print("Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " Σφάλμα:  " + response.text)
-                            mmk_log = mmk_log + "<p>Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " Σφάλμα:  " + response.text + "</p>"
+                            print("Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " <br><strong>Σφάλμα</strong>:  " + response.text)
+                            mmk_log = mmk_log + "<p>Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + "  <br><strong>Σφάλμα</strong>:  " + response.text + "</p>"
                             log_count = log_count + 1
         print(log_count)
         sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
@@ -426,7 +426,39 @@ def get_sedna_to_mmk():
 
     except Error as e:
         return (e)
+@app.route('/send_sedna_to_mmk_id/',  methods=['GET'])
+def end_sedna_to_mmk_id():
+    boatid = request.args.get("boatid", None)
 
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats_apis_sych` where sedna_id='+boatid)
+            boats = cursor.fetchall()
+            import requests
+            import json
+            url = "https://www.booking-manager.com/api/v2/reservation"
+
+            payload = json.dumps({
+                "dateFrom": boats[7].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                "dateTo": boats[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                "yachtId": boats[2],
+                "status": 2
+            })
+            headers = {
+                'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+
+
+        return response.text
+
+    except Error as e:
+        return (e)
 
 @app.route('/getboat_amenities/',  methods=['GET'])
 def getboat_amenities():
@@ -778,7 +810,7 @@ def api_react_date():
 
             json_data = []
             for result in sedna:
-                content = {"start": result[3], "end": result[4]}
+                content = {"book_id":result[0], "start": result[3], "end": result[4]}
                 json_data.append(content)
 
             json_data_mmk = []
