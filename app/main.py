@@ -806,7 +806,7 @@ def api_react():
             print(mmk)
 
             cursor.execute(
-                'SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + boatid + ' AND  YEAR(dateFrom) = ' + year + ' AND MONTH(dateFrom) = ' + month + ' AND mmk_booking.status = 1 ORDER BY `nausys_boats_bookings`.`dateFrom` ASC')
+                'SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + boatid + ' ORDER BY `nausys_boats_bookings`.`periodFrom` ASC')
             nausys = cursor.fetchall()
             json_data = []
             for result in sedna:
@@ -834,7 +834,7 @@ def api_react():
                            "std_model": result[14], "builder": result[15], "widthboat_feet": result[16],
                            "bt_comment": result[17], "port": result[21], "port_id": result[22]}
                 json_data_rv.append(content_rv)
-            data = {'sedna': json_data, 'mmk': json_data_mmk, 'data': json_data_rv}
+            data = {'sedna': json_data, 'mmk': json_data_mmk, 'nausys': json_data_nausys, 'data': json_data_rv}
             print(data)
             return jsonify(data)
 
