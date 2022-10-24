@@ -581,7 +581,7 @@ def getboat_amenities_per_boat():
         if conn.is_connected():
             cursor = conn.cursor()
 
-            json_data = []
+            json_data = [] 
 
             content = ""
             cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(boatid) + '" and topic = "Layout";')
