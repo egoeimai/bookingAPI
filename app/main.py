@@ -4,7 +4,6 @@ import mysql.connector as mysql
 from mysql.connector import Error
 from flask_cors import CORS
 import json
-import nausys as Nausys
 import smtplib, ssl
 
 app = Flask(__name__)
