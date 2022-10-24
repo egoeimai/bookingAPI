@@ -4,6 +4,7 @@ import mysql.connector as mysql
 from mysql.connector import Error
 from flask_cors import CORS
 import json
+import nausys as Nausys
 import smtplib, ssl
 
 app = Flask(__name__)
@@ -390,17 +391,17 @@ def get_sedna_to_mmk():
                         exist = 0
                         for i, d in enumerate(mmk):
 
-                            if d[14] == result[9]:
+                            if d[15] == result[10]:
                                 exist = 1
                                 break
                         else:
                             i = -1
                         if exist == 0:
                             url = "https://www.booking-manager.com/api/v2/reservation"
-
+                            print(result[9].strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
                             payload = json.dumps({
-                                "dateFrom": result[7].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
-                                "dateTo": result[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                                "dateFrom": result[8].strftime('%Y-%m-%dT%H:%M:%S'),
+                                "dateTo": result[9].strftime('%Y-%m-%dT%H:%M:%S'),
                                 "yachtId": result_boas[2],
                                 "status": 2
                             })
@@ -412,8 +413,8 @@ def get_sedna_to_mmk():
                             response = requests.request("POST", url, headers=headers, data=payload)
 
                             print(response.text)
-                            print("Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + " <br><strong>Σφάλμα</strong>:  " + response.text)
-                            mmk_log = mmk_log + "<p>Σκάφος: " + result[3] + " - Κράτηση:  " + result[7].strftime('%Y-%m-%d') + " - " + result[8].strftime('%Y-%m-%d') + "  <br><strong>Σφάλμα</strong>:  " + response.text + "</p>"
+                            print("Σκάφος: " + str(result[3]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + " <br><strong>Σφάλμα</strong>:  " + response.text)
+                            mmk_log = mmk_log + "<p>Σκάφος: " +  str(result[3]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + "  <br><strong>Σφάλμα</strong>:  " + response.text + "</p>"
                             log_count = log_count + 1
         print(log_count)
         sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
@@ -426,8 +427,53 @@ def get_sedna_to_mmk():
 
     except Error as e:
         return (e)
+
+@app.route('/get_sedna_to_nausys/',  methods=['GET'])
+def get_sedna_to_nausys():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats_apis_sych`')
+            boats = cursor.fetchall()
+            nausys_log = ""
+            log_count = 1
+            for result_boats in boats:
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND nausys_boats_bookings.status = "RESERVATION"')
+                nausys = cursor.fetchall()
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND boats_booking.status = 0;')
+                sedna = cursor.fetchall()
+                import requests
+                import json
+
+                if len(nausys) < len(sedna):
+
+                    for result in sedna:
+                        exist = 0
+                        for i, d in enumerate(nausys):
+
+                            if d[12] == result[10]:
+                                exist = 1
+                                print(d)
+                                break
+                        else:
+                            i = -1
+
+
+
+
+
+
+
+        return nausys_log
+
+    except Error as e:
+        return (e)
+
 @app.route('/send_sedna_to_mmk_id/',  methods=['GET'])
-def end_sedna_to_mmk_id():
+def send_sedna_to_mmk_id():
     boatid = request.args.get("boatid", None)
 
     try:
@@ -759,6 +805,9 @@ def api_react():
             mmk = cursor.fetchall()
             print(mmk)
 
+            cursor.execute(
+                'SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + boatid + ' AND  YEAR(dateFrom) = ' + year + ' AND MONTH(dateFrom) = ' + month + ' AND mmk_booking.status = 1 ORDER BY `nausys_boats_bookings`.`dateFrom` ASC')
+            nausys = cursor.fetchall()
             json_data = []
             for result in sedna:
                 content = {"start": result[3], "end": result[4]}
@@ -768,6 +817,11 @@ def api_react():
             for result_mmk in mmk:
                 content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
                 json_data_mmk.append(content_mmk)
+            json_data_nausys = []
+            for result_nausys in nausys:
+                content_nausys = {"start": result_nausys[9], "end": result_nausys[10], "status": result_nausys[8]}
+                json_data_nausys.append(content_nausys)
+
 
             cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boats.boat_id='+boatid)
 
@@ -795,6 +849,7 @@ def api_react_date():
     month = request.args.get("month", None)
     year = request.args.get("year", None)
 
+
     try:
         conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                              password='sd5w2V!0')
@@ -807,6 +862,9 @@ def api_react_date():
             cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND mmk_booking.status = 1 ORDER BY `mmk_booking`.`dateFrom` ASC')
             mmk = cursor.fetchall()
 
+            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND mmk_booking.status = 1 ORDER BY `nausys_boats_bookings`.`dateFrom` ASC')
+            nausys = cursor.fetchall()
+
 
             json_data = []
             for result in sedna:
@@ -816,7 +874,11 @@ def api_react_date():
             json_data_mmk = []
             for result_mmk in mmk:
                 content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
-                json_data_mmk.append(content_mmk)
+            json_data_mmk.append(content_mmk)
+            json_data_nausys = []
+            for result_nausys in nausys:
+                content_nausys = {"start": result_nausys[9], "end": result_nausys[10], "status": result_nausys[8] }
+                json_data_nausys.append(content_nausys)
 
             cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boats.boat_id='+boatid)
 
@@ -829,7 +891,7 @@ def api_react_date():
                            "std_model": result[14], "builder": result[15], "widthboat_feet": result[16],
                            "bt_comment": result[17], "port": result[21], "port_id": result[22]}
                 json_data_rv.append(content_rv)
-            data = {'sedna': json_data, 'mmk': json_data_mmk, 'data': json_data_rv}
+            data = {'sedna': json_data, 'mmk': json_data_mmk, 'nausys': json_data_nausys, 'data': json_data_rv}
             print(data)
             return jsonify(data)
 
@@ -837,6 +899,44 @@ def api_react_date():
     except Error as e:
         return (e)
 
+
+@app.route('/nausys_get_boats/',  methods=['GET'])
+
+def nausys_get_boats():
+    import requests
+    import json
+    boats_bookings = Nausys.boat_bookings()
+    boats = json.loads(boats_bookings)
+
+
+
+
+    return jsonify(boats["reservations"])
+
+@app.route('/nausys_import_boats/',  methods=['GET'])
+def nausys_import_boats():
+    import requests
+    import json
+    boats = Nausys.get_nausys_boats()
+    json_boats = json.loads(boats)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+
+
+            for item in json_boats["yachts"]:
+                sql = "INSERT INTO `nausys_boats` (`boat_id`, `name`) VALUES (%s, %s);"
+                val = (item['id'], item['name'])
+                cursor.execute(sql, val)
+
+                conn.commit()
+
+    except Error as e:
+        print(e)
+    return jsonify(json_boats["yachts"])
 
 
 
