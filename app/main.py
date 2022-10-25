@@ -861,7 +861,7 @@ def api_react_date():
             cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND mmk_booking.status = 1 ORDER BY `mmk_booking`.`dateFrom` ASC')
             mmk = cursor.fetchall()
 
-            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND mmk_booking.status = 1 ORDER BY `nausys_boats_bookings`.`dateFrom` ASC')
+            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(periodFrom) = '+year+' AND MONTH(periodFrom) = '+month+'  ORDER BY `nausys_boats_bookings`.`periodFrom` ASC')
             nausys = cursor.fetchall()
 
 
