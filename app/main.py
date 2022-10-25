@@ -27,169 +27,12 @@ def html_decode(s):
     for code in htmlCodes:
         s = s.replace(code[1], code[0])
     return s
-@app.route('/getboats/',  methods=['GET'])
-def getboats():
 
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat";')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[16], "bt_comment": result[17], "port": result[21], "port_id": result[22]}
-                json_data.append(content)
-            return jsonify(json_data)
-
-    except Error as e:
-        return (e)
-
-
-@app.route('/getboat_bare/',  methods=['GET'])
-def getboat_bare():
-    boatid = request.args.get("boatid", None)
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat" AND boats.boat_id = "' + str(boatid) + '";')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[16], "bt_comment": result[17], "port": result[21], "port_id": result[22]}
-                json_data.append(content)
-            return jsonify(json_data)
-
-    except Error as e:
-        return (e)
-
-
-@app.route('/get_crewd_boats/',  methods=['GET'])
-def get_crewd_boats():
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id;')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
-                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
-                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
-                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
-                json_data.append(content)
-            return jsonify(json_data)
-
-    except Error as e:
-        return (e)
+""" BareBoats Sychronize """
 
 
 
-@app.route('/get_crewd_boat/',  methods=['GET'])
-def get_crewd_boat():
-    boatid = request.args.get("boatid", None)
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id WHERE  crew_boats.boat_id = "' + str(boatid) + '";')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
-                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
-                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
-                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
-                json_data.append(content)
-            return jsonify(json_data)
-
-    except Error as e:
-        return (e)
-
-
-@app.route('/get_crewd_amenties_perboat/',  methods=['GET'])
-def get_crewd_amenties_perboat():
-    boatid = request.args.get("boatid", None)
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_amenties` LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_amenties.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_amenties.boat_id WHERE  crew_amenties.boat_id = "' + str(boatid) + '";')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "stero": result[2], "sattv": result[3], "ipod": result[4], "sunawing": result[5], "hammocock": result[6], "windscoops": result[7], "deckshower": result[8], "bimini": result[9], "specialdiets": result[10], "kosher": result[11], "bbq": result[12], "numdinein":result[13], "nudechart":result[14], "hairdryer":result[15], "hatch":result[16], "crewsmoke":result[17], "guestsmoke":result[18], "guestpet":result[19], "childerallow":result[20], "gym":result[21], "elevator":result[22], "wheelchairaccess":result[23], "genarator":result[24], "inventer":result[25], "icemaker":result[27], "stabilizer":result[28], "internet":result[29], "greenwater":result[30], "greenreusebottle":result[31], "showers":result[34], "tubs":result[35], "washbasins":result[36], "heads":result[37], "electricheads":result[38], "helipad":result[39], "jacuzzi":result[40], "ac":result[41], "prefpickup":result[42], "otherpickup":result[43], "engines":result[44], "fuel":result[45], "speed":result[46], "maxspeed":result[47], "accommodations":result[48], "other":result[51]}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-@app.route('/get_crewd_watersports_perboat/',  methods=['GET'])
-def get_crewd_watersports_perboat():
-    boatid = request.args.get("boatid", None)
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`  WHERE  `crew_water_sports`.`boat_id`= "' + str(boatid) + '";')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "dinghy": result[2], "dinghyhp": result[3], "dinghypax": result[4], "adultsskies": result[5], "kidskis": result[6], "jetskies": result[7], "waverun": result[8], "kneeboard": result[9], "paddle": result[10], "windsurf": result[11], "gearsnorkel": result[12], "tubes":result[13], "scurfer":result[14], "wakeboard":result[15], "mankayak":result[16], "mankayak2":result[17], "seabob":result[18], "seascooter":result[19], "kiteboarding":result[20], "fishinggear":result[21], "fishinggeartype":result[22], "fishinggearnum":result[23], "deepseafish":result[24], "underwatercam":result[25], "watervideo":result[26], "other":result[29]}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-
-
-
-
-@app.route('/get_crewd_boats_crew/', methods=['GET'])
-def get_crewd_boats_crew():
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_boat_crewd`')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "num_crew": result[2], "captainname": result[3], "captainnation": result[4],
-                           "captainborn": result[5], "captainlang": result[6], "crewname": result[7],
-                           "crewtitle": result[8], "crewnation": result[9], "crewborn": result[10],
-                           "crewtext": result[11], "image1": result[12], "image2": result[13]}
-                json_data.append(content)
-            return jsonify(json_data)
-
-    except Error as e:
-        return (e)
-
-
+""" Bare Plan Boats Sychronize """
 @app.route('/get_bare_plan/',  methods=['GET'])
 def get_bare_plan():
     try:
@@ -210,152 +53,22 @@ def get_bare_plan():
     except Error as e:
         return (e)
 
+""" Get BareBoat Extras """
 
-@app.route('/get_crewd_videos/',  methods=['GET'])
-def get_crewd_videos():
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_video_boats` WHERE `video_url` is NOT NULL;')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "video_url": result[2]}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-
-
-@app.route('/get_crewd_reviews/',  methods=['GET'])
-def get_crewd_reviews():
+@app.route('/getboat_extras/',  methods=['POST'])
+def getboats_extras():
     boatid = request.args.get("boatid", None)
     try:
         conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_boats_reviews` WHERE `boat_id`= "' + str(boatid) + '";')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"review1": result[2], "review2": result[3], "review3": result[4]}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-
-@app.route('/get_crewd_menu/',  methods=['GET'])
-def get_crewd_menu():
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_sample_menu` WHERE `text_menu` is NOT NULL;')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "menu": html_decode(result[2])}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-
-@app.route('/get_crewd_amenties/',  methods=['GET'])
-def get_crewd_amenties():
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_amenties` LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_amenties.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_amenties.boat_id;')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "stero": result[2], "sattv": result[3], "ipod": result[4], "sunawing": result[5], "hammocock": result[6], "windscoops": result[7], "deckshower": result[8], "bimini": result[9], "specialdiets": result[10], "kosher": result[11], "bbq": result[12], "numdinein":result[13], "nudechart":result[14], "hairdryer":result[15], "hatch":result[16], "crewsmoke":result[17], "guestsmoke":result[18], "guestpet":result[19], "childerallow":result[20], "gym":result[21], "elevator":result[22], "wheelchairaccess":result[23], "genarator":result[24], "inventer":result[25], "icemaker":result[27], "stabilizer":result[28], "internet":result[29], "greenwater":result[30], "greenreusebottle":result[31], "showers":result[34], "tubs":result[35], "washbasins":result[36], "heads":result[37], "electricheads":result[38], "helipad":result[39], "jacuzzi":result[40], "ac":result[41], "prefpickup":result[42], "otherpickup":result[43], "engines":result[44], "fuel":result[45], "speed":result[46], "maxspeed":result[47], "accommodations":result[48], "other":result[51]}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-@app.route('/get_crewd_watersports/',  methods=['GET'])
-def get_crewd_watersports():
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`;')
-
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"boat_id": result[1], "dinghy": result[2], "dinghyhp": result[3], "dinghypax": result[4], "adultsskies": result[5], "kidskis": result[6], "jetskies": result[7], "waverun": result[8], "kneeboard": result[9], "paddle": result[10], "windsurf": result[11], "gearsnorkel": result[12], "tubes":result[13], "scurfer":result[14], "wakeboard":result[15], "mankayak":result[16], "mankayak2":result[17], "seabob":result[18], "seascooter":result[19], "kiteboarding":result[20], "fishinggear":result[21], "fishinggeartype":result[22], "fishinggearnum":result[23], "deepseafish":result[24], "underwatercam":result[25], "watervideo":result[26], "other":result[29]}
-                json_data.append(content)
-            json_output = json.dumps(rv)
-            return jsonify( json_data)
-
-    except Error as e:
-        return (e)
-
-
-
-@app.route('/getboats_destinations/',  methods=['GET'])
-def getboats_destinations():
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id;')
+            cursor.execute('SELECT * FROM boats_extras WHERE boat_id=' + boatid)
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"name": result[1], "id": result[2], "destination_name": result[6], "id_tbf1": result[7]}
-                json_data.append(content)
-            return jsonify(json_data)
-
-    except Error as e:
-        return (e)
-
-
-
-@app.route('/getboat_price/',  methods=['GET'])
-def getboat_price():
-    boatid = request.args.get("boatid", None)
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `boat_prices` WHERE `datestart` >= "2022-06-18" AND `boat_id` = ' + boatid + ' ORDER BY `boat_prices`.`datestart` ASC')
-            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
-            rv = cursor.fetchall()
-            json_data = []
-            for result in rv:
-                content = {"datestart": result[2], "dateend": result[3], "price": result[4], "unit": result[5]}
+                content = {"id_opt": result[1], "id_opt_bt": result[2], "name": result[3], "price": result[4], "per": result[5]}
                 json_data.append(content)
 
 
@@ -364,146 +77,8 @@ def getboat_price():
     except Error as e:
             return (e)
 
-@app.route('/get_sedna_to_mmk/',  methods=['GET'])
-def get_sedna_to_mmk():
-    boatid = request.args.get("boatid", None)
 
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `boats_apis_sych`')
-            boats = cursor.fetchall()
-            mmk_log = ""
-            log_count = 1
-            for result_boas in boats:
-                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND mmk_booking.status = 1')
-                mmk = cursor.fetchall()
-                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND boats_booking.status = 0;')
-                sedna = cursor.fetchall()
-                import requests
-                import json
-
-                if len(mmk) < len(sedna):
-
-                    for result in sedna:
-                        exist = 0
-                        for i, d in enumerate(mmk):
-
-                            if d[15] == result[10]:
-                                exist = 1
-                                break
-                        else:
-                            i = -1
-                        if exist == 0:
-                            url = "https://www.booking-manager.com/api/v2/reservation"
-                            print(result[9].strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
-                            payload = json.dumps({
-                                "dateFrom": result[8].strftime('%Y-%m-%dT%H:%M:%S'),
-                                "dateTo": result[9].strftime('%Y-%m-%dT%H:%M:%S'),
-                                "yachtId": result_boas[2],
-                                "status": 2
-                            })
-                            headers = {
-                                'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
-                                'Content-Type': 'application/json'
-                            }
-
-                            response = requests.request("POST", url, headers=headers, data=payload)
-
-                            print(response.text)
-                            print("Σκάφος: " + str(result[3]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + " <br><strong>Σφάλμα</strong>:  " + response.text)
-                            mmk_log = mmk_log + "<p>Σκάφος: " +  str(result[3]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + "  <br><strong>Σφάλμα</strong>:  " + response.text + "</p>"
-                            log_count = log_count + 1
-        print(log_count)
-        sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
-        val_bases = mmk_log
-        cursor.execute(sql_bases, val_bases)
-        conn.commit()
-
-
-        return mmk_log
-
-    except Error as e:
-        return (e)
-
-@app.route('/get_sedna_to_nausys/',  methods=['GET'])
-def get_sedna_to_nausys():
-    boatid = request.args.get("boatid", None)
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `boats_apis_sych`')
-            boats = cursor.fetchall()
-            nausys_log = ""
-            log_count = 1
-            for result_boats in boats:
-                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND nausys_boats_bookings.status = "RESERVATION"')
-                nausys = cursor.fetchall()
-                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND boats_booking.status = 0;')
-                sedna = cursor.fetchall()
-                import requests
-                import json
-
-                if len(nausys) < len(sedna):
-
-                    for result in sedna:
-                        exist = 0
-                        for i, d in enumerate(nausys):
-
-                            if d[12] == result[10]:
-                                exist = 1
-                                print(d)
-                                break
-                        else:
-                            i = -1
-
-
-
-
-
-
-
-        return nausys_log
-
-    except Error as e:
-        return (e)
-
-@app.route('/send_sedna_to_mmk_id/',  methods=['GET'])
-def send_sedna_to_mmk_id():
-    boatid = request.args.get("boatid", None)
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `boats_apis_sych` where sedna_id='+boatid)
-            boats = cursor.fetchall()
-            import requests
-            import json
-            url = "https://www.booking-manager.com/api/v2/reservation"
-
-            payload = json.dumps({
-                "dateFrom": boats[7].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
-                "dateTo": boats[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
-                "yachtId": boats[2],
-                "status": 2
-            })
-            headers = {
-                'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
-                'Content-Type': 'application/json'
-            }
-
-            response = requests.request("POST", url, headers=headers, data=payload)
-
-
-        return response.text
-
-    except Error as e:
-        return (e)
+""" Bare Boats Amenities Sychronize """
 
 @app.route('/getboat_amenities/',  methods=['GET'])
 def getboat_amenities():
@@ -571,6 +146,7 @@ def getboat_amenities():
     except Error as e:
         return (e)
 
+""" BareBoats Amenities Per Boat Sychronize """
 @app.route('/getboat_amenities_per_boat/',  methods=['GET'])
 def getboat_amenities_per_boat():
     boatid = request.args.get("boatid", None)
@@ -637,21 +213,331 @@ def getboat_amenities_per_boat():
         return (e)
 
 
+""" BareBoats characteristics Sychronize """
+@app.route('/getboats/',  methods=['GET'])
+def getboats():
 
-@app.route('/getboat_extras/',  methods=['POST'])
-def getboats_extras():
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[16], "bt_comment": result[17], "port": result[21], "port_id": result[22]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+""" BareBoats characteristics Sychronize """
+@app.route('/getboat_bare/',  methods=['GET'])
+def getboat_bare():
     boatid = request.args.get("boatid", None)
     try:
         conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats_extras WHERE boat_id=' + boatid)
+            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boat_characteristics.crew = "Bare Boat" AND boats.boat_id = "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[2], "bt_type": result[5], "model": result[7], "widthboat": result[8], "nbdoucabin": result[9], "nbsimcabin": result[10], "nbper": result[11], "nbbathroom": result[12], "buildyear": result[13], "std_model": result[14], "builder": result[15], "widthboat_feet": result[16], "bt_comment": result[17], "port": result[21], "port_id": result[22]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+""" Crew Boats characteristics Sychronize """
+@app.route('/get_crewd_boats/',  methods=['GET'])
+def get_crewd_boats():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
+                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
+                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
+                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+""" Crew Boats characteristics Sychronize By Id """
+
+@app.route('/get_crewd_boat/',  methods=['GET'])
+def get_crewd_boat():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id WHERE  crew_boats.boat_id = "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
+                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
+                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
+                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
+""" Crew Boats Amenties Sychronize """
+
+@app.route('/get_crewd_amenties_perboat/',  methods=['GET'])
+def get_crewd_amenties_perboat():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_amenties` LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_amenties.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_amenties.boat_id WHERE  crew_amenties.boat_id = "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "stero": result[2], "sattv": result[3], "ipod": result[4], "sunawing": result[5], "hammocock": result[6], "windscoops": result[7], "deckshower": result[8], "bimini": result[9], "specialdiets": result[10], "kosher": result[11], "bbq": result[12], "numdinein":result[13], "nudechart":result[14], "hairdryer":result[15], "hatch":result[16], "crewsmoke":result[17], "guestsmoke":result[18], "guestpet":result[19], "childerallow":result[20], "gym":result[21], "elevator":result[22], "wheelchairaccess":result[23], "genarator":result[24], "inventer":result[25], "icemaker":result[27], "stabilizer":result[28], "internet":result[29], "greenwater":result[30], "greenreusebottle":result[31], "showers":result[34], "tubs":result[35], "washbasins":result[36], "heads":result[37], "electricheads":result[38], "helipad":result[39], "jacuzzi":result[40], "ac":result[41], "prefpickup":result[42], "otherpickup":result[43], "engines":result[44], "fuel":result[45], "speed":result[46], "maxspeed":result[47], "accommodations":result[48], "other":result[51]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+""" Crew Boats WaterSports Sychronize """
+@app.route('/get_crewd_watersports_perboat/',  methods=['GET'])
+def get_crewd_watersports_perboat():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`  WHERE  `crew_water_sports`.`boat_id`= "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "dinghy": result[2], "dinghyhp": result[3], "dinghypax": result[4], "adultsskies": result[5], "kidskis": result[6], "jetskies": result[7], "waverun": result[8], "kneeboard": result[9], "paddle": result[10], "windsurf": result[11], "gearsnorkel": result[12], "tubes":result[13], "scurfer":result[14], "wakeboard":result[15], "mankayak":result[16], "mankayak2":result[17], "seabob":result[18], "seascooter":result[19], "kiteboarding":result[20], "fishinggear":result[21], "fishinggeartype":result[22], "fishinggearnum":result[23], "deepseafish":result[24], "underwatercam":result[25], "watervideo":result[26], "other":result[29]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
+
+
+""" Crew Boats Crew Sychronize """
+
+
+@app.route('/get_crewd_boats_crew/', methods=['GET'])
+def get_crewd_boats_crew():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boat_crewd`')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "num_crew": result[2], "captainname": result[3], "captainnation": result[4],
+                           "captainborn": result[5], "captainlang": result[6], "crewname": result[7],
+                           "crewtitle": result[8], "crewnation": result[9], "crewborn": result[10],
+                           "crewtext": result[11], "image1": result[12], "image2": result[13]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
+
+""" Crew Boats Videos Sychronize """
+
+@app.route('/get_crewd_videos/',  methods=['GET'])
+def get_crewd_videos():
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_video_boats` WHERE `video_url` is NOT NULL;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "video_url": result[2]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
+""" Crew Boats Reviews Sychronize """
+
+@app.route('/get_crewd_reviews/',  methods=['GET'])
+def get_crewd_reviews():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats_reviews` WHERE `boat_id`= "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"review1": result[2], "review2": result[3], "review3": result[4]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
+""" Crew Boats Menu Sychronize """
+
+@app.route('/get_crewd_menu/',  methods=['GET'])
+def get_crewd_menu():
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_sample_menu` WHERE `text_menu` is NOT NULL;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "menu": html_decode(result[2])}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+""" Crew Boats Amenties Sychronize """
+@app.route('/get_crewd_amenties/',  methods=['GET'])
+def get_crewd_amenties():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_amenties` LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_amenties.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_amenties.boat_id;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "stero": result[2], "sattv": result[3], "ipod": result[4], "sunawing": result[5], "hammocock": result[6], "windscoops": result[7], "deckshower": result[8], "bimini": result[9], "specialdiets": result[10], "kosher": result[11], "bbq": result[12], "numdinein":result[13], "nudechart":result[14], "hairdryer":result[15], "hatch":result[16], "crewsmoke":result[17], "guestsmoke":result[18], "guestpet":result[19], "childerallow":result[20], "gym":result[21], "elevator":result[22], "wheelchairaccess":result[23], "genarator":result[24], "inventer":result[25], "icemaker":result[27], "stabilizer":result[28], "internet":result[29], "greenwater":result[30], "greenreusebottle":result[31], "showers":result[34], "tubs":result[35], "washbasins":result[36], "heads":result[37], "electricheads":result[38], "helipad":result[39], "jacuzzi":result[40], "ac":result[41], "prefpickup":result[42], "otherpickup":result[43], "engines":result[44], "fuel":result[45], "speed":result[46], "maxspeed":result[47], "accommodations":result[48], "other":result[51]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
+
+""" Crew Boats Watersports Sychronize """
+
+@app.route('/get_crewd_watersports/',  methods=['GET'])
+def get_crewd_watersports():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "dinghy": result[2], "dinghyhp": result[3], "dinghypax": result[4], "adultsskies": result[5], "kidskis": result[6], "jetskies": result[7], "waverun": result[8], "kneeboard": result[9], "paddle": result[10], "windsurf": result[11], "gearsnorkel": result[12], "tubes":result[13], "scurfer":result[14], "wakeboard":result[15], "mankayak":result[16], "mankayak2":result[17], "seabob":result[18], "seascooter":result[19], "kiteboarding":result[20], "fishinggear":result[21], "fishinggeartype":result[22], "fishinggearnum":result[23], "deepseafish":result[24], "underwatercam":result[25], "watervideo":result[26], "other":result[29]}
+                json_data.append(content)
+            json_output = json.dumps(rv)
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+""" Bare Boats Destinations Sychronize """
+
+@app.route('/getboats_destinations/',  methods=['GET'])
+def getboats_destinations():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM boats LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id;')
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"id_opt": result[1], "id_opt_bt": result[2], "name": result[3], "price": result[4], "per": result[5]}
+                content = {"name": result[1], "id": result[2], "destination_name": result[6], "id_tbf1": result[7]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
+""" Bare Boats Prices Sychronize """
+
+@app.route('/getboat_price/',  methods=['GET'])
+def getboat_price():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boat_prices` WHERE `datestart` >= "2022-06-18" AND `boat_id` = ' + boatid + ' ORDER BY `boat_prices`.`datestart` ASC')
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"datestart": result[2], "dateend": result[3], "price": result[4], "unit": result[5]}
                 json_data.append(content)
 
 
@@ -659,6 +545,161 @@ def getboats_extras():
 
     except Error as e:
             return (e)
+
+
+""" Sedna To MMK Sychronize """
+
+@app.route('/get_sedna_to_mmk/',  methods=['GET'])
+def get_sedna_to_mmk():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats_apis_sych`')
+            boats = cursor.fetchall()
+            mmk_log = ""
+            log_count = 1
+            for result_boas in boats:
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND mmk_booking.status = 1')
+                mmk = cursor.fetchall()
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND boats_booking.status = 0;')
+                sedna = cursor.fetchall()
+                import requests
+                import json
+
+                if len(mmk) < len(sedna):
+
+                    for result in sedna:
+                        exist = 0
+                        for i, d in enumerate(mmk):
+
+                            if d[15] == result[10]:
+                                exist = 1
+                                break
+                        else:
+                            i = -1
+                        if exist == 0:
+                            url = "https://www.booking-manager.com/api/v2/reservation"
+                            print(result[9].strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
+                            payload = json.dumps({
+                                "dateFrom": result[8].strftime('%Y-%m-%dT%H:%M:%S'),
+                                "dateTo": result[9].strftime('%Y-%m-%dT%H:%M:%S'),
+                                "yachtId": result_boas[2],
+                                "status": 2
+                            })
+                            headers = {
+                                'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
+                                'Content-Type': 'application/json'
+                            }
+
+                            response = requests.request("POST", url, headers=headers, data=payload)
+
+                            print(response.text)
+                            print("Σκάφος: " + str(result[3]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + " <br><strong>Σφάλμα</strong>:  " + response.text)
+                            mmk_log = mmk_log + "<p>Σκάφος: " +  str(result[3]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + "  <br><strong>Σφάλμα</strong>:  " + response.text + "</p>"
+                            log_count = log_count + 1
+        print(log_count)
+        sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
+        val_bases = mmk_log
+        cursor.execute(sql_bases, val_bases)
+        conn.commit()
+
+
+        return mmk_log
+
+    except Error as e:
+        return (e)
+
+
+
+""" Sedna To Nausys Sychronize """
+
+
+@app.route('/get_sedna_to_nausys/',  methods=['GET'])
+def get_sedna_to_nausys():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats_apis_sych`')
+            boats = cursor.fetchall()
+            nausys_log = ""
+            log_count = 1
+            for result_boats in boats:
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND nausys_boats_bookings.status = "RESERVATION"')
+                nausys = cursor.fetchall()
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND boats_booking.status = 0;')
+                sedna = cursor.fetchall()
+                import requests
+                import json
+
+                if len(nausys) < len(sedna):
+
+                    for result in sedna:
+                        exist = 0
+                        for i, d in enumerate(nausys):
+
+                            if d[12] == result[10]:
+                                exist = 1
+                                print(d)
+                                break
+                        else:
+                            i = -1
+
+
+
+
+
+
+
+        return nausys_log
+
+    except Error as e:
+        return (e)
+
+""" Send Sedna To MMK By Id Boat """
+
+@app.route('/send_sedna_to_mmk_id/',  methods=['GET'])
+def send_sedna_to_mmk_id():
+    boatid = request.args.get("boatid", None)
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `boats_apis_sych` where sedna_id='+boatid)
+            boats = cursor.fetchall()
+            import requests
+            import json
+            url = "https://www.booking-manager.com/api/v2/reservation"
+
+            payload = json.dumps({
+                "dateFrom": boats[7].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                "dateTo": boats[8].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+                "yachtId": boats[2],
+                "status": 2
+            })
+            headers = {
+                'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+
+
+        return response.text
+
+    except Error as e:
+        return (e)
+
+
+
+
 
 @app.route('/getboat_events/',  methods=['GET'])
 def getboat_events():
