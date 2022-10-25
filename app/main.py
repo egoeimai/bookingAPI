@@ -814,7 +814,7 @@ def api_react():
 
             json_data_mmk = []
             for result_mmk in mmk:
-                content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
+                content_mmk = {"start": result_mmk[9], "end": result_mmk[10]}
                 json_data_mmk.append(content_mmk)
             json_data_nausys = []
             for result_nausys in nausys:
@@ -872,7 +872,7 @@ def api_react_date():
 
             json_data_mmk = []
             for result_mmk in mmk:
-                content_mmk = {"start": result_mmk[8], "end": result_mmk[9]}
+                content_mmk = {"start": result_mmk[9], "end": result_mmk[10]}
                 json_data_mmk.append(content_mmk)
             json_data_nausys = []
             for result_nausys in nausys:
