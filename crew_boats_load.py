@@ -1,6 +1,7 @@
 import requests
 import mysql.connector as mysql
 from mysql.connector import Error
+import hashlib
 
 token = ""
 try:
@@ -31,7 +32,7 @@ try:
         print("Table crew_boats is created....")
 
         cursor.execute(
-            "CREATE TABLE `user7313393746_booking`.`crew_boats_basic` (`id` INT NOT NULL AUTO_INCREMENT, `boat_id` INT(11) NOT NULL, `size` VARCHAR(255), `sizeft` VARCHAR(255), `yachtYearBuilt` VARCHAR(255), `yachtPax` INT(11), `yachtCabins` INT(11), `yachtCrew` INT(11), `yachtLowNumericPrice` FLOAT(11), `yachtHighNumericPrice` FLOAT(11), `yachtBuilder` VARCHAR(255), `yachtPrefPickup` VARCHAR(255), PRIMARY KEY (`id`))")
+            "CREATE TABLE `user7313393746_booking`.`crew_boats_basic` (`id` INT NOT NULL AUTO_INCREMENT, `boat_id` INT(11) NOT NULL, `size` VARCHAR(255), `sizeft` VARCHAR(255), `yachtYearBuilt` VARCHAR(255), `yachtPax` INT(11), `yachtCabins` INT(11), `yachtCrew` INT(11), `yachtLowNumericPrice` FLOAT(11), `yachtHighNumericPrice` FLOAT(11), `yachtBuilder` VARCHAR(255), `yachtPrefPickup` VARCHAR(255), `yacht_description` LONGTEXT, `price_details` LONGTEXT, `location_details` LONGTEXT, `hash` VARCHAR(255), `broker_notes` LONGTEXT,  PRIMARY KEY (`id`))")
         print("Table crew_boats_basic  is created....")
 
         # cursor.execute(
@@ -75,10 +76,10 @@ for result in rv:
 
             conn.commit()
 
-            sql_extra = "INSERT  INTO `crew_boats_basic` (`id`, `boat_id`, `size`, `sizeft`, `yachtYearBuilt`, `yachtPax`, `yachtCabins`, `yachtCrew`, `yachtLowNumericPrice`, `yachtHighNumericPrice`, `yachtBuilder`, `yachtPrefPickup`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            sql_extra = "INSERT  INTO `crew_boats_basic` (`id`, `boat_id`, `size`, `sizeft`, `yachtYearBuilt`, `yachtPax`, `yachtCabins`, `yachtCrew`, `yachtLowNumericPrice`, `yachtHighNumericPrice`, `yachtBuilder`, `yachtPrefPickup`, `yacht_description`, `price_details`, `location_details`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             val_extra = (
             holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text, holiday[13].text,
-            holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text)
+            holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text, holiday[130].text, holiday[269].text, holiday[271].text, holiday[284].text, hashlib.md5(str(holiday).encode("utf-8")).hexdigest())
             mycursor.execute(sql_extra, val_extra)
 
             image_count = 181

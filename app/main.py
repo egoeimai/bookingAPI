@@ -269,10 +269,10 @@ def get_crewd_boats():
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
-                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
-                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
-                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
+                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[23], "extraimages":result[24], "port":result[15], "num_crew": result[27], "captainname": result[28], "captainnation": result[29],
+                           "captainborn": result[30], "captainlang": result[31], "crewname": result[32],
+                           "crewtitle": result[33], "crewnation": result[34], "crewborn": result[35],
+                           "crewtext": result[36], "image1": result[37], "image2": result[38], "video_url": result[41], "description": result[16], "price_details": result[17], "locations_details": result[18], "broker_notes": result[19] }
                 json_data.append(content)
             return jsonify(json_data)
 
@@ -295,10 +295,16 @@ def get_crewd_boat():
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6], "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8], "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "mainimage":result[18], "extraimages":result[19], "port":result[15], "num_crew": result[22], "captainname": result[23], "captainnation": result[24],
-                           "captainborn": result[25], "captainlang": result[26], "crewname": result[27],
-                           "crewtitle": result[28], "crewnation": result[29], "crewborn": result[30],
-                           "crewtext": result[31], "image1": result[32], "image2": result[33], "video_url": result[36], }
+                content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6],
+                           "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8],
+                           "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13],
+                           "mainimage": result[23], "extraimages": result[24], "port": result[15],
+                           "num_crew": result[27], "captainname": result[28], "captainnation": result[29],
+                           "captainborn": result[30], "captainlang": result[31], "crewname": result[32],
+                           "crewtitle": result[33], "crewnation": result[34], "crewborn": result[35],
+                           "crewtext": result[36], "image1": result[37], "image2": result[38], "video_url": result[41],
+                           "description": result[16], "price_details": result[17], "locations_details": result[18],
+                           "broker_notes": result[19]}
                 json_data.append(content)
             return jsonify(json_data)
 
@@ -953,6 +959,10 @@ def nausys_get_boats():
 
     return jsonify(boats["reservations"])
 
+
+
+
+
 @app.route('/nausys_import_boats/',  methods=['GET'])
 def nausys_import_boats():
     import requests
@@ -1043,6 +1053,18 @@ def get_nausys_boats():
     response = requests.request("POST", url, headers=headers, data=payload)
 
     return response.text
+@app.route('/login/',  methods=['POST'])
+
+def login():
+    username = request.args.get("email", None)
+    password = request.args.get("password", None)
+    import requests
+    import json
+
+    data = {'token': "testtt", 'refreshToken': "testtt"}
+    print(data)
+    return jsonify(data)
+
 
 @app.route('/')
 def index():
