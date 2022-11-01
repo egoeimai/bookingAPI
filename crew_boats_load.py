@@ -32,7 +32,7 @@ try:
         print("Table crew_boats is created....")
 
         cursor.execute(
-            "CREATE TABLE `user7313393746_booking`.`crew_boats_basic` (`id` INT NOT NULL AUTO_INCREMENT, `boat_id` INT(11) NOT NULL, `size` VARCHAR(255), `sizeft` VARCHAR(255), `yachtYearBuilt` VARCHAR(255), `yachtPax` INT(11), `yachtCabins` INT(11), `yachtCrew` INT(11), `yachtLowNumericPrice` FLOAT(11), `yachtHighNumericPrice` FLOAT(11), `yachtBuilder` VARCHAR(255), `yachtPrefPickup` VARCHAR(255), `yacht_description` LONGTEXT, `price_details` LONGTEXT, `location_details` LONGTEXT, `hash` VARCHAR(255), `broker_notes` LONGTEXT,  PRIMARY KEY (`id`))")
+            "CREATE TABLE `user7313393746_booking`.`crew_boats_basic` (`id` INT NOT NULL AUTO_INCREMENT, `boat_id` INT(11) NOT NULL, `size` VARCHAR(255), `sizeft` VARCHAR(255), `yachtYearBuilt` VARCHAR(255), `yachtPax` INT(11), `yachtCabins` INT(11), `yachtCrew` INT(11), `yachtLowNumericPrice` FLOAT(11), `yachtHighNumericPrice` FLOAT(11), `yachtBuilder` VARCHAR(255), `yachtPrefPickup` VARCHAR(255), `yacht_description` LONGTEXT, `price_details` LONGTEXT, `location_details` LONGTEXT, `broker_notes` LONGTEXT, `hash` VARCHAR(255),  PRIMARY KEY (`id`))")
         print("Table crew_boats_basic  is created....")
 
         # cursor.execute(
@@ -55,7 +55,7 @@ mycursor.execute('SELECT * FROM crew_boats_select')
 row_headers = [x[0] for x in mycursor.description]  # this will extract row headers
 rv = mycursor.fetchall()
 for result in rv:
-    print(result[1])
+   # print(result[1])
     reqUrl = "http://www.centralyachtagent.com/snapins/ebrochure-xml.php?user=1318&apicode=1318FYLY7hSs%d49hjQ&idin=" + str(
         result[1])
 
@@ -67,84 +67,125 @@ for result in rv:
     xml = ET.fromstring(response.text)
 
     for holiday in xml.findall('yacht'):
-        print(len(holiday))
+        #print(len(holiday))
         if len(holiday) > 1:
-            sql = "INSERT INTO crew_boats (boat_name, boat_id, boat_category) VALUES (%s, %s, %s)"
-            print(holiday)
-            val = (holiday[1].text, holiday[0].text, holiday[4].text)
-            mycursor.execute(sql, val)
-
-            conn.commit()
-
-            sql_extra = "INSERT  INTO `crew_boats_basic` (`id`, `boat_id`, `size`, `sizeft`, `yachtYearBuilt`, `yachtPax`, `yachtCabins`, `yachtCrew`, `yachtLowNumericPrice`, `yachtHighNumericPrice`, `yachtBuilder`, `yachtPrefPickup`, `yacht_description`, `price_details`, `location_details`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val_extra = (
-            holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text, holiday[13].text,
-            holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text, holiday[130].text, holiday[269].text, holiday[271].text, holiday[284].text, hashlib.md5(str(holiday).encode("utf-8")).hexdigest())
-            mycursor.execute(sql_extra, val_extra)
-
-            image_count = 181
-            all_images = str(holiday[180].text)
-            while (image_count < 199):
-
-                if holiday[image_count].text:
-
-                    all_images += "|" + holiday[image_count].text
-                image_count = image_count + 1
 
 
-            sql_images = "INSERT INTO `crew_images_boats` (`id`, `boat_id`, `image_crew`, `extra_images`) VALUES (NULL, %s, %s, %s);"
-            val_images = (holiday[0].text, holiday[180].text, all_images)
-            mycursor.execute(sql_images, val_images)
+            mycursor.execute("SELECT boat_id, hash, id FROM crew_boats_basic WHERE boat_id=" + holiday[0].text);
+            boat_exist = mycursor.fetchall();
+            if (len(boat_exist) == 0):
+
+                sql = "INSERT INTO crew_boats (boat_name, boat_id, boat_category) VALUES (%s, %s, %s)"
+                print(holiday)
+                val = (holiday[1].text, holiday[0].text, holiday[4].text)
+                mycursor.execute(sql, val)
+
+                conn.commit();
+
+                crew_boats_basic_hash = (holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text, holiday[13].text,
+                holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text, holiday[130].text, holiday[269].text, holiday[271].text, holiday[284].text)
 
 
-            sql_yachtotherentertain = "INSERT INTO `crew_yachtotherentertain` (`other_id`, `boat_id`, `yachtotherentertain`) VALUES (NULL, %s, %s);"
-            val_yachtotherentertain = (holiday[0].text, holiday[171].text)
-            mycursor.execute(sql_yachtotherentertain, val_yachtotherentertain)
+                sql_extra = "INSERT  INTO `crew_boats_basic` (`id`, `boat_id`, `size`, `sizeft`, `yachtYearBuilt`, `yachtPax`, `yachtCabins`, `yachtCrew`, `yachtLowNumericPrice`, `yachtHighNumericPrice`, `yachtBuilder`, `yachtPrefPickup`, `yacht_description`, `price_details`, `location_details`, `broker_notes`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                val_extra = (holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text, holiday[13].text,
+                holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text, holiday[130].text, holiday[269].text, holiday[271].text, holiday[284].text, hashlib.md5(str(crew_boats_basic_hash).encode("utf-8")).hexdigest())
+                mycursor.execute(sql_extra, val_extra)
 
-            sql_othertoys = "INSERT INTO `crew_yachtothertoys` (`id_other`, `boat_id`, `yachtothertoys`) VALUES (NULL, %s, %s);"
-            val_othertoys = (holiday[0].text, holiday[170].text)
-            mycursor.execute(sql_othertoys, val_othertoys)
+                image_count = 181
+                all_images = str(holiday[180].text)
+                while (image_count < 199):
 
-            sql_amenties = "INSERT INTO `crew_amenties`(`amenties_id`, `boat_id`, `yachtSalonStereo`, `yachtSatTv`, `yachtIpod`, `yachtSunAwning`,`yachtHammock`, `yachtWindScoops`, `yachtDeckShower`, `yachtBimini`, `yachtSpecialDiets`, `yachtKosher`, `yachtBBQ`, `yachtNumDineIn`, `yachtNudeCharters`, `yachtHairDryer`, `yachtNumHatch`, `yachtCrewSmoke`, `yachtGuestSmoke`, `yachtGuestPet`, `yachtChildrenAllowed`, `yachtGym`, `yachtElevators`, `yachtWheelChairAccess`, `yachtGenerator`, `yachtInverter`, `yachtWaterMaker`, `yachtIceMaker`, `yachtStabilizers`, `yachtInternet`, `yachtGreenMakeWater`, `yachtGreenReuseBottle`) VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
-            val_amenties = (
-            holiday[0].text, holiday[48].text, holiday[281].text, holiday[282].text, holiday[55].text, holiday[56].text,
-            holiday[57].text, holiday[58].text, holiday[59].text, holiday[60].text, holiday[61].text, holiday[62].text,
-            holiday[54].text, holiday[64].text, holiday[65].text, holiday[66].text, holiday[211].text, holiday[67].text,
-            holiday[68].text, holiday[69].text, holiday[23].text, holiday[25].text, holiday[26].text, holiday[71].text,
-            holiday[74].text, holiday[75].text, holiday[76].text, holiday[24].text, holiday[285].text, holiday[110].text,
-            holiday[111].text)
-            mycursor.execute(sql_amenties, val_amenties)
+                    if holiday[image_count].text:
 
-            sql_watersports = "INSERT INTO `crew_water_sports` (`id`, `boat_id`, `yachtDinghy`, `yachtDinghyHp`, `yachtDinghyPax`, `yachtAdultWSkis`, `yachtKidsSkis`, `yachtJetSkis`, `yachtWaveRun`, `yachtKneeBoard`, `yachtStandUpPaddle`, `yachtWindSurf`, `yachtGearSnorkel`, `yachtTube`, `yachtScurfer`, `yachtWakeBoard`, `yacht1ManKayak`, `yacht2ManKayak`, `yachtSeaBob`, `yachtSeaScooter`, `yachtKiteBoarding`, `yachtFishingGear`, `yachtFishGearType`, `yachtNumFishRods`, `yachtDeepSeaFish`, `yachtUnderWaterCam`, `yachtUnderWaterVideo`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val_watersports = (
-            holiday[0].text, holiday[79].text, holiday[80].text, holiday[81].text, holiday[82].text, holiday[83].text,
-            holiday[84].text, holiday[85].text, holiday[86].text, holiday[87].text, holiday[88].text, holiday[89].text,
-            holiday[90].text, holiday[91].text, holiday[92].text, holiday[93].text, holiday[94].text, holiday[95].text,
-            holiday[96].text, holiday[97].text, holiday[105].text, holiday[106].text, holiday[107].text, holiday[280].text,
-            holiday[108].text, holiday[109].text)
-            mycursor.execute(sql_watersports, val_watersports)
+                        all_images += "|" + holiday[image_count].text
+                    image_count = image_count + 1
 
-            sql_generic = "INSERT INTO `crew_characteristics` (`id`, `boat_id`, `yachtShowers`, `yachtTubs`, `yachtWashBasins`, `yachtHeads`, `yachtElectricHeads`, `yachtHelipad`, `yachtJacuzzi`, `yachtAc`, `yachtPrefPickup`, `yachtOtherPickup`, `yachtEngines`, `yachtFuel`, `yachtCruiseSpeed`, `yachtMaxSpeed`, `yachtAccommodations`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val_generic = (
-            holiday[0].text, holiday[175].text, holiday[268].text, holiday[176].text, holiday[177].text, holiday[178].text,
-            holiday[21].text, holiday[22].text, holiday[27].text, holiday[28].text, holiday[29].text,
-            holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, holiday[38].text)
-            mycursor.execute(sql_generic, val_generic)
 
-            sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val_crew = (
-            holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text, holiday[216].text, holiday[220].text,
-            holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text, holiday[229].text,
-            holiday[230].text, holiday[231].text)
-            mycursor.execute(sql_crew, val_crew)
+                sql_images = "INSERT INTO `crew_images_boats` (`id`, `boat_id`, `image_crew`, `extra_images`) VALUES (NULL, %s, %s, %s);"
+                val_images = (holiday[0].text, holiday[180].text, all_images)
+                mycursor.execute(sql_images, val_images)
 
-            video_sql = "INSERT INTO `crew_video_boats` (`boat_id`, `video_url`) VALUES (%s, %s);"
-            video_val = (holiday[0].text, holiday[35].text)
-            mycursor.execute(video_sql, video_val)
 
-            menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`) VALUES (%s, %s);"
-            menu_val = (holiday[0].text, holiday[199].text)
-            mycursor.execute(menu_sql, menu_val)
+                sql_yachtotherentertain = "INSERT INTO `crew_yachtotherentertain` (`other_id`, `boat_id`, `yachtotherentertain`) VALUES (NULL, %s, %s);"
+                val_yachtotherentertain = (holiday[0].text, holiday[171].text)
+                mycursor.execute(sql_yachtotherentertain, val_yachtotherentertain)
 
-            conn.commit()
+                sql_othertoys = "INSERT INTO `crew_yachtothertoys` (`id_other`, `boat_id`, `yachtothertoys`) VALUES (NULL, %s, %s);"
+                val_othertoys = (holiday[0].text, holiday[170].text)
+                mycursor.execute(sql_othertoys, val_othertoys)
+
+                sql_amenties = "INSERT INTO `crew_amenties`(`amenties_id`, `boat_id`, `yachtSalonStereo`, `yachtSatTv`, `yachtIpod`, `yachtSunAwning`,`yachtHammock`, `yachtWindScoops`, `yachtDeckShower`, `yachtBimini`, `yachtSpecialDiets`, `yachtKosher`, `yachtBBQ`, `yachtNumDineIn`, `yachtNudeCharters`, `yachtHairDryer`, `yachtNumHatch`, `yachtCrewSmoke`, `yachtGuestSmoke`, `yachtGuestPet`, `yachtChildrenAllowed`, `yachtGym`, `yachtElevators`, `yachtWheelChairAccess`, `yachtGenerator`, `yachtInverter`, `yachtWaterMaker`, `yachtIceMaker`, `yachtStabilizers`, `yachtInternet`, `yachtGreenMakeWater`, `yachtGreenReuseBottle`) VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
+                val_amenties = (
+                holiday[0].text, holiday[48].text, holiday[281].text, holiday[282].text, holiday[55].text, holiday[56].text,
+                holiday[57].text, holiday[58].text, holiday[59].text, holiday[60].text, holiday[61].text, holiday[62].text,
+                holiday[54].text, holiday[64].text, holiday[65].text, holiday[66].text, holiday[211].text, holiday[67].text,
+                holiday[68].text, holiday[69].text, holiday[23].text, holiday[25].text, holiday[26].text, holiday[71].text,
+                holiday[74].text, holiday[75].text, holiday[76].text, holiday[24].text, holiday[285].text, holiday[110].text,
+                holiday[111].text)
+                mycursor.execute(sql_amenties, val_amenties)
+
+                sql_watersports = "INSERT INTO `crew_water_sports` (`id`, `boat_id`, `yachtDinghy`, `yachtDinghyHp`, `yachtDinghyPax`, `yachtAdultWSkis`, `yachtKidsSkis`, `yachtJetSkis`, `yachtWaveRun`, `yachtKneeBoard`, `yachtStandUpPaddle`, `yachtWindSurf`, `yachtGearSnorkel`, `yachtTube`, `yachtScurfer`, `yachtWakeBoard`, `yacht1ManKayak`, `yacht2ManKayak`, `yachtSeaBob`, `yachtSeaScooter`, `yachtKiteBoarding`, `yachtFishingGear`, `yachtFishGearType`, `yachtNumFishRods`, `yachtDeepSeaFish`, `yachtUnderWaterCam`, `yachtUnderWaterVideo`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                val_watersports = (
+                holiday[0].text, holiday[79].text, holiday[80].text, holiday[81].text, holiday[82].text, holiday[83].text,
+                holiday[84].text, holiday[85].text, holiday[86].text, holiday[87].text, holiday[88].text, holiday[89].text,
+                holiday[90].text, holiday[91].text, holiday[92].text, holiday[93].text, holiday[94].text, holiday[95].text,
+                holiday[96].text, holiday[97].text, holiday[105].text, holiday[106].text, holiday[107].text, holiday[280].text,
+                holiday[108].text, holiday[109].text)
+                mycursor.execute(sql_watersports, val_watersports)
+
+                sql_generic = "INSERT INTO `crew_characteristics` (`id`, `boat_id`, `yachtShowers`, `yachtTubs`, `yachtWashBasins`, `yachtHeads`, `yachtElectricHeads`, `yachtHelipad`, `yachtJacuzzi`, `yachtAc`, `yachtPrefPickup`, `yachtOtherPickup`, `yachtEngines`, `yachtFuel`, `yachtCruiseSpeed`, `yachtMaxSpeed`, `yachtAccommodations`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                val_generic = (
+                holiday[0].text, holiday[175].text, holiday[268].text, holiday[176].text, holiday[177].text, holiday[178].text,
+                holiday[21].text, holiday[22].text, holiday[27].text, holiday[28].text, holiday[29].text,
+                holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, holiday[38].text)
+                mycursor.execute(sql_generic, val_generic)
+
+                sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                val_crew = (
+                holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text, holiday[216].text, holiday[220].text,
+                holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text, holiday[229].text,
+                holiday[230].text, holiday[231].text)
+                mycursor.execute(sql_crew, val_crew)
+
+                video_sql = "INSERT INTO `crew_video_boats` (`boat_id`, `video_url`) VALUES (%s, %s);"
+                video_val = (holiday[0].text, holiday[35].text)
+                mycursor.execute(video_sql, video_val)
+
+                menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`) VALUES (%s, %s);"
+                menu_val = (holiday[0].text, holiday[199].text)
+                mycursor.execute(menu_sql, menu_val)
+
+                conn.commit()
+
+            else:
+                #print(str(holiday.text))
+                print(boat_exist[0][2])
+                crew_boats_basic_hash = (
+                holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text, holiday[13].text,
+                holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text,
+                holiday[130].text, holiday[269].text, holiday[271].text, holiday[284].text)
+
+                print(hashlib.md5(str(crew_boats_basic_hash).encode("utf-8")).hexdigest())
+                if hashlib.md5(str(crew_boats_basic_hash).encode("utf-8")).hexdigest() == boat_exist[0][1]:
+                    print("Δεν Αλλαξε Κατι")
+                else:
+                    print("Αλλαξε Κατι")
+                    mycursor.execute("DELETE FROM crew_boats_basic WHERE id = " + str(int(boat_exist[0][2])))
+                    boat_exist = mycursor.fetchall();
+                    crew_boats_basic_hash = (
+                    holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text,
+                    holiday[13].text,
+                    holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text,
+                    holiday[130].text, holiday[269].text, holiday[271].text, holiday[284].text)
+
+                    sql_extra = "INSERT  INTO `crew_boats_basic` (`id`, `boat_id`, `size`, `sizeft`, `yachtYearBuilt`, `yachtPax`, `yachtCabins`, `yachtCrew`, `yachtLowNumericPrice`, `yachtHighNumericPrice`, `yachtBuilder`, `yachtPrefPickup`, `yacht_description`, `price_details`, `location_details`, `broker_notes`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    val_extra = (holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text,
+                                 holiday[13].text,
+                                 holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text,
+                                 holiday[28].text, holiday[130].text, holiday[269].text, holiday[271].text,
+                                 holiday[284].text, hashlib.md5(str(crew_boats_basic_hash).encode("utf-8")).hexdigest())
+                    mycursor.execute(sql_extra, val_extra)
+                    conn.commit()
+
+
 
