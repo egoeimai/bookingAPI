@@ -297,12 +297,12 @@ def get_crewd_boat():
             for result in rv:
                 content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6],
                            "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8],
-                           "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], "description": result[16], "price_details": result[17], "locations_details": result[18], "broker_notes": result[19],
-                           "mainimage": result[28], "extraimages": result[29], "port": result[15],
-                           "num_crew": result[32], "captainname": result[33], "captainnation": result[34],
-                           "captainborn": result[35], "captainlang": result[36], "crewname": result[37],
-                           "crewtitle": result[38], "crewnation": result[39], "crewborn": result[40],
-                           "crewtext": result[41], "image1": result[42], "image2": result[43], "video_url": result[46],
+                           "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], 
+                           "mainimage": result[23], "extraimages": result[24], "port": result[15],
+                           "num_crew": result[27], "captainname": result[28], "captainnation": result[29],
+                           "captainborn": result[30], "captainlang": result[31], "crewname": result[32],
+                           "crewtitle": result[33], "crewnation": result[34], "crewborn": result[35],
+                           "crewtext": result[36], "image1": result[37], "image2": result[38], "video_url": result[41],
                            "description": result[16], "price_details": result[17], "locations_details": result[18],
                            "broker_notes": result[19]}
                 json_data.append(content)
