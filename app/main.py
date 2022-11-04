@@ -4,6 +4,7 @@ import mysql.connector as mysql
 from mysql.connector import Error
 from flask_cors import CORS
 import json
+from crew_boats_update import crew_update
 import smtplib, ssl
 
 app = Flask(__name__)
@@ -297,7 +298,7 @@ def get_crewd_boat():
             for result in rv:
                 content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6],
                            "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8],
-                           "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13], 
+                           "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13],
                            "mainimage": result[23], "extraimages": result[24], "port": result[15],
                            "num_crew": result[27], "captainname": result[28], "captainnation": result[29],
                            "captainborn": result[30], "captainlang": result[31], "crewname": result[32],
@@ -1064,6 +1065,14 @@ def login():
     data = {'token': "testtt", 'refreshToken': "testtt"}
     print(data)
     return jsonify(data)
+
+
+@app.route('/crew_boats_update/',  methods=['POST'])
+
+def crew_boats_update():
+    crew_update();
+    return "<h1>Welcome to our server !!</h1>"
+
 
 
 @app.route('/')
