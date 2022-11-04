@@ -4,7 +4,6 @@ import mysql.connector as mysql
 from mysql.connector import Error
 from flask_cors import CORS
 import json
-from crew_boats_update import crew_update
 import smtplib, ssl
 
 app = Flask(__name__)
@@ -1070,7 +1069,7 @@ def login():
 @app.route('/crew_boats_update/',  methods=['POST'])
 
 def crew_boats_update():
-    crew_update();
+
     return "<h1>Welcome to our server !!</h1>"
 
 
