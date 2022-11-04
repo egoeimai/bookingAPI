@@ -1067,7 +1067,7 @@ def login():
     return jsonify(data)
 
 
-@app.route('/crew_boats_update/',  methods=['POST'])
+@app.route('/crew_boats_update/',  methods=['GET'])
 
 def crew_boats_update():
     test = crew_update();
