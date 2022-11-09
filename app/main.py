@@ -791,15 +791,15 @@ def api_get_boats():
                 json_data_rv.append(content_rv)
             cursor.execute('SELECT * FROM `api_mmk_sych` ORDER BY sych_id DESC LIMIT 5')
             mmk_log_data = cursor.fetchall()
-            cursor.execute('SELECT * FROM `api_nausys_sych` ORDER BY sych_id DESC LIMIT 5')
-            nausys_log_data = cursor.fetchall()
+
             json_mmk_log_data = []
             for mmk_result in mmk_log_data:
                 mmk_content_rv = {
                     "id": mmk_result[0], "log":mmk_result[1], "date":mmk_result[3], "count":mmk_result[2]
                 }
                 json_mmk_log_data.append(mmk_content_rv)
-
+            cursor.execute('SELECT * FROM `api_nausys_sych` ORDER BY `sych_id_n` DESC LIMIT 5')
+            nausys_log_data = cursor.fetchall()
             json_nausys_log_data = []
             for nausys_result in nausys_log_data:
                 nausys_content_rv = {
