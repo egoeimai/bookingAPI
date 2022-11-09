@@ -397,7 +397,7 @@ def get_sedna_to_mmk():
             cursor.execute('SELECT * FROM `boats_apis_sych`')
             boats = cursor.fetchall()
             mmk_log = ""
-            log_count = 1
+            log_count = 0
             for result_boas in boats:
                 cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' + str(result_boas[1]) + ' AND mmk_booking.status = 1')
                 mmk = cursor.fetchall()
@@ -469,11 +469,17 @@ def get_sedna_to_nausys():
             cursor.execute('SELECT * FROM `boats_apis_sych`')
             boats = cursor.fetchall()
             nausys_log = ""
-            log_count = 1
+            log_count = 0
+            import datetime
+
+            today = datetime.date.today()
+            first = today.replace(day=1)
+            last_month = first - datetime.timedelta(days=1)
+
             for result_boats in boats:
-                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND nausys_boats_bookings.status = "RESERVATION"')
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND nausys_boats_bookings.status = "RESERVATION" AND nausys_boats_bookings.periodFrom >  "' + str(last_month.strftime("%Y-%m-%d")) + '"')
                 nausys = cursor.fetchall()
-                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND boats_booking.status = 0;')
+                cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN boats_booking ON boats_booking.boat_id = boats_apis_sych.sedna_id WHERE boats_apis_sych.sedna_id = ' + str(result_boats[1]) + ' AND boats_booking.status = 0 AND boats_booking.datestart > "' + str(last_month.strftime("%Y-%m-%d")) + '"' )
                 sedna = cursor.fetchall()
                 import requests
                 import json

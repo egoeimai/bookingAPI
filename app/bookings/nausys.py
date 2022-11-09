@@ -13,6 +13,11 @@ class Nausys:
     def insert_boat_bookings(self):
         import requests
         import json
+        import datetime
+
+        today = datetime.date.today()
+        first = today.replace(day=1)
+        last_month = first - datetime.timedelta(days=1)
 
         url = "http://ws.nausys.com/CBMS-external/rest/yachtReservation/v6/reservations"
 
@@ -21,8 +26,8 @@ class Nausys:
                 "username": "rest@FLY",
                 "password": "restFyly761"
             },
-            "periodFrom": "01.06.2022",
-            "periodTo": "01.01.2023"
+            "periodFrom": str(last_month.strftime("%d.%m.%Y")),
+            "periodTo": "31.12.2023"
         })
         headers = {
             'Content-Type': 'application/json'

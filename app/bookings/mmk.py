@@ -43,7 +43,7 @@ class MMK:
                     val = (item["name"], item["id"])
                     mycursor.execute(sql, val)
                     conn.commit()
-                url = "https://www.booking-manager.com/api/v2/availability/2022?companyId=2103"
+                url = "https://www.booking-manager.com/api/v2/availability/2023?companyId=2103"
                 payload = {}
                 headers = {
                     'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2'
