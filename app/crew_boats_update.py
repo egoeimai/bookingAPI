@@ -480,6 +480,36 @@ def crew_update():
                         holiday[0].text, holiday[199].text, hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
                         mycursor.execute(menu_sql, menu_val)
 
+                    mycursor.execute(
+                        "SELECT boat_id, hash, plan_layout FROM crewd_plan WHERE boat_id=" + holiday[0].text);
+                    boat_menu_exist = mycursor.fetchall();
+                    print(boat_menu_exist)
+                    menu_val_hash = (holiday[0].text, holiday[167].text)
+                    if len(boat_menu_exist) > 0:
+                        if hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest() == boat_menu_exist[0][1]:
+                            print("Δεν Αλλαξε Κατι από Plan Layout")
+                            Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Plan Layout</br>"
+                        else:
+                            print("Αλλαξε Κατι από Menu")
+                            Boat_log = Boat_log + "Αλλαξε Κατι από Plan Layout</br>"
+                            mycursor.execute(
+                                "DELETE FROM crewd_plan WHERE boat_id = " + str(int(holiday[0].text)))
+                            boat_menu_exist = mycursor.fetchall();
+                            menu_sql = "INSERT INTO `crewd_plan` (`boat_id`, `plan_layout`, `hash`) VALUES (%s, %s, %s);"
+                            menu_val = (
+                                holiday[0].text, holiday[167].text,
+                                hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
+                            mycursor.execute(menu_sql, menu_val)
+                    else:
+                        print("Αλλαξε Κατι από Menu")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Plan Layout</br>"
+
+                        menu_sql = "INSERT INTO `crewd_plan` (`boat_id`, `plan_layout`, `hash`) VALUES (%s, %s, %s);"
+                        menu_val = (
+                            holiday[0].text, holiday[167].text,
+                            hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
+                        mycursor.execute(menu_sql, menu_val)
+
 
     print(Boat_log)
     sql_bases_log = "INSERT INTO `crew_boats_update_log` (`id`, `log`, `created`) VALUES (NULL, '%s', current_timestamp());"

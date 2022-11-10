@@ -221,6 +221,27 @@ def get_crewd_boats_crew():
         return (e)
 
 
+@app.route('/get_crewd_boats_layout/', methods=['GET'])
+def get_crewd_boats_layout():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crewd_plan`  WHERE `boat_id`= "' + str(boatid) + '";')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "layout": result[2]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
 
 """ Crew Boats Videos Sychronize """
 
