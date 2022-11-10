@@ -242,6 +242,27 @@ def get_crewd_boats_layout():
         return (e)
 
 
+@app.route('/get_crewd_boats_log/', methods=['GET'])
+def get_crewd_boats_log():
+    boatid = request.args.get("boatid", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats_update_log` ORDER BY `crew_boats_update_log`.`id` DESC LIMIT 1;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"created": result[2], "log": result[1]}
+                json_data.append(content)
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
+
 
 """ Crew Boats Videos Sychronize """
 
