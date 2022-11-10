@@ -55,6 +55,7 @@ def crew_update():
     mycursor.execute('SELECT * FROM crew_boats_select')
     row_headers = [x[0] for x in mycursor.description]  # this will extract row headers
     rv = mycursor.fetchall()
+    Boat_log = ""
     for result in rv:
        # print(result[1])
         reqUrl = "http://www.centralyachtagent.com/snapins/ebrochure-xml.php?user=1318&apicode=1318FYLY7hSs%d49hjQ&idin=" + str(
@@ -68,6 +69,7 @@ def crew_update():
         xml = ET.fromstring(response.text)
 
         for holiday in xml.findall('yacht'):
+
             #print(len(holiday))
             if len(holiday) > 1:
 
@@ -204,6 +206,9 @@ def crew_update():
                 else:
                     #print(str(holiday.text))
                     print(boat_exist[0][0])
+
+                    print(holiday[1].text)
+                    Boat_log = Boat_log + "<h3>" + holiday[1].text + "</h3></br>";
                     crew_boats_basic_hash = (
                     holiday[0].text, holiday[7].text, holiday[8].text, holiday[31].text, holiday[12].text, holiday[13].text,
                     holiday[210].text, holiday[41].text, holiday[42].text, holiday[32].text, holiday[28].text,
@@ -211,9 +216,11 @@ def crew_update():
 
                     print(hashlib.md5(str(crew_boats_basic_hash).encode("utf-8")).hexdigest())
                     if hashlib.md5(str(crew_boats_basic_hash).encode("utf-8")).hexdigest() == boat_exist[0][1]:
-                        print("Δεν Αλλαξε Κατι")
+                        print("Δεν Αλλαξε Κατι Specs")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι Specs</br>"
                     else:
-                        print("Αλλαξε Κατι")
+                        print("Αλλαξε Κατι Specs")
+                        Boat_log = Boat_log + "Αλλαξε Κατι Specs</br>"
                         mycursor.execute("DELETE FROM crew_boats_basic WHERE id = " + str(int(boat_exist[0][2])))
                         boat_exist = mycursor.fetchall();
                         crew_boats_basic_hash = (
@@ -247,9 +254,11 @@ def crew_update():
                     # Insert Images of Boat
                     val_images_hash = (holiday[0].text, holiday[180].text, all_images)
                     if hashlib.md5(str(val_images_hash).encode("utf-8")).hexdigest() == boat_images_exist[0][1]:
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Φωτογραφίες</br>"
                         print("Δεν Αλλαξε Κατι από Φωτογραφίες")
                     else:
                         print("Αλλαξε Κατι από Φωτογραφίες")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Φωτογραφίες</br>"
                         mycursor.execute("DELETE FROM crew_images_boats WHERE id = " + str(int(boat_images_exist[0][2])))
                         boat_images_exist = mycursor.fetchall();
                         sql_images = "INSERT INTO `crew_images_boats` (`id`, `boat_id`, `image_crew`, `extra_images`, `hash`) VALUES (NULL, %s, %s, %s, %s);"
@@ -264,9 +273,11 @@ def crew_update():
                     val_yachtotherentertain_hash = (holiday[0].text, holiday[171].text)
 
                     if hashlib.md5(str(val_yachtotherentertain_hash).encode("utf-8")).hexdigest() == boat_entertain_exist[0][1]:
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Entertain</br>"
                         print("Δεν Αλλαξε Κατι από Entertain")
                     else:
                         print("Αλλαξε Κατι από Entertain")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Entertain</br>"
                         mycursor.execute("DELETE FROM crew_yachtotherentertain WHERE other_id = " + str(int(boat_entertain_exist[0][2])))
                         boat_entertain_exist = mycursor.fetchall();
                         sql_yachtotherentertain = "INSERT INTO `crew_yachtotherentertain` (`other_id`, `boat_id`, `yachtotherentertain`, `hash`) VALUES (NULL, %s, %s, %s);"
@@ -282,8 +293,10 @@ def crew_update():
                     # Insert Other Toys  of Boat
                     if hashlib.md5(str(val_othertoys_hash).encode("utf-8")).hexdigest() == boat_othertoys_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από Other Toys")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Other Toys</br>"
                     else:
                         print("Αλλαξε Κατι από Other Toys")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Other Toys</br>"
                         mycursor.execute("DELETE FROM crew_yachtothertoys WHERE id_other = " + str(int(boat_othertoys_exist[0][2])))
                         boat_othertoys_exist = mycursor.fetchall();
                         sql_othertoys = "INSERT INTO `crew_yachtothertoys` (`id_other`, `boat_id`, `yachtothertoys`, `hash`) VALUES (NULL, %s, %s, %s);"
@@ -312,8 +325,10 @@ def crew_update():
 
                     if hashlib.md5(str(val_amenties_hash).encode("utf-8")).hexdigest() == boat_amenties_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από amenties")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από amenties</br>"
                     else:
                         print("Αλλαξε Κατι από amenties")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από amenties</br>"
                         mycursor.execute("DELETE FROM crew_amenties WHERE amenties_id = " + str(int(boat_amenties_exist[0][2])))
                         boat_amenties_exist = mycursor.fetchall();
                         sql_amenties = "INSERT INTO `crew_amenties`(`amenties_id`, `boat_id`, `yachtSalonStereo`, `yachtSatTv`, `yachtIpod`, `yachtSunAwning`,`yachtHammock`, `yachtWindScoops`, `yachtDeckShower`, `yachtBimini`, `yachtSpecialDiets`, `yachtKosher`, `yachtBBQ`, `yachtNumDineIn`, `yachtNudeCharters`, `yachtHairDryer`, `yachtNumHatch`, `yachtCrewSmoke`, `yachtGuestSmoke`, `yachtGuestPet`, `yachtChildrenAllowed`, `yachtGym`, `yachtElevators`, `yachtWheelChairAccess`, `yachtGenerator`, `yachtInverter`, `yachtWaterMaker`, `yachtIceMaker`, `yachtStabilizers`, `yachtInternet`, `yachtGreenMakeWater`, `yachtGreenReuseBottle`, `hash`) VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
@@ -347,8 +362,10 @@ def crew_update():
                         holiday[108].text, holiday[109].text)
                     if hashlib.md5(str(val_watersports_hash).encode("utf-8")).hexdigest() == boat_watersports_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από WaterSports")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από WaterSports</br>"
                     else:
                         print("Αλλαξε Κατι από WaterSports")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από WaterSports</br>"
                         mycursor.execute("DELETE FROM crew_water_sports WHERE id = " + str(int(boat_watersports_exist[0][2])))
                         boat_watersports_exist = mycursor.fetchall();
 
@@ -377,8 +394,10 @@ def crew_update():
                         holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, holiday[38].text)
                     if hashlib.md5(str(val_generic_hash).encode("utf-8")).hexdigest() == boat_character_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από Characteristics")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Characteristics</br>"
                     else:
                         print("Αλλαξε Κατι από Characteristics")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Characteristics</br>"
                         mycursor.execute("DELETE FROM crew_characteristics WHERE id = " + str(int(boat_character_exist[0][2])))
                         boat_character_exist = mycursor.fetchall();
                         sql_generic = "INSERT INTO `crew_characteristics` (`id`, `boat_id`, `yachtShowers`, `yachtTubs`, `yachtWashBasins`, `yachtHeads`, `yachtElectricHeads`, `yachtHelipad`, `yachtJacuzzi`, `yachtAc`, `yachtPrefPickup`, `yachtOtherPickup`, `yachtEngines`, `yachtFuel`, `yachtCruiseSpeed`, `yachtMaxSpeed`, `yachtAccommodations`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
@@ -403,8 +422,10 @@ def crew_update():
                         holiday[230].text, holiday[231].text)
                     if hashlib.md5(str(val_crew_hash).encode("utf-8")).hexdigest() == boat_crewd_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από Crew Pliroma")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Crew Πλήρωμα</br>"
                     else:
                         print("Αλλαξε Κατι από Crew Pliroma")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Crew Πλήρωμα</br>"
                         mycursor.execute("DELETE FROM crew_boat_crewd WHERE id = " + str(int(boat_crewd_exist[0][2])))
                         boat_crewd_exist = mycursor.fetchall();
                         sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
@@ -429,8 +450,10 @@ def crew_update():
                     video_val_hash = (holiday[0].text, holiday[35].text)
                     if hashlib.md5(str(video_val_hash).encode("utf-8")).hexdigest() == boat_video_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από Videos")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Videos</br>"
                     else:
                         print("Αλλαξε Κατι από Videos")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Videos</br>"
                         mycursor.execute("DELETE FROM crew_video_boats WHERE crw_video_id = " + str(int(boat_video_exist[0][2])))
                         boat_video_exist = mycursor.fetchall();
                         video_sql = "INSERT INTO `crew_video_boats` (`boat_id`, `video_url`, `hash`) VALUES (%s, %s, %s);"
@@ -446,8 +469,10 @@ def crew_update():
                     menu_val_hash = (holiday[0].text, holiday[199].text)
                     if hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest() == boat_menu_exist[0][1]:
                         print("Δεν Αλλαξε Κατι από Menu")
+                        Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Menu</br>"
                     else:
                         print("Αλλαξε Κατι από Menu")
+                        Boat_log = Boat_log + "Αλλαξε Κατι από Menu</br>"
                         mycursor.execute("DELETE FROM crew_sample_menu WHERE menu_id = " + str(int(boat_menu_exist[0][2])))
                         boat_menu_exist = mycursor.fetchall();
                         menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`, `hash`) VALUES (%s, %s, %s);"
@@ -455,10 +480,15 @@ def crew_update():
                         holiday[0].text, holiday[199].text, hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
                         mycursor.execute(menu_sql, menu_val)
 
-                    conn.commit()
+
+    print(Boat_log)
+    sql_bases_log = "INSERT INTO `crew_boats_update_log` (`id`, `log`, `created`) VALUES (NULL, '%s', current_timestamp());"
+    val_bases_log  = (str(Boat_log))
+    mycursor.execute(sql_bases_log, val_bases_log)
+    conn.commit()
 
 
 
-    return "Test"
+    return "Done"
 
 
