@@ -512,7 +512,7 @@ def crew_update():
 
 
     print(Boat_log)
-    sql_bases_log = "INSERT INTO `crew_boats_update_log` (`id`, `log`, `created`) VALUES (NULL, " + Boat_log + ", current_timestamp());"
+    sql_bases_log = "INSERT INTO `crew_boats_update_log` (`id`, `log`, `created`) VALUES (NULL, '" + Boat_log + "', current_timestamp());"
     val_bases_log  = Boat_log
     mycursor.execute(sql_bases_log)
     conn.commit()
