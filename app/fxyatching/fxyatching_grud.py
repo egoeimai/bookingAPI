@@ -10,7 +10,6 @@ class fxyatching:
 
     def __init__(self):
         pass
-    def get_all_other_boats(self):
 
 
     def get_yatchs(self):
