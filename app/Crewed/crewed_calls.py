@@ -10,6 +10,37 @@ class CrewedBoats:
     def __init__(self):
         pass
 
+    def import_all_crew_boasts(self):
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+
+                import requests
+
+                reqUrl = "http://www.centralyachtagent.com/snapins/snyachts-xml.php?user=1318&apicode=1318FYLY7hSs%d49hjQ"
+                payload = ""
+                mycursor = conn.cursor()
+                response = requests.request("GET", reqUrl, data=payload)
+                import xml.etree.ElementTree as ET
+
+                xml = ET.fromstring(response.text)
+
+                for holiday in xml.findall('yacht'):
+                    mycursor.execute("SELECT crew_id  FROM crew_boats_select WHERE crew_id=" + holiday[0].text);
+                    boat_exist = mycursor.fetchall();
+                    if (len(boat_exist) == 0):
+                        sql = "INSERT INTO crew_boats_select (crew_id, crew_name) VALUES (%s, %s)"
+                        print(holiday)
+                        val = (holiday[0].text, holiday[4].text)
+                        mycursor.execute(sql, val)
+                        conn.commit();
+
+        except Error as e:
+            return (e)
+
+
+
     def get_all_crew_boasts(self):
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',

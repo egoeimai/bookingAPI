@@ -9,6 +9,7 @@ from app.BareBoats.bareboats_calls import BareBoats
 from app.Crewed.crewed_calls import CrewedBoats
 from app.bookings.nausys import Nausys
 from app.bookings.mmk import MMK
+from app.fxyatching.fxyatching_grud import fxyatching
 import smtplib, ssl
 
 app = Flask(__name__)
@@ -100,7 +101,11 @@ def getboat_bare():
     return bare_boat.get_bareboat_characteristics_boat(boatid)
 
 
-
+""" Import Crewed Boats Sychronize """
+@app.route('/import_crewd_boats/',  methods=['GET'])
+def import_crewd_boats():
+    crew_boat = CrewedBoats()
+    return crew_boat.import_all_crew_boasts()
 
 
 """ Crew Boats characteristics Sychronize """
@@ -1021,7 +1026,44 @@ def crew_boats_update():
     test = crew_update();
     return test
 
+@app.route('/fxyatching_get/',  methods=['GET'])
+def fxyatching_get():
+    yatch = fxyatching()
+    response = yatch.get_yatchs()
 
+    return response
+
+@app.route('/fxyatching_create/',  methods=['GET'])
+def fxyatching_create():
+    boatid = request.args.get("boatid", None)
+    name = request.args.get("name", None)
+    yatch = fxyatching()
+    response = yatch.create_yatchs(name, boatid)
+
+    return response
+
+""" Crew Boats Watersports Sychronize """
+
+@app.route('/fxyatching_get_all_others/',  methods=['GET'])
+def fxyatching_get_all_others():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats_select` WHERE `is_fyly` = 0;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "name": result[2]}
+                json_data.append(content)
+
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
 
 @app.route('/')
 def index():

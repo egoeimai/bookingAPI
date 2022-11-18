@@ -62,7 +62,8 @@ for result in rv:
     response = requests.request("GET", reqUrl, data=payload)
     import xml.etree.ElementTree as ET
 
-    xml = ET.fromstring(response.text)
+    parser = ET.XMLParser(recover=True)
+    xml = ET.fromstring(response.text, parser=parser)
 
     for holiday in xml.findall('yacht'):
         #print(len(holiday))
