@@ -51,5 +51,5 @@ class fxyatching:
         response = requests.post(api_url, headers=wordpress_header, json=data)
 
         response_json = response.json()
-        print(response_json)
-        return  str(response)
+        print(response_json['id'])
+        return response_json['id']

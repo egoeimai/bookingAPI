@@ -1057,10 +1057,40 @@ def fxyatching_get_all_others():
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"boat_id": result[1], "name": result[2]}
+                content = {"boat_id": result[1], "name": result[2], "is_import" : result[5]}
                 json_data.append(content)
 
             return jsonify( json_data)
+
+    except Error as e:
+        return (e)
+
+
+@app.route('/fxyatching_import_boats_others/',  methods=['GET'])
+def fxyatching_import_boats_others():
+
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats_select` WHERE `is_fyly` = 0 AND `fx_import` = 0 LIMIT 20')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "name": result[2], "is_import" : result[5]}
+                json_data.append(content)
+                yatch = fxyatching()
+                response = yatch.create_yatchs(result[2], str(result[1]))
+                print(response)
+
+
+                # some JSON:
+                test = "UPDATE  `crew_boats_select` SET `fx_import` = " + str(response) + " WHERE `crew_boats_select`.`crew_id` = " + str(result[1])
+                cursor.execute("UPDATE  `crew_boats_select` SET `fx_import` = " + str(response) + " WHERE `crew_boats_select`.`crew_id` = " + str(result[1]))
+                conn.commit()
+        return jsonify(test)
 
     except Error as e:
         return (e)
