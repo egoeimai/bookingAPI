@@ -1090,7 +1090,8 @@ def fxyatching_import_boats_others():
                 test = "UPDATE  `crew_boats_select` SET `fx_import` = " + str(response) + " WHERE `crew_boats_select`.`crew_id` = " + str(result[1])
                 cursor.execute("UPDATE  `crew_boats_select` SET `fx_import` = " + str(response) + " WHERE `crew_boats_select`.`crew_id` = " + str(result[1]))
                 conn.commit()
-        return jsonify(test)
+                json_data.append(test)
+        return jsonify(json_data)
 
     except Error as e:
         return (e)
