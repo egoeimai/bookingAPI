@@ -1074,7 +1074,7 @@ def fxyatching_import_boats_others():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_boats_select` WHERE `is_fyly` = 0 AND `fx_import` = 0 LIMIT 20')
+            cursor.execute('SELECT * FROM `crew_boats_select` WHERE `is_fyly` = 0 AND `fx_import` = 0 LIMIT 60')
 
             rv = cursor.fetchall()
             json_data = []
@@ -1094,6 +1094,18 @@ def fxyatching_import_boats_others():
 
     except Error as e:
         return (e)
+
+
+@app.route('/fxyatching_import_synch/',  methods=['GET'])
+def fxyatching_import_synch():
+    yatch = fxyatching()
+    return yatch.create_yatchs_import()
+
+@app.route('/fxyatching_import_synch_trigger/',  methods=['GET'])
+def fxyatching_import_synch_trigger():
+    yatch = fxyatching()
+    return yatch.step_yatchs_import()
+
 
 @app.route('/')
 def index():
