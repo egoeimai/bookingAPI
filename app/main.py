@@ -491,10 +491,10 @@ def get_sedna_to_mmk():
                             mmk_log = mmk_log + "<p>Σκάφος: " +  str(result[2]) + "|" + str(result_boas[4]) + " - Κράτηση:  " + result[8].strftime('%Y-%m-%d') + " - " + result[9].strftime('%Y-%m-%d') + "  <br>" + message + "</p>"
                             log_count = log_count + 1
         print(log_count)
-        sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
-        val_bases = mmk_log
-        cursor.execute(sql_bases, val_bases)
-        conn.commit()
+        #sql_bases = "INSERT INTO api_mmk_sych (log, log_count) VALUES ('" + mmk_log + "', '" + str(log_count) + "');"
+        #val_bases = mmk_log
+        #cursor.execute(sql_bases, val_bases)
+        #conn.commit()
 
 
         return mmk_log
