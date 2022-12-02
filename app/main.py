@@ -494,6 +494,7 @@ def get_sedna_to_mmk():
         sql_bases = 'INSERT INTO api_mmk_sych (log, log_count) VALUES ( %s, %s);'
         val_bases = (mmk_log, log_count)
         cursor.execute(sql_bases, val_bases)
+        
         conn.commit()
 
 
