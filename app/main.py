@@ -838,11 +838,11 @@ def api_get_boats():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id')
+            cursor.execute('SELECT * FROM boats LEFT JOIN boats_apis_sych ON boats_apis_sych.sedna_id = boats.boat_id;')
             rv_data = cursor.fetchall()
             json_data_rv = []
             for result in rv_data:
-                content_rv = {"name": result[1], "id": result[2]}
+                content_rv = {"name": result[1], "id": result[2], "mmkid": result[5], "nausys": result[6]}
                 json_data_rv.append(content_rv)
             cursor.execute('SELECT * FROM `api_mmk_sych` ORDER BY sych_id DESC LIMIT 5')
             mmk_log_data = cursor.fetchall()
