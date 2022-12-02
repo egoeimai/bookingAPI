@@ -615,7 +615,7 @@ def get_sedna_to_nausys():
         cursor.execute(sql_bases, val_bases)
         conn.commit()
         return  nausys_log
-    
+
     except Error as e:
         return (e)
 
