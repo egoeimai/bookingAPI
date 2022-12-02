@@ -494,7 +494,7 @@ def get_sedna_to_mmk():
         sql_bases = 'INSERT INTO api_mmk_sych (log, log_count) VALUES ( %s, %s);'
         val_bases = (mmk_log, log_count)
         cursor.execute(sql_bases, val_bases)
-        
+
         conn.commit()
 
 
@@ -610,13 +610,12 @@ def get_sedna_to_nausys():
                                 else :
                                     print("0 ID")
 
-        print(log_count)
-        sql_bases = "INSERT INTO api_nausys_sych (log, log_count) VALUES ('" + nausys_log + "', '" + str(log_count) + "');"
-        val_bases = nausys_log
+        sql_bases = 'INSERT INTO api_nausys_sych (log, log_count) VALUES (%s, %s);'
+        val_bases = (nausys_log, log_count)
         cursor.execute(sql_bases, val_bases)
         conn.commit()
-        return "test"
-
+        return  nausys_log
+    
     except Error as e:
         return (e)
 
