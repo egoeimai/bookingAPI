@@ -1005,7 +1005,7 @@ def mmk_import_boats():
 
     boats_bookings = MMK()
     boats = json.loads(boats_bookings.insert_boat_bookings())
-    return boats
+    return jsonify(boats)
 
 @app.route('/login/',  methods=['POST'])
 
