@@ -70,7 +70,7 @@ class fxyatching:
                                  password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `finished`, `created`) VALUES (%s, %s, %s, '1', current_timestamp());"
+                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `finished`, `created`) VALUES (%s, %s, %s, '0', current_timestamp());"
                 vals = (uniq,  str(pages_count), 0)
                 cursor.execute(sqls, vals)
                 conn.commit()
@@ -92,7 +92,7 @@ class fxyatching:
                     response = requests.get(api_url)
                     response_json = response.json()
                     for boats in response_json:
-                        resp = requests.post('https://fxyachting.com/?update_boat_id='+ str(boats['id']))
+                        resp = requests.post('https://fxyachting.com/?update_boat_id='+ boats['id'])
                         print(boats['id'])
                     cursor.execute("UPDATE `other_synch` SET `step` = " + str(rv[0][3]+1) + " WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
                     conn.commit()
