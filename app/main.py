@@ -8,6 +8,7 @@ from app.crew_boats_update import crew_update
 from app.BareBoats.bareboats_calls import BareBoats
 from app.Crewed.crewed_calls import CrewedBoats
 from app.bookings.nausys import Nausys
+from app.bookings.sedna import Sedna
 from app.bookings.mmk import MMK
 from app.fxyatching.fxyatching_grud import fxyatching
 import smtplib, ssl
@@ -995,6 +996,10 @@ def nausys_sych_bookings():
     boats = json.loads(boats_bookings.insert_boat_bookings())
     return jsonify(boats["reservations"])
 
+
+
+
+
 @app.route('/nausys_import_boats/',  methods=['GET'])
 def nausys_import_boats():
 
@@ -1007,6 +1012,15 @@ def nausys_import_boats():
 def mmk_import_boats():
 
     boats_bookings = MMK()
+    boats = json.loads(boats_bookings.insert_boat_bookings())
+    return jsonify(boats)
+
+
+
+@app.route('/sedna_import_bookings/',  methods=['GET'])
+def sedna_import_bookings():
+
+    boats_bookings = Sedna()
     boats = json.loads(boats_bookings.insert_boat_bookings())
     return jsonify(boats)
 
