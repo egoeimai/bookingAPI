@@ -608,7 +608,7 @@ def get_sedna_to_nausys():
 
                                     message = "<strong> Σφάλμα </strong>: " + json.loads(responses.text)["status"]
                                     print("Σκάφος: " + str(result_boats[3]) + "|" + str(result_boats[4]) + " - Κράτηση:  " + result[8].strftime('%d.%m.%Y') + " - " + result[9].strftime('%Y-%m-%d') + " <br>" + message)
-                                    nausys_log = nausys_log + "Σκάφος: " + str(result_boats[3]) + "|" + str(result_boats[4]) + " - Κράτηση:  " + result[8].strftime('%d.%m.%Y') + " - " + result[9].strftime('%Y-%m-%d') + " <br>" + message
+                                    nausys_log = nausys_log + " Σκάφος: " + str(result_boats[3]) + "|" + str(result_boats[4]) + " - Κράτηση:  " + result[8].strftime('%d.%m.%Y') + " - " + result[9].strftime('%Y-%m-%d') + " <br>" + message
                                     log_count = log_count + 1
 
                                 else :
