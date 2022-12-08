@@ -51,6 +51,9 @@ def bareboats():
         if action == "get_bareboat_amenities" and boatid:
             bare_boat = BareBoats()
             return bare_boat.get_bareboat_amenities_boat(boatid)
+        if action == "get_bareboat_images" and boatid:
+            bare_boat = BareBoats()
+            return bare_boat.get_bareboat_images_boat(boatid)
 
     else:
         return "Wrong"

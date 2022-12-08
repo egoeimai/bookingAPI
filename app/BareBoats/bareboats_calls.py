@@ -237,3 +237,24 @@ class BareBoats:
 
         except Error as e:
             return (e)
+
+    #Get All Bare Boats Characteristics
+    def get_bareboat_images_boat(self, boatid):
+
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                cursor.execute(
+                    'SELECT * FROM boat_images WHERE boat_id = ' + str(boatid) + ';')
+
+                rv = cursor.fetchall()
+                json_data = []
+                for result in rv:
+                    content = {"image": result[2]}
+                    json_data.append(content)
+                return jsonify(json_data)
+
+        except Error as e:
+            return (e)

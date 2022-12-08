@@ -88,7 +88,7 @@ class fxyatching:
                 rv = cursor.fetchall()
 
                 if rv[0][2] >= rv[0][3]:
-                    api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page='+ str(rv[0][3]) +'&per_page=10&fleet_ownership=14&orderby=date'
+                    api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page='+ str(rv[0][3]) +'&per_page=20&fleet_ownership=14&orderby=date'
                     response = requests.get(api_url)
                     response_json = response.json()
                     print(response_json)

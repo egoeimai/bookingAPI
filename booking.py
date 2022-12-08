@@ -148,9 +148,9 @@ for result in rv:
 
     for holiday_extras in xml_extras.findall('extra'):
         print(result[2])
-        #sql_extras = "INSERT INTO `boats_extras` (`id_opt`, `id_opt_bt`, `name`, `price`, `per`, `boat_id`) VALUES (%s, %s, %s, %s, %s, %s);"
-        #val_extras = (holiday_extras.attrib['id_opt'], holiday_extras.attrib['id_opt_bt'], holiday_extras.attrib['name'], holiday_extras.attrib['price'], holiday_extras.attrib['per'], result[2])
-        #mycursor.execute(sql_extras, val_extras)
+        sql_extras = "INSERT INTO `boats_extras` (`id_opt`, `id_opt_bt`, `name`, `price`, `per`, `boat_id`) VALUES (%s, %s, %s, %s, %s, %s);"
+        val_extras = (holiday_extras.attrib['id_opt'], holiday_extras.attrib['id_opt_bt'], holiday_extras.attrib['name'], holiday_extras.attrib['price'], holiday_extras.attrib['per'], result[2])
+        mycursor.execute(sql_extras, val_extras)
 
         conn.commit()
 
