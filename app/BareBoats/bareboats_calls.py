@@ -178,9 +178,14 @@ class BareBoats:
 
                 cursor.execute('SELECT plan_url FROM `bare_boat_plans` WHERE `boat_id` = "' + str(boatid) + '";')
                 rv_plan = cursor.fetchall()
+                if (len(rv_plan) > 0):
+                    plan = rv_plan[0]
+                else:
+                    plan = ""
+
 
                 content = {"id": boatid, "layout": html, "amenities": amenities, "Characteristics": Characteristics,
-                           "Inventory": Inventory, "Safety_Equipment": Safety_Equipment, "plans": rv_plan[0]}
+                           "Inventory": Inventory, "Safety_Equipment": Safety_Equipment, "plans": plan}
                 json_data.append(content)
 
             return jsonify(json_data)
