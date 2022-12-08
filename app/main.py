@@ -1039,7 +1039,8 @@ def login():
         data = {'token': rand_token, 'refreshToken': refreshToken}
         return jsonify(data)
     else :
-        return "error"
+        data = {'token': rand_token, 'refreshToken': refreshToken}
+        return jsonify(data)
 
 
 
