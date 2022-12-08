@@ -954,16 +954,16 @@ def api_react_date():
 
             json_data = []
             for result in sedna:
-                content = {"sedna_booking_id":result[0], "start": result[3], "end": result[4]}
+                content = {"bookid":result[0], "start": result[3], "end": result[4]}
                 json_data.append(content)
 
             json_data_mmk = []
             for result_mmk in mmk:
-                content_mmk = {"start": result_mmk[9], "end": result_mmk[10]}
+                content_mmk = {"start": result_mmk[9], "end": result_mmk[10], "bookid" : result_mmk[6]  }
                 json_data_mmk.append(content_mmk)
             json_data_nausys = []
             for result_nausys in nausys:
-                content_nausys = {"start": result_nausys[9], "end": result_nausys[10], "status": result_nausys[8] }
+                content_nausys = {"start": result_nausys[9], "end": result_nausys[10], "status": result_nausys[8], "bookid" : result_nausys[6] }
                 json_data_nausys.append(content_nausys)
 
             cursor.execute('SELECT * FROM boats LEFT JOIN boat_characteristics on boat_characteristics.boat_id = boats.boat_id LEFT JOIN boats_bases on boats_bases.boat_id = boats.boat_id WHERE boats.boat_id='+boatid)
