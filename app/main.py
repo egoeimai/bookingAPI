@@ -1030,9 +1030,13 @@ def login():
     username = request.args.get("email", None)
     password = request.args.get("password", None)
     import requests
+    from uuid import uuid4
     import json
-    if username == "info@fyly.gr" & password == "restFyly761" :
-        data = {'token': "testtt", 'refreshToken': "testtt"}
+    rand_token = uuid4()
+    refreshToken = uuid4()
+    print(username)
+    if username == "info@fyly.gr" and password == "restFyly761" :
+        data = {'token': rand_token, 'refreshToken': refreshToken}
         return jsonify(data)
     else :
         return "error"
