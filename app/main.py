@@ -1031,10 +1031,18 @@ def login():
     password = request.args.get("password", None)
     import requests
     import json
+    if username == "info@fyly.gr" & password == "restFyly761" :
+        data = {'token': "testtt", 'refreshToken': "testtt"}
+        return jsonify(data)
+    else :
+        return "error"
 
-    data = {'token': "testtt", 'refreshToken': "testtt"}
-    print(data)
-    return jsonify(data)
+
+
+
+
+
+
 
 
 @app.route('/crew_boats_update/',  methods=['GET'])
