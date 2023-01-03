@@ -154,14 +154,4 @@ for result in rv:
 
         conn.commit()
 
-    reqUrl = "https://api.sednasystem.com/api/getBookingData.asp?api_mode=xml&appname=apiboatcharter&token=" + token + "&id_boat=" + str(result[2]) + "&date_start=2021-01-01&date_end=2022-12-31"
-    payload_bo = ""
-    response_bo = requests.request("GET", reqUrl, data=payload_bo, headers=headersList)
 
-    xml_bo = ET.fromstring(response_bo.text)
-    for holiday_bo in xml_bo.findall('charter'):
-        #sql = "INSERT INTO boats_booking (boat_id, status, datestart, dateend) VALUES (%s, %s, %s, %s)"
-        #val = (result[2], holiday_bo.attrib['status'], holiday_bo.attrib['datestart'], holiday_bo.attrib['dateend'])
-       # mycursor.execute(sql, val)
-
-        conn.commit()

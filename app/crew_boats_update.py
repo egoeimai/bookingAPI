@@ -52,7 +52,7 @@ def crew_update():
 
     reqUrl = "http://www.centralyachtagent.com/snapins/snyachts-xml.php?user=1318&apicode=1318FYLY7hSs%d49hjQ"
     mycursor = conn.cursor()
-    mycursor.execute('SELECT * FROM crew_boats_select')
+    mycursor.execute('SELECT * FROM crew_boats_select WHERE is_fyly = 1')
     row_headers = [x[0] for x in mycursor.description]  # this will extract row headers
     rv = mycursor.fetchall()
     Boat_log = ""

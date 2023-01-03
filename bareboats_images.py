@@ -1,7 +1,7 @@
 import requests
 import mysql.connector as mysql
 from mysql.connector import Error
-
+from PIL import Image
 token = ""
 try:
     conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
