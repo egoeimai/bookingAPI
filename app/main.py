@@ -324,18 +324,25 @@ def get_crewd_reviews():
 
 @app.route('/get_crewd_menu/',  methods=['GET'])
 def get_crewd_menu():
+    boatid = request.args.get("boatid", None)
     try:
         conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_sample_menu` WHERE `text_menu` is NOT NULL;')
+            cursor.execute('SELECT * FROM `crew_sample_menu`  WHERE `boat_id`= "' + str(boatid) + '";')
 
             rv = cursor.fetchall()
             json_data = []
             for result in rv:
-                content = {"boat_id": result[1], "menu": html_decode(result[2])}
-                json_data.append(content)
+                if(result[2]):
+
+                    content = {"boat_id": result[1], "menu": html_decode(result[2])}
+                    json_data.append(content)
+                else:
+                    content = {"boat_id": result[1], "menu": ""}
+                    json_data.append(content)
+
 
             return jsonify( json_data)
 
