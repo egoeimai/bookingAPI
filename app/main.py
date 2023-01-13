@@ -508,7 +508,26 @@ def get_sedna_to_mmk():
 
         conn.commit()
 
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
 
+        username = "e.leontari@animal.gr"
+        password = "Woc80656"
+        mail_from = "e.leontari@animal.gr"
+        mail_to = "n.ziozas@zonepage.gr"
+        mail_subject = "MMK Log"
+        mail_body = "Mmk_log :  " + mmk_log
+
+        mimemsg = MIMEMultipart()
+        mimemsg['From'] = mail_from
+        mimemsg['To'] = mail_to
+        mimemsg['Subject'] = mail_subject
+        mimemsg.attach(MIMEText(mail_body, 'plain'))
+        connection = smtplib.SMTP(host='smtp.office365.com', port=587)
+        connection.starttls()
+        connection.login(username, password)
+        connection.send_messag
         return mmk_log
 
     except Error as e:
@@ -624,7 +643,32 @@ def get_sedna_to_nausys():
         sql_bases = 'INSERT INTO api_nausys_sych (log, log_count) VALUES (%s, %s);'
         val_bases = (nausys_log, log_count)
         cursor.execute(sql_bases, val_bases)
+
+
         conn.commit()
+
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+
+        username = "e.leontari@animal.gr"
+        password = "Woc80656"
+        mail_from = "e.leontari@animal.gr"
+        mail_to = "n.ziozas@zonepage.gr"
+        mail_subject = "Nausys Log"
+        mail_body = "Nausys Log :  " + nausys_log
+
+        mimemsg = MIMEMultipart()
+        mimemsg['From'] = mail_from
+        mimemsg['To'] = mail_to
+        mimemsg['Subject'] = mail_subject
+        mimemsg.attach(MIMEText(mail_body, 'plain'))
+        connection = smtplib.SMTP(host='smtp.office365.com', port=587)
+        connection.starttls()
+        connection.login(username, password)
+        connection.send_message(mimemsg)
+        connection.quit()
+
         return  nausys_log
 
     except Error as e:
