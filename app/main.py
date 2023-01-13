@@ -512,10 +512,10 @@ def get_sedna_to_mmk():
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
 
-        username = "e.leontari@animal.gr"
-        password = "Woc80656"
-        mail_from = "e.leontari@animal.gr"
-        mail_to = "n.ziozas@zonepage.gr"
+        username = "development@zonepage.gr"
+        password = "gY5a*9@F"
+        mail_from = "development@zonepage.gr"
+        mail_to = "n.ziozas@zonepage.gr, fyly@fyly.gr"
         mail_subject = "MMK Log"
         mail_body = "Mmk_log :  " + mmk_log
 
@@ -652,10 +652,10 @@ def get_sedna_to_nausys():
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
 
-        username = "e.leontari@animal.gr"
-        password = "Woc80656"
-        mail_from = "e.leontari@animal.gr"
-        mail_to = "n.ziozas@zonepage.gr"
+        username = "development@zonepage.gr"
+        password = "gY5a*9@F"
+        mail_from = "development@zonepage.gr"
+        mail_to = "n.ziozas@zonepage.gr, fyly@fyly.gr"
         mail_subject = "Nausys Log"
         mail_body = "Nausys Log :  " + nausys_log
 
