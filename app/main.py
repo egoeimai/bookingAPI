@@ -523,7 +523,7 @@ def get_sedna_to_mmk():
         mimemsg['From'] = mail_from
         mimemsg['To'] = mail_to
         mimemsg['Subject'] = mail_subject
-        mimemsg.attach(MIMEText(mail_body, 'plain'))
+        mimemsg.attach(MIMEText(mail_body, 'html'))
         connection = smtplib.SMTP(host='smtp.office365.com', port=587)
         connection.starttls()
         connection.login(username, password)
@@ -662,7 +662,7 @@ def get_sedna_to_nausys():
         mimemsg['From'] = mail_from
         mimemsg['To'] = mail_to
         mimemsg['Subject'] = mail_subject
-        mimemsg.attach(MIMEText(mail_body, 'plain'))
+        mimemsg.attach(MIMEText(mail_body, 'html'))
         connection = smtplib.SMTP(host='smtp.office365.com', port=587)
         connection.starttls()
         connection.login(username, password)
