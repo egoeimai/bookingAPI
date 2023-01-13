@@ -527,7 +527,8 @@ def get_sedna_to_mmk():
         connection = smtplib.SMTP(host='smtp.office365.com', port=587)
         connection.starttls()
         connection.login(username, password)
-        connection.send_messag
+        connection.send_message(mimemsg)
+        connection.quit()
         return mmk_log
 
     except Error as e:
