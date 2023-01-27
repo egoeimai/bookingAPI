@@ -153,7 +153,7 @@ class fxyatching:
                     cursor.execute(
                         "UPDATE `other_synch` SET `working` = '0'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
                     conn.commit()
-                    return str(rv[0][3]+1)
+                    return str(rv[0][3]+1) + ' / ' + rv[0][2]
 
                 if rv[0][2] < rv[0][3]:
                     cursor.execute("UPDATE `other_synch` SET `finished` = '1'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
