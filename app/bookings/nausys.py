@@ -85,7 +85,7 @@ class Nausys:
                                  password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                cursor.execute('TRUNCATE TABLE nausys_boats_bookings;')
+              
 
                 for item in json_boats["reservations"]:
                     d_dateFrom = int(dt.datetime.strptime(item["periodFrom"], "%d.%m.%Y %H:%M").timestamp())

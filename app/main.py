@@ -1008,12 +1008,19 @@ def api_react_date():
 
             json_data = []
             for result in sedna:
-                content = {"bookid":result[0], "start": result[3], "end": result[4], "status": result[2]}
+                if result[2] == 0:
+                    content = {"bookid":result[0], "start": result[3], "end": result[4], "status": "RESERVATION"}
+                else:
+                    content = {"bookid":result[0], "start": result[3], "end": result[4], "status": "OPTION"}
+
                 json_data.append(content)
 
             json_data_mmk = []
             for result_mmk in mmk:
-                content_mmk = {"start": result_mmk[9], "end": result_mmk[10], "bookid" : result_mmk[6], "status": result_mmk[8]  }
+                if  result_mmk[8] == 1:
+                    content_mmk = {"start": result_mmk[9], "end": result_mmk[10], "bookid" : result_mmk[6], "status": "RESERVATION"}
+                else:
+                    content_mmk = {"start": result_mmk[9], "end": result_mmk[10], "bookid": result_mmk[6],"status": "OPTION"}
                 json_data_mmk.append(content_mmk)
             json_data_nausys = []
             for result_nausys in nausys:
