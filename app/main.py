@@ -5,6 +5,7 @@ from mysql.connector import Error
 from flask_cors import CORS
 import json
 from app.crew_boats_update import crew_update
+from app.crew_boats_update import crew_update_other
 from app.BareBoats.bareboats_calls import BareBoats
 from app.Crewed.crewed_calls import CrewedBoats
 from app.bookings.nausys import Nausys
@@ -994,11 +995,11 @@ def api_react_date():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM boats_booking WHERE boat_id='+boatid+' AND  YEAR(datestart) = '+year+' AND MONTH(datestart) = '+month+'  AND status=0 ORDER BY `boats_booking`.`datestart` ASC' )
+            cursor.execute('SELECT * FROM boats_booking WHERE boat_id='+boatid+' AND  YEAR(datestart) = '+year+' AND MONTH(datestart) = '+month+'  AND (status=0 OR status=1) ORDER BY `boats_booking`.`datestart` ASC' )
             row_headers = [x[0] for x in cursor.description]  # this will extract row headers
             sedna = cursor.fetchall()
 
-            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND mmk_booking.status = 1 ORDER BY `mmk_booking`.`dateFrom` ASC')
+            cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN mmk_booking ON mmk_booking.boat_id = boats_apis_sych.mmk_id WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(dateFrom) = '+year+' AND MONTH(dateFrom) = '+month+' AND (mmk_booking.status = 1 OR mmk_booking.status = 2)  ORDER BY `mmk_booking`.`dateFrom` ASC')
             mmk = cursor.fetchall()
 
             cursor.execute('SELECT * FROM `boats_apis_sych` LEFT JOIN nausys_boats_bookings ON nausys_boats_bookings.boat_id = boats_apis_sych.nausys WHERE boats_apis_sych.sedna_id = ' +boatid+ ' AND  YEAR(periodFrom) = '+year+' AND MONTH(periodFrom) = '+month+'  ORDER BY `nausys_boats_bookings`.`periodFrom` ASC')
@@ -1007,12 +1008,12 @@ def api_react_date():
 
             json_data = []
             for result in sedna:
-                content = {"bookid":result[0], "start": result[3], "end": result[4]}
+                content = {"bookid":result[0], "start": result[3], "end": result[4], "status": result[2]}
                 json_data.append(content)
 
             json_data_mmk = []
             for result_mmk in mmk:
-                content_mmk = {"start": result_mmk[9], "end": result_mmk[10], "bookid" : result_mmk[6]  }
+                content_mmk = {"start": result_mmk[9], "end": result_mmk[10], "bookid" : result_mmk[6], "status": result_mmk[8]  }
                 json_data_mmk.append(content_mmk)
             json_data_nausys = []
             for result_nausys in nausys:
@@ -1108,6 +1109,14 @@ def crew_boats_update():
     test = crew_update();
     return test
 
+
+
+@app.route('/crew_boats_update_other/',  methods=['GET'])
+
+def crew_boats_update_other():
+    test = crew_update_other();
+    return test
+
 @app.route('/fxyatching_get/',  methods=['GET'])
 def fxyatching_get():
     yatch = fxyatching()
@@ -1188,6 +1197,91 @@ def fxyatching_import_synch():
 def fxyatching_import_synch_trigger():
     yatch = fxyatching()
     return yatch.step_yatchs_import()
+
+
+@app.route('/fx_get_new_boats/',  methods=['GET'])
+def fx_get_new_boats():
+    import requests
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            mycursor = conn.cursor()
+            reqUrl = "http://www.centralyachtagent.com/snapins/snyachts-xml.php?user=1318&apicode=1318FYLY7hSs%d49hjQ"
+
+
+            import xml.etree.ElementTree as ET
+            try:
+                parser = ET.XMLParser(encoding="utf-8")
+                payload = ""
+                response = requests.request("GET", reqUrl, data=payload)
+                xml = ET.fromstring(response.text, parser=parser)
+
+
+                for holiday in xml.findall('yacht'):
+                    print(holiday[0].text)
+                    sql = "INSERT INTO `crew_fresh` (`crew_fresh_boat_id`)VALUES ('" + holiday[0].text + "')"
+                    print(holiday)
+                    val = (str(holiday[0].text))
+                    mycursor.execute(sql)
+
+                    conn.commit();
+
+            except Error as e:
+                print(e)
+
+            return "Resr"
+    except Error as e:
+        print(e)
+
+
+@app.route('/check_new_delete/',  methods=['GET'])
+def check_new_delete():
+    import requests
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        mycursor = conn.cursor()
+        if conn.is_connected():
+            mycursor.execute('SELECT * FROM crew_boats_select WHERE is_fyly = 0 AND `diagrafei` = "0"')
+            rv = mycursor.fetchall()
+            Boat_log = ""
+            for result in rv:
+                print( str(result[1]))
+                mycursor.execute("DELETE FROM crew_boats_select  WHERE `crew_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_boats  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_boats_reviews  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_boat_crewd  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_characteristics  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_sample_menu  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_video_boats  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_water_sports  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_yachtotherentertain  WHERE `boat_id` = " + str(result[1]))
+                mycursor.execute("DELETE FROM crew_yachtothertoys  WHERE `boat_id` = " + str(result[1]))
+
+                conn.commit()
+
+
+            return "Resr"
+    except Error as e:
+        print(e)
+
+
+@app.route('/update_all_boats/',  methods=['GET'])
+def update_all_boats():
+    yatch = fxyatching()
+    response = yatch.get_yatchs_fylys()
+    response = yatch.update_yatchs_fylys()
+
+    return response
+
+@app.route('/update_all_boats_trigger/',  methods=['GET'])
+def update_all_boats_trigger():
+    yatch = fxyatching()
+    response = yatch.step_yatchs_import_fyly()
+
+
+    return response
 
 
 @app.route('/')
