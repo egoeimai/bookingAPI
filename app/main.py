@@ -514,7 +514,7 @@ def get_sedna_to_mmk():
         from email.mime.text import MIMEText
 
         username = "development@zonepage.gr"
-        password = "gY5a*9@F"
+        password = "Won14376"
         mail_from = "development@zonepage.gr"
         mail_to = "n.ziozas@zonepage.gr, fyly@fyly.gr"
         mail_subject = "MMK Log"
@@ -654,7 +654,7 @@ def get_sedna_to_nausys():
         from email.mime.text import MIMEText
 
         username = "development@zonepage.gr"
-        password = "gY5a*9@F"
+        password = "Won14376"
         mail_from = "development@zonepage.gr"
         mail_to = "n.ziozas@zonepage.gr, fyly@fyly.gr"
         mail_subject = "Nausys Log"
