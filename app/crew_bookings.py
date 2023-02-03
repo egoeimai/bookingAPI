@@ -62,7 +62,7 @@ class Crew_bookings:
                 cursor = conn.cursor()
                 cursor.execute("select database();")
                 record = cursor.fetchone()
-                
+
                 cursor.execute('SELECT * FROM crew_bookings WHERE boat_id =' + str(boat_id))
                 row_headers = [x[0] for x in cursor.description]  # this will extract row headers
                 rv = cursor.fetchall()
