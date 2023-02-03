@@ -68,7 +68,7 @@ class Crew_bookings:
                 rv = cursor.fetchall()
                 json_data = []
                 for result in rv:
-                    content = {"from": result[2].strftime('%Y-%m-%d'), "to": result[3].strftime('%Y-%m-%d'), "middayCheckout": "true",}
+                    content = {"from": result[2].strftime('%Y-%m-%d'), "to": result[3].strftime('%Y-%m-%d'), "middayCheckout": "false"}
                     json_data.append(content)
                 return jsonify(json_data)
 
