@@ -12,6 +12,7 @@ from app.bookings.nausys import Nausys
 from app.bookings.sedna import Sedna
 from app.bookings.mmk import MMK
 from app.fxyatching.fxyatching_grud import fxyatching
+from  app.crew_bookings import Crew_bookings
 import smtplib, ssl
 
 app = Flask(__name__)
@@ -118,6 +119,21 @@ def import_crewd_boats():
 def get_crewd_boats():
     crew_boat = CrewedBoats()
     return crew_boat.get_all_crew_boasts()
+
+""" Crew Boats import/update bookings Sychronize """
+@app.route('/crewed_update_bokkings/',  methods=['GET'])
+def crewed_update_bokkings():
+    crew_boat = Crew_bookings()
+    return crew_boat.crew_update_bookings()
+
+
+""" Crew Boats import/update bookings Sychronize """
+@app.route('/crewed_get_bookings/',  methods=['POST'])
+def crewed_get_bookings():
+    data = request.json
+    print(data)
+    crew_boat = Crew_bookings()
+    return crew_boat.crew_get_bookings(data['boat_id'])
 
 
 """ Crew Boats characteristics Sychronize By Id """
@@ -781,7 +797,7 @@ def send_sedna_to_nausys_id():
                 responses = requests.request("POST", url, headers=headers, data=payload)
 
 
-                
+
                 return jsonify(responses.text);
 
             else:
@@ -1120,6 +1136,7 @@ def login():
 def crew_boats_update():
     test = crew_update();
     return test
+
 
 
 
