@@ -485,7 +485,7 @@ def get_sedna_to_mmk():
                                 "dateFrom": result[8].strftime('%Y-%m-%dT%H:%M:%S'),
                                 "dateTo": result[9].strftime('%Y-%m-%dT%H:%M:%S'),
                                 "yachtId": result_boas[2],
-                                "status": 2
+                                "status": 1
                             })
                             headers = {
                                 'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
@@ -615,7 +615,7 @@ def get_sedna_to_nausys():
                                 if 'id' in json.loads(response.text):
 
 
-                                    url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createOption"
+                                    url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createBooking"
 
                                     payload = json.dumps({
                                         "credentials": {
@@ -623,8 +623,8 @@ def get_sedna_to_nausys():
                                             "password": "restFyly761"
                                         },
                                         "id": json.loads(response.text)['id'],
-                                        "uuid": json.loads(response.text)['uuid'],
-                                        "createWaitingOption": "true"
+                                        "uuid": json.loads(response.text)['uuid']
+
 
                                     })
                                     headers = {
@@ -697,7 +697,7 @@ def send_sedna_to_mmk_id():
                 "dateFrom": boats[0][3].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
                 "dateTo": boats[0][4].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
                 "yachtId": boats[0][8],
-                "status": 2
+                "status": 1
             })
             headers = {
                 'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
@@ -761,29 +761,34 @@ def send_sedna_to_nausys_id():
 
             response = requests.request("POST", url, headers=headers, data=payload)
 
-            print(json.loads(response.text))
+            if 'id' in json.loads(response.text):
 
-            url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createBooking"
+                url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createBooking"
 
-            payload = json.dumps({
-                "credentials": {
-                    "username": "rest@FLY",
-                    "password": "restFyly761"
-                },
-                "id":  json.loads(response.text)['id'],
-                "uuid": json.loads(response.text)['uuid'],
+                payload = json.dumps({
+                    "credentials": {
+                        "username": "rest@FLY",
+                        "password": "restFyly761"
+                    },
+                    "id": json.loads(response.text)['id'],
+                    "uuid": json.loads(response.text)['uuid']
 
-            })
-            headers = {
-                'Content-Type': 'application/json'
-            }
+                })
+                headers = {
+                    'Content-Type': 'application/json'
+                }
 
-            response = requests.request("POST", url, headers=headers, data=payload)
-
-            print(response.text)
+                responses = requests.request("POST", url, headers=headers, data=payload)
 
 
-            return jsonify(response.text);
+                
+                return jsonify(responses.text);
+
+            else:
+                return jsonify("{error:error}")
+
+
+
 
     except Error as e:
         return (e)
