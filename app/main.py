@@ -809,7 +809,7 @@ def send_sedna_to_nausys_id():
 
             if 'id' in json.loads(response.text):
 
-                url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createOption"
+                url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createBooking"
 
                 payload = json.dumps({
                     "credentials": {
