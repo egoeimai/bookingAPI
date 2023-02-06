@@ -12,6 +12,7 @@ from app.bookings.nausys import Nausys
 from app.bookings.sedna import Sedna
 from app.bookings.mmk import MMK
 from app.fxyatching.fxyatching_grud import fxyatching
+from app.BareBoats.bareboats_sych import BareBoats_sych
 from  app.crew_bookings import Crew_bookings
 import smtplib, ssl
 
@@ -62,6 +63,12 @@ def bareboats():
         return "Wrong"
 
 
+""" Bare Plan Boats Import """
+@app.route('/get_bare_plan_import/',  methods=['GET'])
+def get_bare_plan_import():
+    bare_boat_plan = BareBoats_sych()
+    return bare_boat_plan.bareboats_sych_plans()
+
 """ Bare Plan Boats Sychronize """
 @app.route('/get_bare_plan/',  methods=['GET'])
 def get_bare_plan():
@@ -70,10 +77,31 @@ def get_bare_plan():
 
 """ Bare Boats Amenities """
 
+
+
+@app.route('/getboat_amenities_import/',  methods=['GET'])
+def getboat_amenities_import():
+    bare_boat_plan = BareBoats_sych()
+    return bare_boat_plan.baraboats_sych_amenities()
 @app.route('/getboat_amenities/',  methods=['GET'])
 def getboat_amenities():
     bare_boat_plan = BareBoats()
     return bare_boat_plan.get_bareboat_amenities()
+
+
+
+@app.route('/getboat_extras_import/',  methods=['GET'])
+def getboat_extras_import():
+
+    bare_boat_plan = BareBoats_sych()
+    return bare_boat_plan.bareboats_sych_boat_extras()
+
+
+@app.route('/getboat_images_import/',  methods=['GET'])
+def getboat_images_import():
+
+    bare_boat_plan = BareBoats_sych()
+    return bare_boat_plan.bareboasts_sych_boat_images()
 
 """ Get BareBoat Extras """
 
@@ -776,6 +804,8 @@ def send_sedna_to_nausys_id():
             }
 
             response = requests.request("POST", url, headers=headers, data=payload)
+            print(json.loads(response.text)['uuid'])
+            print(json.loads(response.text)['id'])
 
             if 'id' in json.loads(response.text):
 
