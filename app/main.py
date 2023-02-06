@@ -741,7 +741,7 @@ def send_sedna_to_mmk_id():
                 "dateFrom": boats[0][3].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
                 "dateTo": boats[0][4].strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
                 "yachtId": boats[0][8],
-                "status": 1
+                "status": 2
             })
             headers = {
                 'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
@@ -809,7 +809,7 @@ def send_sedna_to_nausys_id():
 
             if 'id' in json.loads(response.text):
 
-                url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createBooking"
+                url = "http://ws.nausys.com/CBMS-external/rest/booking/v6/createOption"
 
                 payload = json.dumps({
                     "credentials": {
