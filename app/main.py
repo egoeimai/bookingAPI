@@ -529,7 +529,7 @@ def get_sedna_to_mmk():
                                 "dateFrom": result[8].strftime('%Y-%m-%dT%H:%M:%S'),
                                 "dateTo": result[9].strftime('%Y-%m-%dT%H:%M:%S'),
                                 "yachtId": result_boas[2],
-                                "status": 1
+                                "status": 2
                             })
                             headers = {
                                 'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
@@ -539,6 +539,8 @@ def get_sedna_to_mmk():
                             response = requests.request("POST", url, headers=headers, data=payload)
 
                             print(response.text)
+                            mmk_result = json.loads(response.text)
+                            print(mmk_result["id"])
                             message = "<strong> Σφάλμα </strong>: " + response.text
                             if len(response.text) > 192:
                                 message = "<strong>Πέρασε</strong>"
@@ -751,11 +753,39 @@ def send_sedna_to_mmk_id():
             response = requests.request("POST", url, headers=headers, data=payload)
 
             print(response.text)
-            return jsonify(response.text);
+            try:
+                json.loads(response.text)
+            except ValueError as e:
+                return jsonify(response.text);
+            mmk_result = json.loads(response.text)
+            print(mmk_result["id"])
+            url = "https://www.booking-manager.com/api/v2/reservation/" + str(mmk_result["id"])
+            response = requests.request("PUT", url, headers=headers, data=payload)
+
+            print(response.text)
+            return jsonify('{Reservation Success}');
 
     except Error as e:
         return (e)
 
+""" MMK DELETE By Id Boat """
+
+@app.route('/delete_mmk_id/',  methods=['GET'])
+def delete_mmk_id():
+    boatid = request.args.get("boatid", None)
+    print(boatid)
+    import requests
+    import json
+    payload =""
+    headers = {
+        'Authorization': 'Bearer 837-d6973f84d9b2752274d9695ee411b01176871329d36b12872601a0837b390374104b7fa3542e0aefade6f65835bd09885f372592ddc57b44a2a853602dd03cc2',
+        'Content-Type': 'application/json'
+    }
+    url = "https://www.booking-manager.com/api/v2/reservation/" + str(boatid)
+    response = requests.request("PUT", url, headers=headers, data=payload)
+
+    print(response.text)
+    return jsonify('{Reservation Delete}');
 
 
 """ Send Sedna To Nausis By Id Boat """
