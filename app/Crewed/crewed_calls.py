@@ -48,7 +48,7 @@ class CrewedBoats:
             if conn.is_connected():
                 cursor = conn.cursor()
                 cursor.execute(
-                    'SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id;')
+                    'SELECT * FROM `crew_boats` LEFT JOIN crew_boats_basic ON crew_boats.boat_id = crew_boats_basic.boat_id LEFT JOIN crew_images_boats ON crew_images_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_boat_crewd on crew_boat_crewd.boat_id = crew_boats.boat_id LEFT JOIN crew_video_boats ON crew_video_boats.boat_id = crew_boats.boat_id LEFT JOIN crew_amenties ON crew_amenties.boat_id = crew_boats.boat_id LEFT JOIN crew_characteristics ON crew_characteristics.boat_id = crew_boats.boat_id LEFT JOIN crew_water_sports ON crew_water_sports.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtothertoys ON crew_yachtothertoys.boat_id = crew_boats.boat_id LEFT JOIN crew_yachtotherentertain ON crew_yachtotherentertain.boat_id = crew_boats.boat_id LEFT JOIN crewed_areas ON crewed_areas.boat_id = crew_boats.boat_id;')
 
                 rv = cursor.fetchall()
                 json_data = []
@@ -63,7 +63,7 @@ class CrewedBoats:
                                "crewtitle": result[33], "crewnation": result[34], "crewborn": result[35],
                                "crewtext": result[36], "image1": result[37], "image2": result[38],
                                "video_url": result[41], "description": result[16], "price_details": result[17],
-                               "locations_details": result[18], "broker_notes": result[19]}
+                               "locations_details": result[18], "broker_notes": result[19], "yachtPrefPickup": result[43], "yachtSummerArea": result[44], "yachtOtherPickup": result[45]}
                     json_data.append(content)
                 return jsonify(json_data)
 

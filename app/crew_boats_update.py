@@ -202,6 +202,12 @@ def crew_update():
                         menu_val = (holiday[0].text, holiday[199].text, hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
                         mycursor.execute(menu_sql, menu_val)
 
+                        val_boat_destinations_hash = (holiday[9].text, holiday[172].text, holiday[10].text)
+                        val_boat_destinations_sql = "INSERT INTO `crewed_areas` (`boat_id`, `yachtPrefPickup`, `yachtSummerArea`, `yachtOtherPickup`, `hash`) VALUES (%s, %s, %s, %s, %s);"
+                        val_boat_destinations_val = (holiday[0].text, holiday[28].text, holiday[173].text, holiday[29].text,
+                                hashlib.md5(str(val_boat_destinations_hash).encode("utf-8")).hexdigest())
+                        mycursor.execute(val_boat_destinations_sql, val_boat_destinations_val)
+
                         conn.commit()
 
                     else:
@@ -510,6 +516,36 @@ def crew_update():
                                 holiday[0].text, holiday[167].text,
                                 hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(menu_sql, menu_val)
+
+                        mycursor.execute(
+                            "SELECT boat_id, hash FROM crewed_areas WHERE boat_id=" + holiday[0].text);
+                        val_boat_destinations_exist = mycursor.fetchall();
+                        val_boat_destinations_hash = (holiday[28].text, holiday[172].text, holiday[29].text)
+
+                        if len(val_boat_destinations_exist) > 0:
+                            if hashlib.md5(str(val_boat_destinations_hash).encode("utf-8")).hexdigest() == val_boat_destinations_exist[0][1]:
+                                print("Δεν Αλλαξε Κατι από  Crewed Destinations")
+                                Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Στο Crewed Destinations</br>"
+                            else:
+                                print("Αλλαξε Κατι από Menu")
+                                Boat_log = Boat_log + "Αλλαξε Κατι από Crewed Destinations</br>"
+                                mycursor.execute(
+                                    "DELETE FROM crewed_areas WHERE boat_id = " + str(int(holiday[0].text)))
+                                boat_menu_exist = mycursor.fetchall();
+                                val_boat_destinations_sql = "INSERT INTO `crewed_areas` (`boat_id`, `yachtPrefPickup`, `yachtSummerArea`, `yachtOtherPickup`, `hash`) VALUES (%s, %s, %s, %s, %s);"
+                                val_boat_destinations_val = (
+                                holiday[0].text, holiday[28].text, holiday[173].text, holiday[29].text,
+                                hashlib.md5(str(val_boat_destinations_hash).encode("utf-8")).hexdigest())
+                                mycursor.execute(val_boat_destinations_sql, val_boat_destinations_val)
+
+                        else:
+                            print("Αλλαξε Κατι από Crewed Destinations")
+                            Boat_log = Boat_log + "Αλλαξε Κατι από Crewed Destinations</br>"
+                            val_boat_destinations_sql = "INSERT INTO `crewed_areas` (`boat_id`, `yachtPrefPickup`, `yachtSummerArea`, `yachtOtherPickup`, `hash`) VALUES (%s, %s, %s, %s, %s);"
+                            val_boat_destinations_val = (holiday[0].text, holiday[28].text, holiday[173].text, holiday[29].text,  hashlib.md5(str(val_boat_destinations_hash).encode("utf-8")).hexdigest())
+
+                            mycursor.execute(val_boat_destinations_sql,  val_boat_destinations_val)
+                            conn.commit()
 
         except:
             pass
