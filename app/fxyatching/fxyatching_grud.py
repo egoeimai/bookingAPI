@@ -130,8 +130,8 @@ class fxyatching:
                                  password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,  `action`, `finished`, `created`) VALUES (%s, %s, %s, %s, '0', current_timestamp());"
-                vals = (uniq, str(pages_count), 1, 0, action)
+                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,  `action`, `finished`, `created`) VALUES (%s, %s, %s, %s, %s, '0', current_timestamp());"
+                vals = (uniq, str(pages_count), 1, 0, str(action))
                 cursor.execute(sqls, vals)
                 conn.commit()
 

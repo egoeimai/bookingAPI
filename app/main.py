@@ -1370,6 +1370,7 @@ def update_all_boats_bulk():
     boatids = request.args.get("boatids", None)
     action = request.args.get("action", None)
     yatch = fxyatching()
+    print(action)
     #response = yatch.get_yatchs_fylys()
     response = yatch.update_yatchs_fylys_bulk(boatids, action)
 
