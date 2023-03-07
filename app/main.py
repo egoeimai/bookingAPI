@@ -1385,7 +1385,7 @@ def update_all_boats_trigger():
 
     return response
 
- 
+
 @app.route('/')
 def index():
     return "<h1>Welcome to our server !!</h1>"

@@ -129,8 +129,8 @@ class fxyatching:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,`finished`,`action`, `created`) VALUES (%s, %s, %s, %s, '0',%s, current_timestamp());"
-                vals = (uniq,  str(pages_count), 1, 0, action)
+                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,`finished`,`action`, `created`) VALUES (%s, %s, %s, %s, '0', %s, current_timestamp());"
+                vals = (uniq,  str(pages_count), 0, 0, action)
                 cursor.execute(sqls, vals)
                 conn.commit()
 
