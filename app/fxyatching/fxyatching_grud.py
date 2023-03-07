@@ -130,7 +130,7 @@ class fxyatching:
             if conn.is_connected():
                 cursor = conn.cursor()
                 sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,`finished`,`action`, `created`) VALUES (%s, %s, %s, %s, '0', %s, current_timestamp());"
-                vals = (uniq,  str(pages_count), 0, 0, action)
+                vals = (uniq,  str(pages_count), 1, 0, action)
                 cursor.execute(sqls, vals)
                 conn.commit()
 
