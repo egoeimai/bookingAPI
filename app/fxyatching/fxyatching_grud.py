@@ -116,7 +116,31 @@ class fxyatching:
         except Error as e:
             return (e)
 
-    def step_yatchs_import_fyly(self):
+    def update_yatchs_fylys_bulk(self, boatids, action):
+        import uuid
+        uniq = uuid.uuid4().hex[:6].upper()
+        api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=1&per_page=10&fleet_ownership=13'
+
+        response = requests.get(api_url)
+        pages_count = response.headers['X-WP-TotalPages']
+        response_json = response.json()
+        str(pages_count)
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly', password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,`finished`,`action`, `created`) VALUES (%s, %s, %s, %s, '0',%s, current_timestamp());"
+                vals = (uniq,  str(pages_count), 1, 0, action)
+                cursor.execute(sqls, vals)
+                conn.commit()
+
+                #self.step_yatchs_import_fyly()
+            return str(uniq)
+
+        except Error as e:
+            return (e)
+
+    def step_yatchs_import_fyly(self, action):
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                                  password='sd5w2V!0')
@@ -137,7 +161,7 @@ class fxyatching:
                     for boats in response_json:
                         print(boats)
 
-                        url = "https://fxyachting.com/wp-json/updateboats/v1/boat/" + str(boats['id'])
+                        url = "https://fxyachting.com/wp-json/updateboats/v1/boat/id=" + str(boats['id'] + "?action=" + action)
 
                         payload = {}
                         headers = {}

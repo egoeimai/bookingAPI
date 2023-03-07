@@ -1364,15 +1364,28 @@ def update_all_boats():
 
     return response
 
+
+@app.route('/update_all_boats_bulk/',  methods=['GET'])
+def update_all_boats_bulk():
+    boatids = request.args.get("boatids", None)
+    action = request.args.get("action", None)
+    yatch = fxyatching()
+    #response = yatch.get_yatchs_fylys()
+    response = yatch.update_yatchs_fylys_bulk(boatids, action)
+
+    return response
+
 @app.route('/update_all_boats_trigger/',  methods=['GET'])
 def update_all_boats_trigger():
+    action = request.args.get("action", None)
+
     yatch = fxyatching()
-    response = yatch.step_yatchs_import_fyly()
+    response = yatch.step_yatchs_import_fyly(action)
 
 
     return response
 
-
+ 
 @app.route('/')
 def index():
     return "<h1>Welcome to our server !!</h1>"
