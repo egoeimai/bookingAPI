@@ -130,8 +130,8 @@ class fxyatching:
                                  password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,`finished`, `created`) VALUES (%s, %s, %s, %s, '0', current_timestamp());"
-                vals = (uniq, str(pages_count), 1, 0)
+                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,  `action`, `finished`, `created`) VALUES (%s, %s, %s, %s, '0', current_timestamp());"
+                vals = (uniq, str(pages_count), 1, 0, action)
                 cursor.execute(sqls, vals)
                 conn.commit()
 
@@ -149,11 +149,10 @@ class fxyatching:
                 cursor = conn.cursor()
                 cursor.execute('SELECT * FROM `other_synch` WHERE `finished` = 0 AND `working` = 0 ORDER BY `created` DESC LIMIT 1;')
                 rv = cursor.fetchall()
-
-                cursor.execute(
-                    "UPDATE `other_synch` SET `working` = '1'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
+                print(rv)
+                cursor.execute("UPDATE `other_synch` SET `working` = '1'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
                 conn.commit()
-                print(rv[0][3])
+
                 if rv[0][2] >= rv[0][3]:
                     api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=10&fleet_ownership=13&orderby=date'
                     response = requests.get(api_url)
@@ -162,7 +161,7 @@ class fxyatching:
                     for boats in response_json:
                         print(boats)
 
-                        url = "https://fxyachting.com/wp-json/updateboats/v1/boat/id=" + str(boats['id'] + "?action=" + action)
+                        url = "https://fxyachting.com/wp-json/updateboats/v1/boat/id=" + str(boats['id']) + "?action=" + str(action)
 
                         payload = {}
                         headers = {}
