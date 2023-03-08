@@ -161,7 +161,7 @@ class fxyatching:
                     for boats in response_json:
                         print(boats)
 
-                        url = "https://fxyachting.com/wp-json/updateboats/v1/boat/id=" + str(boats['id']) + "?action=" + str(action)
+                        url = "https://fxyachting.com/wp-json/updateboats/v1/boat/" + str(boats['id']) + "?action=" + str(action)
 
                         payload = {}
                         headers = {}
