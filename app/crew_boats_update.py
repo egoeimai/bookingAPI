@@ -749,11 +749,11 @@ def crew_update_other():
                         holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text, holiday[216].text, holiday[220].text,
                         holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text, holiday[229].text,
                         holiday[230].text, holiday[231].text)
-                        sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                        sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`, `yachtCrew2Pic`, `yachtCrew3Pic`, `yachtCrew4Pic`, `yachtCrew5Pic`, `yachtCrew6Pic`, `yachtCrew7Pic`, `yachtCrew8Pic`, `yachtCrew9Pic`, `yachtCrew10Pic`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
                         val_crew = (
                         holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text, holiday[216].text, holiday[220].text,
                         holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text, holiday[229].text,
-                        holiday[230].text, holiday[231].text, hashlib.md5(str(val_crew_hash).encode("utf-8")).hexdigest())
+                        holiday[230].text, holiday[231].text, holiday[232].text, holiday[233].text, holiday[234].text, holiday[235].text, holiday[236].text, holiday[237].text, holiday[238].text, holiday[239].text, holiday[240].text, hashlib.md5(str(val_crew_hash).encode("utf-8")).hexdigest())
                         mycursor.execute(sql_crew, val_crew)
 
                         # Insert Videos of Crew
@@ -985,7 +985,9 @@ def crew_update_other():
                             holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text, holiday[216].text,
                             holiday[220].text,
                             holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text, holiday[229].text,
-                            holiday[230].text, holiday[231].text)
+                            holiday[230].text, holiday[231].text, holiday[232].text, holiday[233].text,
+                                holiday[234].text, holiday[235].text, holiday[236].text, holiday[237].text,
+                                holiday[238].text, holiday[239].text, holiday[240].text,)
                         if hashlib.md5(str(val_crew_hash).encode("utf-8")).hexdigest() == boat_crewd_exist[0][1]:
                             print("Δεν Αλλαξε Κατι από Crew Pliroma")
                             Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Crew Πλήρωμα</br>"
@@ -994,12 +996,15 @@ def crew_update_other():
                             Boat_log = Boat_log + "Αλλαξε Κατι από Crew Πλήρωμα</br>"
                             mycursor.execute("DELETE FROM crew_boat_crewd WHERE id = " + str(int(boat_crewd_exist[0][2])))
                             boat_crewd_exist = mycursor.fetchall();
-                            sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                            sql_crew = "INSERT INTO `crew_boat_crewd` (`id`, `boat_id`, `crew_num`, `yachtCaptainName`, `yachtCaptainNation`, `yachtCaptainBorn`, `yachtCaptainLang`, `yachtCrewName`, `yachtCrewTitle`, `yachtCrewNation`, `yachtCrewYrBorn`, `yachtCrewProfile`, `yachtCrewPhoto`, `yachtCrew1Pic`, `yachtCrew2Pic`, `yachtCrew3Pic`, `yachtCrew4Pic`, `yachtCrew5Pic`, `yachtCrew6Pic`, `yachtCrew7Pic`, `yachtCrew8Pic`, `yachtCrew9Pic`, `yachtCrew10Pic`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
                             val_crew = (
-                                holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text, holiday[216].text,
-                                holiday[220].text,
-                                holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text, holiday[229].text,
-                                holiday[230].text, holiday[231].text,
+                                holiday[0].text, holiday[210].text, holiday[214].text, holiday[215].text,
+                                holiday[216].text, holiday[220].text,
+                                holiday[221].text, holiday[222].text, holiday[223].text, holiday[224].text,
+                                holiday[229].text,
+                                holiday[230].text, holiday[231].text, holiday[232].text, holiday[233].text,
+                                holiday[234].text, holiday[235].text, holiday[236].text, holiday[237].text,
+                                holiday[238].text, holiday[239].text, holiday[240].text,
                                 hashlib.md5(str(val_crew_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(sql_crew, val_crew)
 
