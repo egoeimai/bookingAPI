@@ -382,7 +382,7 @@ def get_crewd_menu():
             for result in rv:
                 if(result[2]):
 
-                    content = {"boat_id": result[1], "menu": html_decode(result[2])}
+                    content = {"boat_id": result[1], "menu": html_decode(result[2]), "image1": result[3], "image2": result[4], "image3": result[5], "image4": result[6], "image5": result[7], "image6": result[8], "image7": result[9], "image8": result[10], "image9": result[11], "image10": result[12]}
                     json_data.append(content)
                 else:
                     content = {"boat_id": result[1], "menu": ""}

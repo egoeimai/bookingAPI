@@ -204,6 +204,8 @@ def crew_update():
                         video_sql = "INSERT INTO `crew_video_boats` (`boat_id`, `video_url`, `hash`) VALUES (%s, %s, %s);"
                         video_val = (holiday[0].text, holiday[35].text, hashlib.md5(str(video_val_hash).encode("utf-8")).hexdigest())
                         mycursor.execute(video_sql, video_val)
+
+
                         # Insert Menu of Crew
                         menu_val_hash = (holiday[0].text, holiday[199].text, holiday[200].text, holiday[201].text, holiday[202].text, holiday[203].text, holiday[204].text, holiday[205].text, holiday[206].text, holiday[207].text, holiday[208].text, holiday[209].text)
                         menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`, `hash`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
@@ -482,30 +484,10 @@ def crew_update():
                             holiday[0].text, holiday[35].text, hashlib.md5(str(video_val_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(video_sql, video_val)
 
-                        # Check Manu  of Crew
 
-                        mycursor.execute("SELECT boat_id, hash, menu_id FROM crew_sample_menu WHERE boat_id=" + holiday[0].text);
-                        boat_menu_exist = mycursor.fetchall();
-                        menu_val_hash = (
-                            holiday[0].text, holiday[199].text, holiday[200].text, holiday[201].text, holiday[202].text,
-                            holiday[203].text, holiday[204].text, holiday[205].text, holiday[206].text,
-                            holiday[207].text, holiday[208].text, holiday[209].text)
-                        if hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest() == boat_menu_exist[0][1]:
-                            print("Δεν Αλλαξε Κατι από Menu")
-                            Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Menu</br>"
-                        else:
-                            print("Αλλαξε Κατι από Menu")
-                            Boat_log = Boat_log + "Αλλαξε Κατι από Menu</br>"
-                            mycursor.execute("DELETE FROM crew_sample_menu WHERE menu_id = " + str(int(boat_menu_exist[0][2])))
-                            boat_menu_exist = mycursor.fetchall();
 
-                            menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`, `hash`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-                            menu_val = (
-                            holiday[0].text, holiday[199].text, holiday[200].text, holiday[201].text, holiday[202].text,
-                            holiday[203].text, holiday[204].text, holiday[205].text, holiday[206].text,
-                            holiday[207].text, holiday[208].text, holiday[209].text,
-                            hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
-                            mycursor.execute(menu_sql, menu_val)
+
+                        # Check Manu  of Plan
 
                         mycursor.execute(
                             "SELECT boat_id, hash, plan_layout FROM crewd_plan WHERE boat_id=" + holiday[0].text);
@@ -566,6 +548,44 @@ def crew_update():
 
                             mycursor.execute(val_boat_destinations_sql,  val_boat_destinations_val)
                             conn.commit()
+
+
+                        # Check Manu  of Crew
+
+                        mycursor.execute("SELECT boat_id, hash, menu_id FROM crew_sample_menu WHERE boat_id=" + holiday[0].text);
+                        val_boat_menu_exist = mycursor.fetchall();
+
+                        menu_val_hash = (holiday[0].text, holiday[199].text, holiday[200].text, holiday[201].text, holiday[202].text, holiday[203].text, holiday[204].text, holiday[205].text, holiday[206].text, holiday[207].text, holiday[208].text, holiday[209].text)
+                        if len(val_boat_menu_exist) > 0:
+
+                            if hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest() == val_boat_menu_exist[0][1]:
+                                print("Δεν Αλλαξε Κατι από Menu")
+                                Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Menu</br>"
+                            else:
+                                print("Αλλαξε Κατι από Menu")
+                                Boat_log = Boat_log + "Αλλαξε Κατι από Menu</br>"
+                                mycursor.execute("DELETE FROM crew_sample_menu WHERE menu_id = " + str(int(val_boat_menu_exist[0][2])))
+                                boat_menu_exist = mycursor.fetchall();
+
+                                menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`, `yachtMenu1Pic`, `yachtMenu2Pic`, `yachtMenu3Pic`, `yachtMenu4Pic`, `yachtMenu5Pic`, `yachtMenu6Pic`, `yachtMenu7Pic`, `yachtMenu8Pic`, `yachtMenu9Pic`, `yachtMenu10Pic`, `hash`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                                menu_val = (
+                                holiday[0].text, holiday[199].text, holiday[200].text, holiday[201].text, holiday[202].text,
+                                holiday[203].text, holiday[204].text, holiday[205].text, holiday[206].text,
+                                holiday[207].text, holiday[208].text, holiday[209].text,
+                                hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
+                                mycursor.execute(menu_sql, menu_val)
+                        else:
+                                print("Αλλαξε Κατι από Menu")
+                                Boat_log = Boat_log + "Αλλαξε Κατι από Menu</br>"
+
+                                menu_sql = "INSERT INTO `crew_sample_menu` (`boat_id`, `text_menu`, `yachtMenu1Pic`, `yachtMenu2Pic`, `yachtMenu3Pic`, `yachtMenu4Pic`, `yachtMenu5Pic`, `yachtMenu6Pic`, `yachtMenu7Pic`, `yachtMenu8Pic`, `yachtMenu9Pic`, `yachtMenu10Pic`, `hash`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                                menu_val = (
+                                    holiday[0].text, holiday[199].text, holiday[200].text, holiday[201].text,
+                                    holiday[202].text,
+                                    holiday[203].text, holiday[204].text, holiday[205].text, holiday[206].text,
+                                    holiday[207].text, holiday[208].text, holiday[209].text,
+                                    hashlib.md5(str(menu_val_hash).encode("utf-8")).hexdigest())
+                                mycursor.execute(menu_sql, menu_val)
 
         except:
             pass
