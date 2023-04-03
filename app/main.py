@@ -1222,6 +1222,8 @@ def fxyatching_create():
 
     return response
 
+
+
 """ Crew Boats Watersports Sychronize """
 
 @app.route('/fxyatching_get_all_others/',  methods=['GET'])
@@ -1406,6 +1408,26 @@ def fxyatching_get_all_my_boats():
 
     except Error as e:
         return (e)
+
+@app.route('/import_boat/',  methods=['GET'])
+def import_boat():
+    boatid = request.args.get("boat_id", None)
+    name = request.args.get("title", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            sql = 'INSERT INTO `crew_boats_select` (`crew_id`, `crew_name`, `is_fyly`) VALUES (%s, %s, %s);'
+            val = (boatid, name, 1)
+            cursor.execute(sql, val)
+            conn.commit();
+
+    except:
+        pass
+
+    return "success"
+
 @app.route('/')
 def index():
     return "<h1>Welcome to our server !!</h1>"
