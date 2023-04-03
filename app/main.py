@@ -1386,7 +1386,26 @@ def update_all_boats_trigger():
 
     return response
 
+@app.route('/fxyatching_get_all_my_boats/',  methods=['GET'])
+def fxyatching_get_all_my_boats():
 
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM `crew_boats_select` WHERE `is_fyly` = 1;')
+
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                content = {"boat_id": result[1], "name": result[2], "is_import" : result[5]}
+                json_data.append(content)
+
+            return jsonify( json_data)
+
+    except Error as e:
+        return (e)
 @app.route('/')
 def index():
     return "<h1>Welcome to our server !!</h1>"

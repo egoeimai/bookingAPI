@@ -15,6 +15,7 @@ try:
         cursor.execute('TRUNCATE TABLE boats;')
         cursor.execute('TRUNCATE TABLE boats_bases;')
         cursor.execute('TRUNCATE TABLE boat_characteristics;')
+        cursor.execute('TRUNCATE TABLE boat_prices;')
         import requests
         reqUrl = "https://api.sednasystem.com/API/getaccess.asp?l=Zonepage&p=Zonepage2022@&appname=apiboatcharter"
 
@@ -59,6 +60,15 @@ for boat in xml.findall('boat'):
     sqls = "INSERT INTO `boat_characteristics` (`boat_id`, `bt_type`, `crew`, `model`, `widthboat`, `nbdoucabin`, `nbsimcabin`, `nbper`, `nbbathroom`, `buildyear`, `std_model`, `builder`, `widthboat_feet`, `bt_comment`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
     vals = (boat.attrib['id_boat'], boat.attrib['bt_type'], boat.attrib['crew'], boat.attrib['model'], boat.attrib['widthboat'], boat.attrib['nbdoucabin'], boat.attrib['nbsimcabin'], boat.attrib['nbper'], boat.attrib['nbbathroom'], boat.attrib['buildyear'], boat.attrib['std_model'], boat.attrib['builder'], boat.attrib['widthboat_feet'], boat.attrib['bt_comment'])
     mycursor.execute(sqls, vals)
+
+    prices = boat.findall('prices')
+    for price in prices:
+        price_inner = price.findall('price')
+        for price_val in price_inner:
+            print(price_val.attrib['amount'])
+            sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
+            price_vals = (boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
+            mycursor.execute(sqls_price, price_vals)
 
     homeports = boat.findall('homeport')
     for homeport in homeports:

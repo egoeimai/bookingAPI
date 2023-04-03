@@ -149,7 +149,6 @@ class fxyatching:
                 cursor = conn.cursor()
                 cursor.execute('SELECT * FROM `other_synch` WHERE `finished` = 0 AND `working` = 0 ORDER BY `created` DESC LIMIT 1;')
                 rv = cursor.fetchall()
-                print(rv)
                 cursor.execute("UPDATE `other_synch` SET `working` = '1'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
                 conn.commit()
 
@@ -157,9 +156,7 @@ class fxyatching:
                     api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=10&fleet_ownership=13&orderby=date'
                     response = requests.get(api_url)
                     response_json = response.json()
-                    print(response_json)
                     for boats in response_json:
-                        print(boats)
 
                         url = "https://fxyachting.com/wp-json/updateboats/v1/boat/" + str(boats['id']) + "?action=" + str(action)
 
