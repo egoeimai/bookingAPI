@@ -232,7 +232,7 @@ def get_crewd_watersports_perboat():
                              password='sd5w2V!0')
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`  WHERE  `crew_water_sports`.`boat_id`= "' + str(boatid) + '";')
+            cursor.execute('SELECT * FROM `crew_water_sports` LEFT JOIN `crew_yachtothertoys` ON `crew_yachtothertoys`.`boat_id` = `crew_water_sports`.`boat_id`  WHERE  `crew_water_sports`.`boat_id`= "' + str(boatid) + '" ORDER BY `crew_water_sports`.`id` DESC;')
 
             rv = cursor.fetchall()
             json_data = []

@@ -367,16 +367,144 @@ def crew_update():
                         mycursor.execute(
                             "SELECT boat_id, hash, id FROM crew_water_sports WHERE boat_id=" + holiday[0].text);
                         boat_watersports_exist = mycursor.fetchall();
+
+
+                        if  holiday[109].text:
+                            yachtUnderWaterVideo = holiday[109].text
+                        else:
+                            yachtUnderWaterVideo = '<div class="nul"></div>'
+
+                        if  holiday[108].text:
+                            yachtUnderWaterCam = holiday[108].text
+                        else:
+                            yachtUnderWaterCam = '<div class="nul"></div>'
+
+                        if holiday[280].text:
+                            yachtDeepSeaFish = holiday[280].text
+                        else:
+                            yachtDeepSeaFish = '<div class="nul"></div>'
+
+                        if holiday[107].text:
+                            yachtNumFishRods = holiday[107].text
+                        else:
+                            yachtNumFishRods = '<div class="nul"></div>'
+
+                        if holiday[106].text :
+                            yachtFishGearType = holiday[106].text
+                        else:
+                            yachtFishGearType = '<div class="nul"></div>'
+
+                        if holiday[105].text:
+                            yachtFishingGear = holiday[105].text
+                        else:
+                            yachtFishingGear = '<div class="nul"></div>'
+
+                        if holiday[97].text:
+                            yachtKiteBoarding = holiday[97].text
+                        else:
+                            yachtKiteBoarding = '<div class="nul"></div>'
+
+                        if holiday[96].text:
+                            yachtSeaScooter = holiday[96].text
+                        else:
+                            yachtSeaScooter = '<div class="nul"></div>'
+
+
+
+                        if holiday[95].text:
+                            yachtSeaBob = holiday[95].text
+                        else:
+                            yachtSeaBob = '<div class="nul"></div>'
+
+                        if holiday[94].text :
+                            yacht2ManKayak = holiday[94].text
+                        else:
+                            yacht2ManKayak = '<div class="nul"></div>'
+
+                        if holiday[93].text :
+                            yacht1ManKayak = holiday[93].text
+                        else:
+                            yacht1ManKayak = '<div class="nul"></div>'
+
+                        if holiday[92].text:
+                            yachtWakeBoard = holiday[92].text
+                        else:
+                            yachtWakeBoard = '<div class="nul"></div>'
+
+                        if holiday[91].text :
+                            yachtScurfer = holiday[91].text
+                        else:
+                            yachtScurfer = '<div class="nul"></div>'
+
+                        if holiday[90].text:
+                            yachtTube = holiday[90].text
+                        else:
+                            yachtTube = '<div class="nul"></div>'
+
+                        if holiday[89].text:
+                            yachtGearSnorkel = holiday[89].text
+                        else:
+                            yachtGearSnorkel = '<div class="nul"></div>'
+
+                        if holiday[88].text:
+                            yachtWindSurf = holiday[88].text
+                        else:
+                            yachtWindSurf = '<div class="nul"></div>'
+                        if holiday[87].text :
+                            yachtStandUpPaddle = holiday[87].text
+                        else:
+                            yachtStandUpPaddle = '<div class="nul"></div>'
+
+                        if holiday[86].text:
+                            yachtKneeBoard = holiday[86].text
+                        else:
+                            yachtKneeBoard = '<div class="nul"></div>'
+
+                        if holiday[85].text:
+                            yachtWaveRun = holiday[85].text
+                        else:
+                            yachtWaveRun = '<div class="nul"></div>'
+
+                        if holiday[84].text:
+                            yachtJetSkis = holiday[84].text
+                        else:
+                            yachtJetSkis = '<div class="nul"></div>'
+
+                        if holiday[83].text :
+                            yachtKidsSkis = holiday[83].text
+                        else:
+                            yachtKidsSkis = '<div class="nul"></div>'
+
+                        if holiday[82].text :
+                            yachtAdultWSkis = holiday[82].text
+                        else:
+                            yachtAdultWSkis = '<div class="nul"></div>'
+
+                        if holiday[81].text :
+                            yachtDinghyPax = holiday[81].text
+                        else:
+                            yachtDinghyPax = '<div class="nul"></div>'
+
+                        if holiday[80].text:
+                            yachtDinghyHp = holiday[80].text
+                        else:
+                            yachtDinghyHp = '<div class="nul"></div>'
+
+                        if holiday[79].text:
+                            yachtDinghy = holiday[79].text
+                        else:
+                            yachtDinghy = '<div class="nul"></div>'
+
                         val_watersports_hash = (
-                            holiday[0].text, holiday[79].text, holiday[80].text, holiday[81].text, holiday[82].text,
-                            holiday[83].text,
-                            holiday[84].text, holiday[85].text, holiday[86].text, holiday[87].text, holiday[88].text,
-                            holiday[89].text,
-                            holiday[90].text, holiday[91].text, holiday[92].text, holiday[93].text, holiday[94].text,
-                            holiday[95].text,
-                            holiday[96].text, holiday[97].text, holiday[105].text, holiday[106].text, holiday[107].text,
-                            holiday[280].text,
-                            holiday[108].text, holiday[109].text)
+                            holiday[0].text, yachtDinghy, yachtDinghyHp, yachtDinghyPax, yachtAdultWSkis,
+                            yachtKidsSkis,
+                            yachtJetSkis, yachtWaveRun, yachtKneeBoard, yachtStandUpPaddle, yachtWindSurf,
+                            yachtGearSnorkel,
+                            yachtTube, yachtScurfer, yachtWakeBoard, yacht1ManKayak, yacht2ManKayak,
+                            yachtSeaBob,
+                            yachtSeaScooter, yachtKiteBoarding, yachtFishingGear, yachtFishGearType, yachtNumFishRods,
+                            yachtDeepSeaFish,
+                            yachtUnderWaterCam, yachtUnderWaterVideo)
                         if hashlib.md5(str(val_watersports_hash).encode("utf-8")).hexdigest() == boat_watersports_exist[0][1]:
                             print("Δεν Αλλαξε Κατι από WaterSports")
                             Boat_log = Boat_log + "Δεν Αλλαξε Κατι από WaterSports</br>"
@@ -386,17 +514,19 @@ def crew_update():
                             mycursor.execute("DELETE FROM crew_water_sports WHERE id = " + str(int(boat_watersports_exist[0][2])))
                             boat_watersports_exist = mycursor.fetchall();
 
+
+
                             sql_watersports = "INSERT INTO `crew_water_sports` (`id`, `boat_id`, `yachtDinghy`, `yachtDinghyHp`, `yachtDinghyPax`, `yachtAdultWSkis`, `yachtKidsSkis`, `yachtJetSkis`, `yachtWaveRun`, `yachtKneeBoard`, `yachtStandUpPaddle`, `yachtWindSurf`, `yachtGearSnorkel`, `yachtTube`, `yachtScurfer`, `yachtWakeBoard`, `yacht1ManKayak`, `yacht2ManKayak`, `yachtSeaBob`, `yachtSeaScooter`, `yachtKiteBoarding`, `yachtFishingGear`, `yachtFishGearType`, `yachtNumFishRods`, `yachtDeepSeaFish`, `yachtUnderWaterCam`, `yachtUnderWaterVideo`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
                             val_watersports = (
-                                holiday[0].text, holiday[79].text, holiday[80].text, holiday[81].text, holiday[82].text,
-                                holiday[83].text,
-                                holiday[84].text, holiday[85].text, holiday[86].text, holiday[87].text, holiday[88].text,
-                                holiday[89].text,
-                                holiday[90].text, holiday[91].text, holiday[92].text, holiday[93].text, holiday[94].text,
-                                holiday[95].text,
-                                holiday[96].text, holiday[97].text, holiday[105].text, holiday[106].text, holiday[107].text,
-                                holiday[280].text,
-                                holiday[108].text, holiday[109].text,
+                                holiday[0].text, yachtDinghy, yachtDinghyHp, yachtDinghyPax, yachtAdultWSkis,
+                                yachtKidsSkis,
+                                yachtJetSkis, yachtWaveRun, yachtKneeBoard, yachtStandUpPaddle, yachtWindSurf,
+                                yachtGearSnorkel,
+                                yachtTube, yachtScurfer, yachtWakeBoard, yacht1ManKayak, yacht2ManKayak,
+                                yachtSeaBob,
+                                yachtSeaScooter, yachtKiteBoarding, yachtFishingGear, yachtFishGearType, yachtNumFishRods,
+                                yachtDeepSeaFish,
+                                yachtUnderWaterCam, yachtUnderWaterVideo,
                                 hashlib.md5(str(val_watersports_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(sql_watersports, val_watersports)
 
