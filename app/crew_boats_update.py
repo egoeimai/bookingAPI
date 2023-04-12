@@ -327,18 +327,185 @@ def crew_update():
                             "SELECT boat_id, hash, amenties_id FROM crew_amenties WHERE boat_id=" + holiday[0].text);
                         boat_amenties_exist = mycursor.fetchall();
 
+
+                        if  holiday[48].text:
+                            yachtSalonStereo = holiday[48].text
+                        else:
+                            yachtSalonStereo = '<div class="nul"></div>'
+
+
+                        if  holiday[281].text:
+                            yachtSatTv = holiday[281].text
+                        else:
+                            yachtSatTv = '<div class="nul"></div>'
+
+                        if  holiday[282].text:
+                            yachtIpod = holiday[282].text
+                        else:
+                            yachtIpod = '<div class="nul"></div>'
+
+                        if  holiday[55].text:
+                            yachtSunAwning = holiday[55].text
+                        else:
+                            yachtSunAwning = '<div class="nul"></div>'
+
+                        if  holiday[56].text:
+                            yachtHammock = holiday[56].text
+                        else:
+                            yachtHammock = '<div class="nul"></div>'
+
+                        if  holiday[57].text:
+                            yachtWindScoops = holiday[57].text
+                        else:
+                            yachtWindScoops = '<div class="nul"></div>'
+
+
+                        if  holiday[58].text:
+                            yachtDeckShower = holiday[58].text
+                        else:
+                            yachtDeckShower = '<div class="nul"></div>'
+
+                        if  holiday[59].text:
+                            yachtBimini = holiday[59].text
+                        else:
+                            yachtBimini = '<div class="nul"></div>'
+
+                        if  holiday[60].text:
+                            yachtSpecialDiets = holiday[60].text
+                        else:
+                            yachtSpecialDiets = '<div class="nul"></div>'
+
+                        if  holiday[61].text:
+                            yachtKosher = holiday[61].text
+                        else:
+                            yachtKosher = '<div class="nul"></div>'
+
+                        if  holiday[62].text:
+                            yachtBBQ = holiday[62].text
+                        else:
+                            yachtBBQ = '<div class="nul"></div>'
+
+
+                        if  holiday[54].text:
+                            yachtNumDineIn = holiday[54].text
+                        else:
+                            yachtNumDineIn = '<div class="nul"></div>'
+
+                        if holiday[64].text:
+                            yachtNudeCharters = holiday[64].text
+                        else:
+                            yachtNudeCharters = '<div class="nul"></div>'
+
+
+                        if holiday[65].text:
+                            yachtHairDryer = holiday[65].text
+                        else:
+                            yachtHairDryer = '<div class="nul"></div>'
+
+                        if holiday[66].text:
+                            yachtNumHatch = holiday[66].text
+                        else:
+                            yachtNumHatch = '<div class="nul"></div>'
+
+                        if holiday[211].text:
+                            yachtCrewSmoke = holiday[211].text
+                        else:
+                            yachtCrewSmoke = '<div class="nul"></div>'
+
+                        if holiday[67].text:
+                            yachtGuestSmoke = holiday[67].text
+                        else:
+                            yachtGuestSmoke = '<div class="nul"></div>'
+
+                        if holiday[68].text:
+                            yachtGuestPet = holiday[68].text
+                        else:
+                            yachtGuestPet = '<div class="nul"></div>'
+
+
+                        if holiday[69].text:
+                            yachtChildrenAllowed = holiday[69].text
+                        else:
+                            yachtChildrenAllowed = '<div class="nul"></div>'
+
+                        if holiday[23].text:
+                            yachtGym = holiday[23].text
+                        else:
+                            yachtGym = '<div class="nul"></div>'
+
+                        if holiday[25].text:
+                            yachtElevators = holiday[25].text
+                        else:
+                            yachtElevators = '<div class="nul"></div>'
+
+                        if holiday[26].text:
+                            yachtWheelChairAccess = holiday[26].text
+                        else:
+                            yachtWheelChairAccess = '<div class="nul"></div>'
+
+
+
+                        if holiday[71].text:
+                            yachtGenerator = holiday[71].text
+                        else:
+                            yachtGenerator = '<div class="nul"></div>'
+
+
+                        if holiday[74].text:
+                            yachtInverter = holiday[74].text
+                        else:
+                            yachtInverter = '<div class="nul"></div>'
+
+
+                        if holiday[75].text:
+                            yachtWaterMaker = holiday[75].text
+                        else:
+                            yachtWaterMaker = '<div class="nul"></div>'
+
+
+                        if holiday[76].text:
+                            yachtIceMaker = holiday[76].text
+                        else:
+                            yachtIceMaker = '<div class="nul"></div>'
+
+
+                        if holiday[24].text:
+                            yachtStabilizers = holiday[24].text
+                        else:
+                            yachtStabilizers = '<div class="nul"></div>'
+
+
+                        if holiday[285].text:
+                            yachtInternet = holiday[285].text
+                        else:
+                            yachtInternet = '<div class="nul"></div>'
+
+
+
+                        if holiday[110].text:
+                            yachtGreenMakeWater = holiday[110].text
+                        else:
+                            yachtGreenMakeWater = '<div class="nul"></div>'
+
+
+                        if holiday[110].text:
+                            yachtGreenReuseBottle = holiday[110].text
+                        else:
+                            yachtGreenReuseBottle = '<div class="nul"></div>'
+
+
                         val_amenties_hash = (
-                            holiday[0].text, holiday[48].text, holiday[281].text, holiday[282].text, holiday[55].text,
-                            holiday[56].text,
-                            holiday[57].text, holiday[58].text, holiday[59].text, holiday[60].text, holiday[61].text,
-                            holiday[62].text,
-                            holiday[54].text, holiday[64].text, holiday[65].text, holiday[66].text, holiday[211].text,
-                            holiday[67].text,
-                            holiday[68].text, holiday[69].text, holiday[23].text, holiday[25].text, holiday[26].text,
-                            holiday[71].text,
-                            holiday[74].text, holiday[75].text, holiday[76].text, holiday[24].text, holiday[285].text,
-                            holiday[110].text,
-                            holiday[111].text)
+                            holiday[0].text, yachtSalonStereo, yachtSatTv, yachtIpod, yachtSunAwning,
+                            yachtHammock,
+                            yachtWindScoops, yachtDeckShower, yachtBimini, yachtSpecialDiets, yachtKosher,
+                            yachtBBQ,
+                            yachtNumDineIn, yachtNudeCharters, yachtHairDryer, yachtNumHatch, yachtCrewSmoke,
+                            yachtGuestSmoke,
+                            yachtGuestPet, yachtChildrenAllowed, yachtGym, yachtElevators, yachtWheelChairAccess,
+                            yachtGenerator,
+                            yachtInverter, yachtWaterMaker, yachtIceMaker, yachtStabilizers, yachtInternet,
+                            yachtGreenMakeWater,
+                            yachtGreenReuseBottle)
 
                         if hashlib.md5(str(val_amenties_hash).encode("utf-8")).hexdigest() == boat_amenties_exist[0][1]:
                             print("Δεν Αλλαξε Κατι από amenties")
@@ -350,17 +517,17 @@ def crew_update():
                             boat_amenties_exist = mycursor.fetchall();
                             sql_amenties = "INSERT INTO `crew_amenties`(`amenties_id`, `boat_id`, `yachtSalonStereo`, `yachtSatTv`, `yachtIpod`, `yachtSunAwning`,`yachtHammock`, `yachtWindScoops`, `yachtDeckShower`, `yachtBimini`, `yachtSpecialDiets`, `yachtKosher`, `yachtBBQ`, `yachtNumDineIn`, `yachtNudeCharters`, `yachtHairDryer`, `yachtNumHatch`, `yachtCrewSmoke`, `yachtGuestSmoke`, `yachtGuestPet`, `yachtChildrenAllowed`, `yachtGym`, `yachtElevators`, `yachtWheelChairAccess`, `yachtGenerator`, `yachtInverter`, `yachtWaterMaker`, `yachtIceMaker`, `yachtStabilizers`, `yachtInternet`, `yachtGreenMakeWater`, `yachtGreenReuseBottle`, `hash`) VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
                             val_amenties = (
-                                holiday[0].text, holiday[48].text, holiday[281].text, holiday[282].text, holiday[55].text,
-                                holiday[56].text,
-                                holiday[57].text, holiday[58].text, holiday[59].text, holiday[60].text, holiday[61].text,
-                                holiday[62].text,
-                                holiday[54].text, holiday[64].text, holiday[65].text, holiday[66].text, holiday[211].text,
-                                holiday[67].text,
-                                holiday[68].text, holiday[69].text, holiday[23].text, holiday[25].text, holiday[26].text,
-                                holiday[71].text,
-                                holiday[74].text, holiday[75].text, holiday[76].text, holiday[24].text, holiday[285].text,
-                                holiday[110].text,
-                                holiday[111].text, hashlib.md5(str(val_amenties_hash).encode("utf-8")).hexdigest())
+                                holiday[0].text, yachtSalonStereo, yachtSatTv, yachtIpod, yachtSunAwning,
+                                yachtHammock,
+                                yachtWindScoops, yachtDeckShower, yachtBimini, yachtSpecialDiets, yachtKosher,
+                                yachtBBQ,
+                                yachtNumDineIn, yachtNudeCharters, yachtHairDryer, yachtNumHatch, yachtCrewSmoke,
+                                yachtGuestSmoke,
+                                yachtGuestPet, yachtChildrenAllowed, yachtGym, yachtElevators, yachtWheelChairAccess,
+                                yachtGenerator,
+                                yachtInverter, yachtWaterMaker, yachtIceMaker, yachtStabilizers, yachtInternet,
+                                yachtGreenMakeWater,
+                                yachtGreenReuseBottle, hashlib.md5(str(val_amenties_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(sql_amenties, val_amenties)
 
                         # Check WaterSports of Crew Boats
@@ -534,11 +701,21 @@ def crew_update():
                         mycursor.execute(
                             "SELECT boat_id, hash, id FROM crew_characteristics WHERE boat_id=" + holiday[0].text);
                         boat_character_exist = mycursor.fetchall();
+
+                        if  holiday[38].text:
+                            yachtAccommodations = holiday[38].text
+                        else:
+                            yachtAccommodations = '<div class="nul"></div>'
+
+
+
+
+
                         val_generic_hash = (
                             holiday[0].text, holiday[175].text, holiday[268].text, holiday[176].text, holiday[177].text,
                             holiday[178].text,
                             holiday[21].text, holiday[22].text, holiday[27].text, holiday[28].text, holiday[29].text,
-                            holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, holiday[38].text)
+                            holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, yachtAccommodations)
                         if hashlib.md5(str(val_generic_hash).encode("utf-8")).hexdigest() == boat_character_exist[0][1]:
                             print("Δεν Αλλαξε Κατι από Characteristics")
                             Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Characteristics</br>"
@@ -552,7 +729,7 @@ def crew_update():
                                 holiday[0].text, holiday[175].text, holiday[268].text, holiday[176].text, holiday[177].text,
                                 holiday[178].text,
                                 holiday[21].text, holiday[22].text, holiday[27].text, holiday[28].text, holiday[29].text,
-                                holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, holiday[38].text,
+                                holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, yachtAccommodations,
                                 hashlib.md5(str(val_generic_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(sql_generic, val_generic)
 
