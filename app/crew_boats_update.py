@@ -707,15 +707,91 @@ def crew_update():
                         else:
                             yachtAccommodations = '<div class="nul"></div>'
 
+                        if  holiday[37].text:
+                            yachtMaxSpeed = holiday[37].text
+                        else:
+                            yachtMaxSpeed = '<div class="nul"></div>'
+
+                        if  holiday[36].text:
+                            yachtCruiseSpeed = holiday[36].text
+                        else:
+                            yachtCruiseSpeed = '<div class="nul"></div>'
+
+                        if  holiday[73].text:
+                            yachtFuel = holiday[73].text
+                        else:
+                            yachtFuel = '<div class="nul"></div>'
+
+                        if  holiday[72].text:
+                            yachtEngines = holiday[72].text
+                        else:
+                            yachtEngines = '<div class="nul"></div>'
+
+
+                        if  holiday[29].text:
+                            yachtOtherPickup = holiday[29].text
+                        else:
+                            yachtOtherPickup = '<div class="nul"></div>'
+
+
+                        if  holiday[28].text:
+                            yachtPrefPickup = holiday[28].text
+                        else:
+                            yachtPrefPickup = '<div class="nul"></div>'
+
+
+                        if  holiday[27].text:
+                            yachtAc = holiday[27].text
+                        else:
+                            yachtAc = '<div class="nul"></div>'
+
+
+                        if  holiday[22].text:
+                            yachtJacuzzi = holiday[22].text
+                        else:
+                            yachtJacuzzi = '<div class="nul"></div>'
+
+                        if  holiday[21].text:
+                            yachtHelipad = holiday[21].text
+                        else:
+                            yachtHelipad = '<div class="nul"></div>'
+
+
+                        if  holiday[178].text:
+                            yachtElectricHeads = holiday[178].text
+                        else:
+                            yachtElectricHeads = '<div class="nul"></div>'
+
+                        if holiday[177].text:
+                            yachtHeads = holiday[177].text
+                        else:
+                            yachtHeads = '<div class="nul"></div>'
+
+                        if holiday[176].text:
+                            yachtWashBasins = holiday[176].text
+                        else:
+                            yachtWashBasins = '<div class="nul"></div>'
+
+                        if holiday[268].text:
+                            yachtTubs = holiday[268].text
+                        else:
+                            yachtTubs = '<div class="nul"></div>'
+
+
+                        if holiday[175].text:
+                            yachtShowers = holiday[175].text
+                        else:
+                            yachtShowers = '<div class="nul"></div>'
+
 
 
 
 
                         val_generic_hash = (
-                            holiday[0].text, holiday[175].text, holiday[268].text, holiday[176].text, holiday[177].text,
-                            holiday[178].text,
-                            holiday[21].text, holiday[22].text, holiday[27].text, holiday[28].text, holiday[29].text,
-                            holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, yachtAccommodations)
+                            holiday[0].text, yachtShowers, yachtTubs, yachtWashBasins, yachtHeads,
+                            yachtElectricHeads,
+                            yachtHelipad, yachtJacuzzi, yachtAc, yachtPrefPickup, yachtOtherPickup,
+                            yachtEngines, yachtFuel, yachtCruiseSpeed, yachtMaxSpeed, yachtAccommodations)
                         if hashlib.md5(str(val_generic_hash).encode("utf-8")).hexdigest() == boat_character_exist[0][1]:
                             print("Δεν Αλλαξε Κατι από Characteristics")
                             Boat_log = Boat_log + "Δεν Αλλαξε Κατι από Characteristics</br>"
@@ -726,10 +802,10 @@ def crew_update():
                             boat_character_exist = mycursor.fetchall();
                             sql_generic = "INSERT INTO `crew_characteristics` (`id`, `boat_id`, `yachtShowers`, `yachtTubs`, `yachtWashBasins`, `yachtHeads`, `yachtElectricHeads`, `yachtHelipad`, `yachtJacuzzi`, `yachtAc`, `yachtPrefPickup`, `yachtOtherPickup`, `yachtEngines`, `yachtFuel`, `yachtCruiseSpeed`, `yachtMaxSpeed`, `yachtAccommodations`, `hash`) VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
                             val_generic = (
-                                holiday[0].text, holiday[175].text, holiday[268].text, holiday[176].text, holiday[177].text,
-                                holiday[178].text,
-                                holiday[21].text, holiday[22].text, holiday[27].text, holiday[28].text, holiday[29].text,
-                                holiday[72].text, holiday[73].text, holiday[36].text, holiday[37].text, yachtAccommodations,
+                                holiday[0].text, yachtShowers, yachtTubs, yachtWashBasins, yachtHeads,
+                                yachtElectricHeads,
+                                yachtHelipad, yachtJacuzzi, yachtAc, yachtPrefPickup, yachtOtherPickup,
+                                yachtEngines, yachtFuel, yachtCruiseSpeed, yachtMaxSpeed, yachtAccommodations,
                                 hashlib.md5(str(val_generic_hash).encode("utf-8")).hexdigest())
                             mycursor.execute(sql_generic, val_generic)
 
