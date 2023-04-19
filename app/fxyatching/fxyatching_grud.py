@@ -119,7 +119,7 @@ class fxyatching:
     def update_yatchs_fylys_bulk(self, boatids, action, website):
         import uuid
         uniq = uuid.uuid4().hex[:6].upper()
-        api_url = 'http://' + website + '/wp-json/wp/v2/boats?page=1&per_page=10&fleet_ownership=13'
+        api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=1&per_page=10&fleet_ownership=13'
 
         response = requests.get(api_url)
         pages_count = response.headers['X-WP-TotalPages']
@@ -153,7 +153,7 @@ class fxyatching:
                 conn.commit()
 
                 if rv[0][2] >= rv[0][3]:
-                    api_url = 'http://' +  website + '/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=10&fleet_ownership=13&orderby=date'
+                    api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=10&fleet_ownership=13&orderby=date'
                     response = requests.get(api_url)
                     response_json = response.json()
                     for boats in response_json:
