@@ -1371,19 +1371,20 @@ def update_all_boats():
 def update_all_boats_bulk():
     boatids = request.args.get("boatids", None)
     action = request.args.get("action", None)
+    website = request.args.get("website", None)
     yatch = fxyatching()
     print(action)
     #response = yatch.get_yatchs_fylys()
-    response = yatch.update_yatchs_fylys_bulk(boatids, action)
+    response = yatch.update_yatchs_fylys_bulk(boatids, action, website)
 
     return response
 
 @app.route('/update_all_boats_trigger/',  methods=['GET'])
 def update_all_boats_trigger():
     action = request.args.get("action", None)
-
+    website = request.args.get("website", None)
     yatch = fxyatching()
-    response = yatch.step_yatchs_import_fyly(action)
+    response = yatch.step_yatchs_import_fyly(action, website)
 
 
     return response
