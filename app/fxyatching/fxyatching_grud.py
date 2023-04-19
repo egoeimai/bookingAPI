@@ -153,7 +153,7 @@ class fxyatching:
                 conn.commit()
 
                 if rv[0][2] >= rv[0][3]:
-                    api_url =  website + '/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=10&fleet_ownership=13&orderby=date'
+                    api_url = 'http://' +  website + '/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=10&fleet_ownership=13&orderby=date'
                     response = requests.get(api_url)
                     response_json = response.json()
                     for boats in response_json:
