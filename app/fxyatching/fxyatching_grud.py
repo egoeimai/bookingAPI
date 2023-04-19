@@ -158,7 +158,7 @@ class fxyatching:
                     response_json = response.json()
                     for boats in response_json:
 
-                        url = 'http://' +  website + '/wp-json/updateboats/v1/boat/" + str(boats['id']) + "?action=" + str(action)
+                        url = "http://" +  website + "/wp-json/updateboats/v1/boat/" + str(boats['id']) + "?action=" + str(action)
 
                         payload = {}
                         headers = {}
