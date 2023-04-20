@@ -331,167 +331,167 @@ def crew_update():
                         if  holiday[48].text:
                             yachtSalonStereo = holiday[48].text
                         else:
-                            yachtSalonStereo = '<div class="nul"></div>'
+                            yachtSalonStereo = "<div class='nul'></div>"
 
 
                         if  holiday[281].text:
                             yachtSatTv = holiday[281].text
                         else:
-                            yachtSatTv = '<div class="nul"></div>'
+                            yachtSatTv = "<div class='nul'></div>"
 
                         if  holiday[282].text:
                             yachtIpod = holiday[282].text
                         else:
-                            yachtIpod = '<div class="nul"></div>'
+                            yachtIpod = "<div class='nul'></div>"
 
                         if  holiday[55].text:
                             yachtSunAwning = holiday[55].text
                         else:
-                            yachtSunAwning = '<div class="nul"></div>'
+                            yachtSunAwning = "<div class='nul'></div>"
 
                         if  holiday[56].text:
                             yachtHammock = holiday[56].text
                         else:
-                            yachtHammock = '<div class="nul"></div>'
+                            yachtHammock = "<div class='nul'></div>"
 
                         if  holiday[57].text:
                             yachtWindScoops = holiday[57].text
                         else:
-                            yachtWindScoops = '<div class="nul"></div>'
+                            yachtWindScoops = "<div class='nul'></div>"
 
 
                         if  holiday[58].text:
                             yachtDeckShower = holiday[58].text
                         else:
-                            yachtDeckShower = '<div class="nul"></div>'
+                            yachtDeckShower = "<div class='nul'></div>"
 
                         if  holiday[59].text:
                             yachtBimini = holiday[59].text
                         else:
-                            yachtBimini = '<div class="nul"></div>'
+                            yachtBimini = "<div class='nul'></div>"
 
                         if  holiday[60].text:
                             yachtSpecialDiets = holiday[60].text
                         else:
-                            yachtSpecialDiets = '<div class="nul"></div>'
+                            yachtSpecialDiets = "<div class='nul'></div>"
 
                         if  holiday[61].text:
                             yachtKosher = holiday[61].text
                         else:
-                            yachtKosher = '<div class="nul"></div>'
+                            yachtKosher = "<div class='nul'></div>"
 
                         if  holiday[62].text:
                             yachtBBQ = holiday[62].text
                         else:
-                            yachtBBQ = '<div class="nul"></div>'
+                            yachtBBQ = "<div class='nul'></div>"
 
 
                         if  holiday[54].text:
                             yachtNumDineIn = holiday[54].text
                         else:
-                            yachtNumDineIn = '<div class="nul"></div>'
+                            yachtNumDineIn = "<div class='nul'></div>"
 
                         if holiday[64].text:
                             yachtNudeCharters = holiday[64].text
                         else:
-                            yachtNudeCharters = '<div class="nul"></div>'
+                            yachtNudeCharters = "<div class='nul'></div>"
 
 
                         if holiday[65].text:
                             yachtHairDryer = holiday[65].text
                         else:
-                            yachtHairDryer = '<div class="nul"></div>'
+                            yachtHairDryer = "<div class='nul'></div>"
 
                         if holiday[66].text:
                             yachtNumHatch = holiday[66].text
                         else:
-                            yachtNumHatch = '<div class="nul"></div>'
+                            yachtNumHatch = "<div class='nul'></div>"
 
                         if holiday[211].text:
                             yachtCrewSmoke = holiday[211].text
                         else:
-                            yachtCrewSmoke = '<div class="nul"></div>'
+                            yachtCrewSmoke = "<div class='nul'></div>"
 
                         if holiday[67].text:
                             yachtGuestSmoke = holiday[67].text
                         else:
-                            yachtGuestSmoke = '<div class="nul"></div>'
+                            yachtGuestSmoke = "<div class='nul'></div>"
 
                         if holiday[68].text:
                             yachtGuestPet = holiday[68].text
                         else:
-                            yachtGuestPet = '<div class="nul"></div>'
+                            yachtGuestPet = "<div class='nul'></div>"
 
 
                         if holiday[69].text:
                             yachtChildrenAllowed = holiday[69].text
                         else:
-                            yachtChildrenAllowed = '<div class="nul"></div>'
+                            yachtChildrenAllowed = "<div class='nul'></div>"
 
                         if holiday[23].text:
                             yachtGym = holiday[23].text
                         else:
-                            yachtGym = '<div class="nul"></div>'
+                            yachtGym = "<div class='nul'></div>"
 
                         if holiday[25].text:
                             yachtElevators = holiday[25].text
                         else:
-                            yachtElevators = '<div class="nul"></div>'
+                            yachtElevators = "<div class='nul'></div>"
 
                         if holiday[26].text:
                             yachtWheelChairAccess = holiday[26].text
                         else:
-                            yachtWheelChairAccess = '<div class="nul"></div>'
+                            yachtWheelChairAccess = "<div class='nul'></div>"
 
 
 
                         if holiday[71].text:
                             yachtGenerator = holiday[71].text
                         else:
-                            yachtGenerator = '<div class="nul"></div>'
+                            yachtGenerator = "<div class='nul'></div>"
 
 
                         if holiday[74].text:
                             yachtInverter = holiday[74].text
                         else:
-                            yachtInverter = '<div class="nul"></div>'
+                            yachtInverter = "<div class='nul'></div>"
 
 
                         if holiday[75].text:
                             yachtWaterMaker = holiday[75].text
                         else:
-                            yachtWaterMaker = '<div class="nul"></div>'
+                            yachtWaterMaker = "<div class='nul'></div>"
 
 
                         if holiday[76].text:
                             yachtIceMaker = holiday[76].text
                         else:
-                            yachtIceMaker = '<div class="nul"></div>'
+                            yachtIceMaker = "<div class='nul'></div>"
 
 
                         if holiday[24].text:
                             yachtStabilizers = holiday[24].text
                         else:
-                            yachtStabilizers = '<div class="nul"></div>'
+                            yachtStabilizers = "<div class='nul'></div>"
 
 
                         if holiday[285].text:
                             yachtInternet = holiday[285].text
                         else:
-                            yachtInternet = '<div class="nul"></div>'
+                            yachtInternet = "<div class='nul'></div>"
 
 
 
                         if holiday[110].text:
                             yachtGreenMakeWater = holiday[110].text
                         else:
-                            yachtGreenMakeWater = '<div class="nul"></div>'
+                            yachtGreenMakeWater = "<div class='nul'></div>"
 
 
                         if holiday[110].text:
                             yachtGreenReuseBottle = holiday[110].text
                         else:
-                            yachtGreenReuseBottle = '<div class="nul"></div>'
+                            yachtGreenReuseBottle = "<div class='nul'></div>"
 
 
                         val_amenties_hash = (
@@ -539,128 +539,128 @@ def crew_update():
                         if  holiday[109].text:
                             yachtUnderWaterVideo = holiday[109].text
                         else:
-                            yachtUnderWaterVideo = '<div class="nul"></div>'
+                            yachtUnderWaterVideo = "<div class='nul'></div>"
 
                         if  holiday[108].text:
                             yachtUnderWaterCam = holiday[108].text
                         else:
-                            yachtUnderWaterCam = '<div class="nul"></div>'
+                            yachtUnderWaterCam = "<div class='nul'></div>"
 
                         if holiday[280].text:
                             yachtDeepSeaFish = holiday[280].text
                         else:
-                            yachtDeepSeaFish = '<div class="nul"></div>'
+                            yachtDeepSeaFish = "<div class='nul'></div>"
 
                         if holiday[107].text:
                             yachtNumFishRods = holiday[107].text
                         else:
-                            yachtNumFishRods = '<div class="nul"></div>'
+                            yachtNumFishRods = "<div class='nul'></div>"
 
                         if holiday[106].text :
                             yachtFishGearType = holiday[106].text
                         else:
-                            yachtFishGearType = '<div class="nul"></div>'
+                            yachtFishGearType = "<div class='nul'></div>"
 
                         if holiday[105].text:
                             yachtFishingGear = holiday[105].text
                         else:
-                            yachtFishingGear = '<div class="nul"></div>'
+                            yachtFishingGear = "<div class='nul'></div>"
 
                         if holiday[97].text:
                             yachtKiteBoarding = holiday[97].text
                         else:
-                            yachtKiteBoarding = '<div class="nul"></div>'
+                            yachtKiteBoarding = "<div class='nul'></div>"
 
                         if holiday[96].text:
                             yachtSeaScooter = holiday[96].text
                         else:
-                            yachtSeaScooter = '<div class="nul"></div>'
+                            yachtSeaScooter = "<div class='nul'></div>"
 
 
 
                         if holiday[95].text:
                             yachtSeaBob = holiday[95].text
                         else:
-                            yachtSeaBob = '<div class="nul"></div>'
+                            yachtSeaBob = "<div class='nul'></div>"
 
                         if holiday[94].text :
                             yacht2ManKayak = holiday[94].text
                         else:
-                            yacht2ManKayak = '<div class="nul"></div>'
+                            yacht2ManKayak = "<div class='nul'></div>"
 
                         if holiday[93].text :
                             yacht1ManKayak = holiday[93].text
                         else:
-                            yacht1ManKayak = '<div class="nul"></div>'
+                            yacht1ManKayak = "<div class='nul'></div>"
 
                         if holiday[92].text:
                             yachtWakeBoard = holiday[92].text
                         else:
-                            yachtWakeBoard = '<div class="nul"></div>'
+                            yachtWakeBoard = "<div class='nul'></div>"
 
                         if holiday[91].text :
                             yachtScurfer = holiday[91].text
                         else:
-                            yachtScurfer = '<div class="nul"></div>'
+                            yachtScurfer = "<div class='nul'></div>"
 
                         if holiday[90].text:
                             yachtTube = holiday[90].text
                         else:
-                            yachtTube = '<div class="nul"></div>'
+                            yachtTube = "<div class='nul'></div>"
 
                         if holiday[89].text:
                             yachtGearSnorkel = holiday[89].text
                         else:
-                            yachtGearSnorkel = '<div class="nul"></div>'
+                            yachtGearSnorkel = "<div class='nul'></div>"
 
                         if holiday[88].text:
                             yachtWindSurf = holiday[88].text
                         else:
-                            yachtWindSurf = '<div class="nul"></div>'
+                            yachtWindSurf = "<div class='nul'></div>"
                         if holiday[87].text :
                             yachtStandUpPaddle = holiday[87].text
                         else:
-                            yachtStandUpPaddle = '<div class="nul"></div>'
+                            yachtStandUpPaddle = "<div class='nul'></div>"
 
                         if holiday[86].text:
                             yachtKneeBoard = holiday[86].text
                         else:
-                            yachtKneeBoard = '<div class="nul"></div>'
+                            yachtKneeBoard = "<div class='nul'></div>"
 
                         if holiday[85].text:
                             yachtWaveRun = holiday[85].text
                         else:
-                            yachtWaveRun = '<div class="nul"></div>'
+                            yachtWaveRun = "<div class='nul'></div>"
 
                         if holiday[84].text:
                             yachtJetSkis = holiday[84].text
                         else:
-                            yachtJetSkis = '<div class="nul"></div>'
+                            yachtJetSkis = "<div class='nul'></div>"
 
                         if holiday[83].text :
                             yachtKidsSkis = holiday[83].text
                         else:
-                            yachtKidsSkis = '<div class="nul"></div>'
+                            yachtKidsSkis = "<div class='nul'></div>"
 
                         if holiday[82].text :
                             yachtAdultWSkis = holiday[82].text
                         else:
-                            yachtAdultWSkis = '<div class="nul"></div>'
+                            yachtAdultWSkis = "<div class='nul'></div>"
 
                         if holiday[81].text :
                             yachtDinghyPax = holiday[81].text
                         else:
-                            yachtDinghyPax = '<div class="nul"></div>'
+                            yachtDinghyPax = "<div class='nul'></div>"
 
                         if holiday[80].text:
                             yachtDinghyHp = holiday[80].text
                         else:
-                            yachtDinghyHp = '<div class="nul"></div>'
+                            yachtDinghyHp = "<div class='nul'></div>"
 
                         if holiday[79].text:
                             yachtDinghy = holiday[79].text
                         else:
-                            yachtDinghy = '<div class="nul"></div>'
+                            yachtDinghy = "<div class='nul'></div>"
 
                         val_watersports_hash = (
                             holiday[0].text, yachtDinghy, yachtDinghyHp, yachtDinghyPax, yachtAdultWSkis,
@@ -705,83 +705,83 @@ def crew_update():
                         if  holiday[38].text:
                             yachtAccommodations = holiday[38].text
                         else:
-                            yachtAccommodations = '<div class="nul"></div>'
+                            yachtAccommodations = "<div class='nul'></div>"
 
                         if  holiday[37].text:
                             yachtMaxSpeed = holiday[37].text
                         else:
-                            yachtMaxSpeed = '<div class="nul"></div>'
+                            yachtMaxSpeed = "<div class='nul'></div>"
 
                         if  holiday[36].text:
                             yachtCruiseSpeed = holiday[36].text
                         else:
-                            yachtCruiseSpeed = '<div class="nul"></div>'
+                            yachtCruiseSpeed = "<div class='nul'></div>"
 
                         if  holiday[73].text:
                             yachtFuel = holiday[73].text
                         else:
-                            yachtFuel = '<div class="nul"></div>'
+                            yachtFuel = "<div class='nul'></div>"
 
                         if  holiday[72].text:
                             yachtEngines = holiday[72].text
                         else:
-                            yachtEngines = '<div class="nul"></div>'
+                            yachtEngines = "<div class='nul'></div>"
 
 
                         if  holiday[29].text:
                             yachtOtherPickup = holiday[29].text
                         else:
-                            yachtOtherPickup = '<div class="nul"></div>'
+                            yachtOtherPickup = "<div class='nul'></div>"
 
 
                         if  holiday[28].text:
                             yachtPrefPickup = holiday[28].text
                         else:
-                            yachtPrefPickup = '<div class="nul"></div>'
+                            yachtPrefPickup = "<div class='nul'></div>"
 
 
                         if  holiday[27].text:
                             yachtAc = holiday[27].text
                         else:
-                            yachtAc = '<div class="nul"></div>'
+                            yachtAc = "<div class='nul'></div>"
 
 
                         if  holiday[22].text:
                             yachtJacuzzi = holiday[22].text
                         else:
-                            yachtJacuzzi = '<div class="nul"></div>'
+                            yachtJacuzzi = "<div class='nul'></div>"
 
                         if  holiday[21].text:
                             yachtHelipad = holiday[21].text
                         else:
-                            yachtHelipad = '<div class="nul"></div>'
+                            yachtHelipad = "<div class='nul'></div>"
 
 
                         if  holiday[178].text:
                             yachtElectricHeads = holiday[178].text
                         else:
-                            yachtElectricHeads = '<div class="nul"></div>'
+                            yachtElectricHeads = "<div class='nul'></div>"
 
                         if holiday[177].text:
                             yachtHeads = holiday[177].text
                         else:
-                            yachtHeads = '<div class="nul"></div>'
+                            yachtHeads = "<div class='nul'></div>"
 
                         if holiday[176].text:
                             yachtWashBasins = holiday[176].text
                         else:
-                            yachtWashBasins = '<div class="nul"></div>'
+                            yachtWashBasins = "<div class='nul'></div>"
 
                         if holiday[268].text:
                             yachtTubs = holiday[268].text
                         else:
-                            yachtTubs = '<div class="nul"></div>'
+                            yachtTubs = "<div class='nul'></div>"
 
 
                         if holiday[175].text:
                             yachtShowers = holiday[175].text
                         else:
-                            yachtShowers = '<div class="nul"></div>'
+                            yachtShowers = "<div class='nul'></div>"
 
 
 
