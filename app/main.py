@@ -1379,6 +1379,34 @@ def update_all_boats_bulk():
 
     return response
 
+
+@app.route('/update_all_others_bulk/',  methods=['GET'])
+def update_all_others_bulk():
+    action = request.args.get("action", None)
+    website = request.args.get("website", None)
+    yatch = fxyatching()
+    print(action)
+    #response = yatch.get_yatchs_fylys()
+    response = yatch.update_yatchs_others_bulk(action, website)
+
+    return response
+
+
+@app.route('/update_all_others_trigger/',  methods=['GET'])
+def update_all_others_trigger():
+    action = request.args.get("action", None)
+    website = request.args.get("website", None)
+    yatch = fxyatching()
+    response = yatch.step_yatchs_other(action, website)
+
+
+    return response
+
+
+
+
+
+
 @app.route('/update_all_boats_trigger/',  methods=['GET'])
 def update_all_boats_trigger():
     action = request.args.get("action", None)

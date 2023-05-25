@@ -141,6 +141,32 @@ class fxyatching:
         except Error as e:
             return (e)
 
+
+    def update_yatchs_others_bulk(self, action, website):
+        import uuid
+        uniq = uuid.uuid4().hex[:6].upper()
+        api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=1&per_page=20&fleet_ownership=13'
+
+        response = requests.get(api_url)
+        pages_count = response.headers['X-WP-TotalPages']
+        response_json = response.json()
+        str(pages_count)
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                sqls = "INSERT INTO `other_synch` (`hash`, `total`, `step`, `working`,  `action`, `finished`, `created`) VALUES (%s, %s, %s, %s, %s, '0', current_timestamp());"
+                vals = (uniq, str(pages_count), 1, 0, str(action))
+                cursor.execute(sqls, vals)
+                conn.commit()
+
+                # self.step_yatchs_import_fyly()
+            return str(uniq)
+
+        except Error as e:
+            return (e)
+
     def step_yatchs_import_fyly(self, action, website):
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
@@ -187,3 +213,49 @@ class fxyatching:
         except Error as e:
             return (e)
 
+    def step_yatchs_other(self, action, website):
+        action ="update"
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                cursor.execute('SELECT * FROM `other_synch` WHERE `finished` = 0 AND `working` = 0 ORDER BY `created` DESC LIMIT 1;')
+                rv = cursor.fetchall()
+                cursor.execute("UPDATE `other_synch` SET `working` = '1'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
+                conn.commit()
+
+                if rv[0][2] >= rv[0][3]:
+                    api_url = 'https://fxyachting.com/wp-json/wp/v2/boats?page=' + str(rv[0][3]) + '&per_page=20&fleet_ownership=13&orderby=date'
+                    response = requests.get(api_url)
+                    response_json = response.json()
+                    for boats in response_json:
+
+                        url = "http://" +  website + "/wp-json/update_others/v2/boat/" + str(boats['id']) + "?action=images"
+
+                        payload = {}
+                        headers = {}
+
+                        response = requests.request("GET", url, headers=headers, data=payload)
+
+                        #print(response.text)
+
+
+                        print(boats['id'])
+                    cursor.execute("UPDATE `other_synch` SET `step` = " + str(rv[0][3]+1) + " WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
+                    conn.commit()
+                    cursor.execute(
+                        "UPDATE `other_synch` SET `working` = '0'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
+                    conn.commit()
+                    step = str(rv[0][3]+1) + ' / ' + str(rv[0][2])
+                    return step
+
+                if rv[0][2] < rv[0][3]:
+                    cursor.execute("UPDATE `other_synch` SET `finished` = '1'  WHERE `other_synch`.`synch_id` = " + str(rv[0][0]))
+                    conn.commit()
+                    return str("Finished")
+
+
+
+        except Error as e:
+            return (e)
