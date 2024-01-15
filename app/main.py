@@ -9,13 +9,9 @@ from app.crew_boats_update import crew_update_other
 from app.BareBoats.bareboats_calls import BareBoats
 from app.Crewed.crewed_calls import CrewedBoats
 from app.bookings.nausys import Nausys
-from app.fylybridge import FylyApi
-from app.bookings.sedna import Sedna
-from app.bookings.mmk import MMK
 from app.fxyatching.fxyatching_grud import fxyatching
 from app.BareBoats.bareboats_sych import BareBoats_sych
 from  app.crew_bookings import Crew_bookings
-import smtplib, ssl
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
