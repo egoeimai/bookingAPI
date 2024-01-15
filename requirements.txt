@@ -7,4 +7,5 @@ mysql~=0.0.3
 mysql-connector-python~=8.0.27
 PyMySQL~=1.0.2
 Pillow~=9.3.0
-werkzeug==3.0.1
+werkzeug==2.2.2
+pymongo~=4.3.3
