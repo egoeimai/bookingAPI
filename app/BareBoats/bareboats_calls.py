@@ -1,10 +1,8 @@
-from flask import Flask, request, render_template, jsonify
-import mysql.connector as mysql
-from mysql.connector import Error
-from flask_cors import CORS
 import json
-from app.crew_boats_update import crew_update
-import smtplib, ssl
+import mysql.connector as mysql
+from flask import jsonify
+from mysql.connector import Error
+
 
 class BareBoats:
     def __init__(self):

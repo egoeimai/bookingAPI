@@ -121,8 +121,7 @@ class BareBoats_sych:
         response = requests.request("GET", reqUrl, data=payload, headers=headersList)
         import xml.etree.ElementTree as ET
         xml = ET.fromstring(response.text)
-        with open("output.xml", "w") as f:
-            f.write(response.text)
+
         for boat in xml.findall('boat'):
 
             characteristics = boat.findall('characteristics')
@@ -276,6 +275,69 @@ class BareBoats_sych:
                     sqls_images = "INSERT INTO `boat_images` (`boat_id`, `image_url`) VALUES (%s, %s);"
                     images_vals = (boat.attrib['id_boat'], pictures_inner.attrib['link'])
                     mycursor.execute(sqls_images, images_vals)
+                    conn.commit()
+
+        return "success"
+
+    def baraboats_sych_prices(self):
+        token = ""
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                cursor.execute("select database();")
+                record = cursor.fetchone()
+                print("You're connected to database: ", record)
+                cursor.execute('TRUNCATE TABLE boat_prices;')
+                import requests
+
+                reqUrl = "https://api.sednasystem.com/API/getaccess.asp?l=Zonepage&p=Zonepage2022@&appname=apiboatcharter"
+
+                headersList = {
+                    "Accept": "*/*",
+                    "User-Agent": "opa36",
+                    "connection": "Keep-alive"
+                }
+
+                payload = ""
+
+                response = requests.request("GET", reqUrl, data=payload, headers=headersList)
+                import xml.etree.ElementTree as ET
+
+                xml = ET.fromstring(response.text)
+
+                for holiday in xml.findall('token'):
+                    print(holiday.attrib['authtoken'])
+                    token = holiday.attrib['authtoken']
+
+        except Error as e:
+            print(e)
+
+        reqUrl = "https://api.sednasystem.com/API/getBts5.asp?token=" + token + "&appname=apiboatcharter"
+
+        headersList = {
+            "Accept": "*/*",
+            "User-Agent": "opa36",
+            "connection": "Keep-alive"
+        }
+
+        payload = ""
+        mycursor = conn.cursor()
+        response = requests.request("GET", reqUrl, data=payload, headers=headersList)
+        import xml.etree.ElementTree as ET
+        xml = ET.fromstring(response.text)
+
+        for boat in xml.findall('boat'):
+
+            prices = boat.findall('prices')
+            for price in prices:
+                price_inner = price.findall('price')
+                for price_val in price_inner:
+                    print(price_val.attrib['amount'])
+                    sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
+                    price_vals = (boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
+                    mycursor.execute(sqls_price, price_vals)
                     conn.commit()
 
         return "success"

@@ -58,7 +58,7 @@ for result in rv:
 
 
 
-    reqUrl = "https://api.sednasystem.com/api/getBookingData.asp?api_mode=xml&appname=apiboatcharter&token=" + token + "&id_boat=" + str(result[2]) + "&date_start=" + last_month.strftime("%Y-%m-%d") + "&date_end=2023-12-31"
+    reqUrl = "https://api.sednasystem.com/api/getBookingData.asp?api_mode=xml&appname=apiboatcharter&token=" + token + "&id_boat=" + str(result[2]) + "&date_start=" + last_month.strftime("%Y-%m-%d") + "&date_end=2024-12-31"
     payload_bo = ""
     response_bo = requests.request("GET", reqUrl, data=payload_bo, headers=headersList)
     import datetime as dt
