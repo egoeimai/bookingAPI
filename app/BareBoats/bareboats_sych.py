@@ -339,8 +339,9 @@ class BareBoats_sych:
                         price_vals = (boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
                         mycursor.execute(sqls_price, price_vals)
                         conn.commit()
-                return "success"
+
             self.send_success_email("Update Import Prices", "The prices of BareBoats has been updated")
+            return "success"
         except:
             self.send_success_email("Update Import Prices Faild", "The prices of BareBoats has been Faild")
 
