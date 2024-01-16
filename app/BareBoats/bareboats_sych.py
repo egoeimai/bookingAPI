@@ -327,17 +327,49 @@ class BareBoats_sych:
         response = requests.request("GET", reqUrl, data=payload, headers=headersList)
         import xml.etree.ElementTree as ET
         xml = ET.fromstring(response.text)
+        try:
+            for boat in xml.findall('boat'):
 
-        for boat in xml.findall('boat'):
+                prices = boat.findall('prices')
+                for price in prices:
+                    price_inner = price.findall('price')
+                    for price_val in price_inner:
+                        print(price_val.attrib['amount'])
+                        sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
+                        price_vals = (boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
+                        mycursor.execute(sqls_price, price_vals)
+                        conn.commit()
+                return "success"
+            self.send_success_email("Update Import Prices", "The prices of BareBoats has been updated")
+        except:
+            self.send_success_email("Update Import Prices Faild", "The prices of BareBoats has been Faild")
 
-            prices = boat.findall('prices')
-            for price in prices:
-                price_inner = price.findall('price')
-                for price_val in price_inner:
-                    print(price_val.attrib['amount'])
-                    sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
-                    price_vals = (boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
-                    mycursor.execute(sqls_price, price_vals)
-                    conn.commit()
 
-        return "success"
+
+
+
+    def send_success_email(subject, text, self):
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from string import Template
+
+        # check new data type
+
+        username = "development@zonepage.gr"
+        password = "Vac51132"
+        mail_from = "development@zonepage.gr"
+        mail_subject = subject
+        mail_body = text
+        mimemsg = MIMEMultipart()
+        mimemsg['From'] = mail_from
+        mimemsg['To'] = "nziozas@gmail.com"
+        mimemsg['Subject'] = mail_subject
+        mimemsg.attach(MIMEText(mail_body, 'plain'))
+        connection = smtplib.SMTP(host='smtp.office365.com', port=587)
+        connection.starttls()
+        connection.login(username, password)
+        connection.send_message(mimemsg)
+        connection.quit()
+
+
