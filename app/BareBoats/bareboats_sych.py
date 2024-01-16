@@ -349,7 +349,7 @@ class BareBoats_sych:
 
 
 
-    def send_success_email(subject, text, self):
+    def send_success_email(self, subject_t, text):
         import smtplib
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
@@ -360,7 +360,7 @@ class BareBoats_sych:
         username = "development@zonepage.gr"
         password = "Vac51132"
         mail_from = "development@zonepage.gr"
-        mail_subject = subject
+        mail_subject = subject_t
         mail_body = text
         mimemsg = MIMEMultipart()
         mimemsg['From'] = mail_from
