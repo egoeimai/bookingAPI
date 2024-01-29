@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify
 import mysql.connector as mysql
 from mysql.connector import Error
+import concurrent.futures
 from flask_cors import CORS
 import json
 from app.crew_boats_update import crew_update
@@ -279,8 +280,9 @@ class BareBoats_sych:
 
         return "success"
 
-    def baraboats_sych_prices(self):
+    def baraboats_sych_prices(self, duration):
         token = ""
+        print(f"Starting background task with duration...")
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                                  password='sd5w2V!0')
@@ -341,7 +343,7 @@ class BareBoats_sych:
                         conn.commit()
 
             self.send_success_email("Update Import Prices", "The prices of BareBoats has been updated")
-            return "success"
+            print("Background task completed.")
         except:
             self.send_success_email("Update Import Prices Faild", "The prices of BareBoats has been Faild")
 

@@ -1,5 +1,7 @@
 
+
 from flask import Flask, request, render_template, jsonify
+import concurrent.futures
 import mysql.connector as mysql
 from mysql.connector import Error
 from flask_cors import CORS
@@ -12,6 +14,7 @@ from app.bookings.nausys import Nausys
 from app.fxyatching.fxyatching_grud import fxyatching
 from app.BareBoats.bareboats_sych import BareBoats_sych
 from  app.crew_bookings import Crew_bookings
+import asyncio
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -76,11 +79,28 @@ def get_bare_plan():
 """ Bare Boats Amenities """
 
 
-
+task_status = {}
 @app.route('/getboat_prices_import/',  methods=['GET'])
 def getboat_prices_import():
     bare_boat_plan = BareBoats_sych()
-    return bare_boat_plan.baraboats_sych_prices()
+    duration = 10
+    """Start a background task with the specified duration."""
+    executor = concurrent.futures.ThreadPoolExecutor()
+    future = executor.submit(bare_boat_plan.baraboats_sych_prices, duration)
+    print(future.result())
+    task_status[1] = {"status": "running"}
+
+    return jsonify({"message": "Background task started", "task_id": 1})
+
+@app.route("/status/<int:task_id>")
+def get_task_status(task_id):
+
+    """Get the status of the specified background task."""
+    if task_id in task_status:
+        return jsonify(task_status[task_id])
+    else:
+        return jsonify({"message": "Task not found"})
+
 
 @app.route('/getboat_amenities_import/',  methods=['GET'])
 def getboat_amenities_import():
@@ -166,634 +186,7 @@ def select_free_bookings():
     return crew_boat.select_free_bookings(start, end)
 
 
-""" Crew Boats import/update bookings Sychronize """
-@app.route('/get_history_predefine/',  methods=['GET'])
-def get_history_predefine():
-    crew_boat = Crew_bookings()
-    return crew_boat.get_history_predefine()
 
-
-""" Crew Boats import/update bookings Sychronize """
-@app.route('/add_mail_brochure/',  methods=['GET'])
-def add_mail_brochure():
-    mail_to = request.args.get("mailto", None)
-    subject = request.args.get("subject", None)
-    mail_text = request.args.get("mail_text", None)
-    name = request.args.get("name", None)
-    boat_data = request.args.get("boat_data", None)
-    import smtplib
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-    from string import Template
-    json_object = json.loads(boat_data)
-
-    # check new data type
-
-
-
-    username= "development@zonepage.gr"
-    password = "Vac51132"
-    mail_from = "development@zonepage.gr"
-    mail_subject = subject
-
-    mail_body = """\
-<!DOCTYPE HTML
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:o="urn:schemas-microsoft-com:office:office">
-
-<head>
-  <!--[if gte mso 9]>
-<xml>
-  <o:OfficeDocumentSettings>
-    <o:AllowPNG/>
-    <o:PixelsPerInch>96</o:PixelsPerInch>
-  </o:OfficeDocumentSettings>
-</xml>
-<![endif]-->
-  <meta http-equiv="Content-Type"
-    content="text/html; charset=UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
-  <meta name="x-apple-disable-message-reformatting">
-  <!--[if !mso]><!-->
-  <meta http-equiv="X-UA-Compatible"
-    content="IE=edge"><!--<![endif]-->
-  <title></title>
-
-  <style type="text/css">
-    @media only screen and (min-width: 820px) {
-      .u-row {
-        width: 800px !important;
-      }
-
-      .u-row .u-col {
-        vertical-align: top;
-      }
-
-      .u-row .u-col-33p33 {
-        width: 266.64px !important;
-      }
-
-      .u-row .u-col-66p67 {
-        width: 533.36px !important;
-      }
-
-      .u-row .u-col-100 {
-        width: 800px !important;
-      }
-
-    }
-
-    @media (max-width: 820px) {
-      .u-row-container {
-        max-width: 100% !important;
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-      }
-
-      .u-row .u-col {
-        min-width: 320px !important;
-        max-width: 100% !important;
-        display: block !important;
-      }
-
-      .u-row {
-        width: 100% !important;
-      }
-
-      .u-col {
-        width: 100% !important;
-      }
-
-      .u-col>div {
-        margin: 0 auto;
-      }
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    table,
-    tr,
-    td {
-      vertical-align: top;
-      border-collapse: collapse;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    .ie-container table,
-    .mso-container table {
-      table-layout: fixed;
-    }
-
-    * {
-      line-height: inherit;
-    }
-
-    a[x-apple-data-detectors='true'] {
-      color: inherit !important;
-      text-decoration: none !important;
-    }
-
-    table,
-    td {
-      color: #000000;
-    }
-
-  </style>
-
-
-
-</head>
-
-<body class="clean-body u_body"
-  style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #ffffff;color: #000000">
-  <!--[if IE]><div class="ie-container"><![endif]-->
-  <!--[if mso]><div class="mso-container"><![endif]-->
-  <table
-    style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #ffffff;width:100%"
-    cellpadding="0"
-    cellspacing="0">
-    <tbody>
-      <tr style="vertical-align: top">
-        <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-          <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #ffffff;"><![endif]-->
-
-
-
-          <div class="u-row-container"
-            style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 800px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:800px;"><tr style="background-color: transparent;"><![endif]-->
-
-                <!--[if (mso)|(IE)]><td align="center" width="800" style="width: 800px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                <div class="u-col u-col-100"
-                  style="max-width: 320px;min-width: 800px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <!--[if (!mso)&(!IE)]><!-->
-                    <div
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <!--<![endif]-->
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:0px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <table width="100%"
-                                cellpadding="0"
-                                cellspacing="0"
-                                border="0">
-                                <tr>
-                                  <td style="padding-right: 0px;padding-left: 0px;"
-                                    align="center">
-
-                                    <img align="center"
-                                      border="0"
-                                      src="https://assets.unlayer.com/stock-templates/1704993037472-logo-fyly-exclusive-2.png"
-                                      alt=""
-                                      title=""
-                                      style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 43%;max-width: 344px;"
-                                      width="344" />
-
-                                  </td>
-                                </tr>
-                              </table>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <!--[if (!mso)&(!IE)]><!-->
-                    </div><!--<![endif]-->
-                  </div>
-                </div>
-                <!--[if (mso)|(IE)]></td><![endif]-->
-                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-          <div class="u-row-container"
-            style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 800px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:800px;"><tr style="background-color: transparent;"><![endif]-->
-
-                <!--[if (mso)|(IE)]><td align="center" width="800" style="width: 800px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                <div class="u-col u-col-100"
-                  style="max-width: 320px;min-width: 800px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <!--[if (!mso)&(!IE)]><!-->
-                    <div
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <!--<![endif]-->
-
-                      <!--[if (!mso)&(!IE)]><!-->
-                    </div><!--<![endif]-->
-                  </div>
-                </div>
-                <!--[if (mso)|(IE)]></td><![endif]-->
-                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-              </div>
-            </div>
-          </div>
-                    <div class="u-row-container"
-            style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 800px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:800px;"><tr style="background-color: transparent;"><![endif]-->
-
-                <!--[if (mso)|(IE)]><td align="center" width="800" style="width: 800px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                <div class="u-col u-col-100"
-                  style="max-width: 320px;min-width: 800px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <!--[if (!mso)&(!IE)]><!-->
-                    <div
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <!--<![endif]-->
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 140%;">"""+str(mail_text)+"""</p>
-                              </div>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <!--[if (!mso)&(!IE)]><!-->
-                    </div><!--<![endif]-->
-                  </div>
-                </div>
-                <!--[if (mso)|(IE)]></td><![endif]-->
-                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-              </div>
-            </div>
-          </div>"""
-    boats = """ """
-    for x in json_object:
-        print(x['boat_id'])
-        mail_body += """          <div class="u-row-container"
-            style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 800px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:800px;"><tr style="background-color: transparent;"><![endif]-->
-
-                <!--[if (mso)|(IE)]><td align="center" width="266" style="width: 266px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                <div class="u-col u-col-33p33"
-                  style="max-width: 320px;min-width: 266.67px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <!--[if (!mso)&(!IE)]><!-->
-                    <div
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <!--<![endif]-->
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <table width="100%"
-                                cellpadding="0"
-                                cellspacing="0"
-                                border="0">
-                                <tr>
-                                  <td style="padding-right: 0px;padding-left: 0px;"
-                                    align="center">
-
-                                    <img align="center"
-                                      border="0"
-                                      src='"""+str(x['image_crew'])+"""'
-                                      alt=""
-                                      title=""
-                                      style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 246.67px;"
-                                      width="246.67" />
-
-                                  </td>
-                                </tr>
-                              </table>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <!--[if (!mso)&(!IE)]><!-->
-                    </div><!--<![endif]-->
-                  </div>
-                </div>
-                <!--[if (mso)|(IE)]></td><![endif]-->
-                <!--[if (mso)|(IE)]><td align="center" width="533" style="width: 533px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                <div class="u-col u-col-66p67"
-                  style="max-width: 320px;min-width: 533.33px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <!--[if (!mso)&(!IE)]><!-->
-                    <div
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <!--<![endif]-->
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <!--[if mso]><table width="100%"><tr><td><![endif]-->
-                              <h1
-                                style="margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;">
-                                """+str(x['crew_name'])+"""</h1>
-                              <!--[if mso]></td></tr></table><![endif]-->
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div style="font-size: 17px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 80%;">"""+str(x["price_low"])+"""€ - """+str(x["price_top"])+"""€</p>
-                              </div>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 140%;"><strong>Size</strong>: """+str(x['sizeft'])+"""/"""+str(x['size'])+""" | <strong>Guests</strong>: """+str(x['yachtPax'])+"""|
-                                  <strong>Built</strong>:"""+str(x['yachtYearBuilt'])+""" | <strong>Cabins</strong>:"""+str(x['yachtCabins'])+""" |
-                                  <strong>Crew</strong>: """+str(x['yachtCrew'])+"""</p>
-                              </div>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 140%;">"""+str(x["custom_description"])+"""</p>
-                              </div>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 140%;"><a href='https://www.viewyacht.net/"""+str(x["slug"])+"""'>More Info</a></p>
-                              </div>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <!--[if (!mso)&(!IE)]><!-->
-                    </div><!--<![endif]-->
-                  </div>
-                </div>
-                <!--[if (mso)|(IE)]></td><![endif]-->
-                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-              </div>
-            </div>
-          </div>"""
-
-    mail_body += """<div class="u-row-container"
-            style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 800px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:800px;"><tr style="background-color: transparent;"><![endif]-->
-
-                <!--[if (mso)|(IE)]><td align="center" width="500" style="width: 800px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                <div class="u-col u-col-100"
-                  style="max-width: 320px;min-width: 800px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <!--[if (!mso)&(!IE)]><!-->
-                    <div
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <!--<![endif]-->
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <table height="0px"
-                                align="center"
-                                border="0"
-                                cellpadding="0"
-                                cellspacing="0"
-                                width="100%"
-                                style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #34abb3;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
-                                <tbody>
-                                  <tr style="vertical-align: top">
-                                    <td
-                                      style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
-                                      <span>&#160;</span>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <table style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation"
-                        cellpadding="0"
-                        cellspacing="0"
-                        width="100%"
-                        border="0">
-                        <tbody>
-                          <tr>
-                            <td
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 140%;">This is a new Text block. Change the text.</p>
-                              </div>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <!--[if (!mso)&(!IE)]><!-->
-                    </div><!--<![endif]-->
-                  </div>
-                </div>
-                <!--[if (mso)|(IE)]></td><![endif]-->
-                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-              </div>
-            </div>
-          </div>
-
-
-
-          <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <!--[if mso]></div><![endif]-->
-  <!--[if IE]></div><![endif]-->
-</body>
-
-</html>
-"""
-
-    mimemsg = MIMEMultipart()
-    mimemsg['From'] = mail_from
-    mimemsg['To'] = mail_to
-    mimemsg['Subject'] = mail_subject
-    mimemsg.attach(MIMEText(mail_body, 'html'))
-    connection = smtplib.SMTP(host='smtp.office365.com', port=587)
-    connection.starttls()
-    connection.login(username, password)
-    connection.send_message(mimemsg)
-    connection.quit()
-
-
-
-    try:
-        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
-                             password='sd5w2V!0')
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute("select database();")
-            record = cursor.fetchone()
-            print("You're connected to database: ", record)
-
-
-    except Error as e:
-        print(e)
-
-    import requests
-    sql_extra = "INSERT INTO `predifine`(`mailto`, `email_subject`, `json`, `mail_text`, `name`)  VALUES( %s, %s, %s, %s, %s);"
-    val_booking = (mail_to, subject, mail_text, boat_data, name)
-
-    cursor.execute(sql_extra, val_booking)
-    conn.commit()
-    return 'success'
 
 
 
@@ -1842,6 +1235,29 @@ def search_boat_by_id():
     if response.status_code == 200:
         print(response.content)
         return json.loads(response.content)
+
+@app.route('/get_fx_boats')
+def get_fx_boats():
+    import json
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute("select database();")
+            record = cursor.fetchone()
+
+            cursor.execute('SELECT * FROM crew_boats_select')
+            row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+            rv = cursor.fetchall()
+            json_data = []
+            for result in rv:
+                json_data.append(dict(zip(row_headers, result)))
+            return jsonify(json_data)
+
+    except Error as e:
+        return (e)
+
 
 @app.route('/')
 def index():

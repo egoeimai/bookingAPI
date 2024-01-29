@@ -9,3 +9,4 @@ PyMySQL~=1.0.2
 Pillow~=9.3.0
 werkzeug==2.2.2
 pymongo~=4.3.3
+fastapi~=0.109.0
