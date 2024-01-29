@@ -139,7 +139,7 @@ def getboat_images_import():
 
 @app.route('/getboat_extras/',  methods=['GET'])
 def getboats_extras():
-    boatid = request.args.get("boatid", None) 
+    boatid = request.args.get("boatid", None)
     bare_boat_plan = BareBoats()
     return bare_boat_plan.get_bareboat_extras(boatid)
 

@@ -74,7 +74,7 @@ class BareBoats:
 
                         html = "<ul>"
                         for result in rv:
-                            html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
+                            html = html + "<li>" + result[3] + "  " + result[4] + "  " + result[5] + "</li>"
                         html = html + "</ul>"
 
                         content_obg.append({topic[0]: html})
@@ -113,7 +113,11 @@ class BareBoats:
                     html = "<ul>"
 
                     for result in rv:
-                        html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
+                        if result[4]:
+                            divider_1 = " : "
+                        else:
+                            divider_1 = ""
+                        html = html + "<li>" + result[3] + divider_1 + result[4] + " " + result[5] + "</li>"
                     html = html + "</ul>"
 
                     content_obg[topic[0]] = html
