@@ -124,24 +124,29 @@ class BareBoats_sych:
         import xml.etree.ElementTree as ET
         xml = ET.fromstring(response.text)
 
-        for boat in xml.findall('boat'):
+        try:
+            for boat in xml.findall('boat'):
 
-            characteristics = boat.findall('characteristics')
-            for characteristic_topic in characteristics:
-                characteristic = characteristic_topic.findall('characteristic_topic')
-                for characteristic_inner in characteristic:
-                    # print(characteristic_inner.attrib['topic'])
-                    for characteristic_list in characteristic_inner:
-                        print(characteristic_list.attrib['name'])
-                        sqls_characteristic = "INSERT INTO `boat_characteristics_bare`(`boat_id`, `topic`, `name`, `qnt`, `unit`, `hash`) VALUES(%s, %s, %s, %s, %s, %s);"
-                        characteristic_vals = (boat.attrib['id_boat'], characteristic_inner.attrib['topic'],
-                                               characteristic_list.attrib['name'],
-                                               characteristic_list.attrib['quantity'],
-                                               characteristic_list.attrib['unit'], hash(characteristic_list))
-                        mycursor.execute(sqls_characteristic, characteristic_vals)
-                        conn.commit()
+                characteristics = boat.findall('characteristics')
+                for characteristic_topic in characteristics:
+                    characteristic = characteristic_topic.findall('characteristic_topic')
+                    for characteristic_inner in characteristic:
+                        # print(characteristic_inner.attrib['topic'])
+                        for characteristic_list in characteristic_inner:
+                            print(characteristic_list.attrib['name'])
+                            sqls_characteristic = "INSERT INTO `boat_characteristics_bare`(`boat_id`, `topic`, `name`, `qnt`, `unit`, `hash`) VALUES(%s, %s, %s, %s, %s, %s);"
+                            characteristic_vals = (boat.attrib['id_boat'], characteristic_inner.attrib['topic'],
+                                                   characteristic_list.attrib['name'],
+                                                   characteristic_list.attrib['quantity'],
+                                                   characteristic_list.attrib['unit'], hash(characteristic_list))
+                            mycursor.execute(sqls_characteristic, characteristic_vals)
+                            conn.commit()
 
-        return "success"
+            self.send_success_email("Update Import Data", "The Data of BareBoats has been updated")
+            print("Background task completed.")
+
+        except:
+            self.send_success_email("Update Import Data Faild", "The Data of BareBoats has been Faild")
 
     def bareboats_sych_boat_extras(self, duration):
         token = ""
@@ -190,30 +195,35 @@ class BareBoats_sych:
         response = requests.request("GET", reqUrl, data=payload, headers=headersList)
         import xml.etree.ElementTree as ET
         xml = ET.fromstring(response.text)
+        try:
+            for boat in xml.findall('boat'):
+                sql = "INSERT INTO boats (boat_name, boat_id) VALUES (%s, %s)"
+                val = (boat.attrib['name'], boat.attrib['id_boat'])
+                mycursor.execute(sql, val)
+                conn.commit()
+                print(mycursor.rowcount, "record inserted.")
+                sqls = "INSERT INTO `boat_characteristics` (`boat_id`, `bt_type`, `crew`, `model`, `widthboat`, `nbdoucabin`, `nbsimcabin`, `nbper`, `nbbathroom`, `buildyear`, `std_model`, `builder`, `widthboat_feet`, `bt_comment`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+                vals = (boat.attrib['id_boat'], boat.attrib['bt_type'], boat.attrib['crew'], boat.attrib['model'],
+                        boat.attrib['widthboat'], boat.attrib['nbdoucabin'], boat.attrib['nbsimcabin'],
+                        boat.attrib['nbper'], boat.attrib['nbbathroom'], boat.attrib['buildyear'],
+                        boat.attrib['std_model'],
+                        boat.attrib['builder'], boat.attrib['widthboat_feet'], boat.attrib['bt_comment'])
+                mycursor.execute(sqls, vals)
 
-        for boat in xml.findall('boat'):
-            sql = "INSERT INTO boats (boat_name, boat_id) VALUES (%s, %s)"
-            val = (boat.attrib['name'], boat.attrib['id_boat'])
-            mycursor.execute(sql, val)
-            conn.commit()
-            print(mycursor.rowcount, "record inserted.")
-            sqls = "INSERT INTO `boat_characteristics` (`boat_id`, `bt_type`, `crew`, `model`, `widthboat`, `nbdoucabin`, `nbsimcabin`, `nbper`, `nbbathroom`, `buildyear`, `std_model`, `builder`, `widthboat_feet`, `bt_comment`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            vals = (boat.attrib['id_boat'], boat.attrib['bt_type'], boat.attrib['crew'], boat.attrib['model'],
-                    boat.attrib['widthboat'], boat.attrib['nbdoucabin'], boat.attrib['nbsimcabin'],
-                    boat.attrib['nbper'], boat.attrib['nbbathroom'], boat.attrib['buildyear'], boat.attrib['std_model'],
-                    boat.attrib['builder'], boat.attrib['widthboat_feet'], boat.attrib['bt_comment'])
-            mycursor.execute(sqls, vals)
+                homeports = boat.findall('homeport')
+                for homeport in homeports:
+                    sql_bases = "INSERT INTO boats_bases (boat_id, destination_id, destination_name, id_tbf1) VALUES (%s, %s, %s, %s)"
+                    val_bases = (
+                        boat.attrib['id_boat'], homeport.attrib['id_base'], homeport.attrib['name'],
+                        homeport.attrib['id_tbf1'])
+                    mycursor.execute(sql_bases, val_bases)
 
-            homeports = boat.findall('homeport')
-            for homeport in homeports:
-                sql_bases = "INSERT INTO boats_bases (boat_id, destination_id, destination_name, id_tbf1) VALUES (%s, %s, %s, %s)"
-                val_bases = (
-                    boat.attrib['id_boat'], homeport.attrib['id_base'], homeport.attrib['name'],
-                    homeport.attrib['id_tbf1'])
-                mycursor.execute(sql_bases, val_bases)
+                conn.commit()
+            self.send_success_email("Update Import Data", "The Data of BareBoats has been updated")
+            print("Background task completed.")
 
-            conn.commit()
-        return "success"
+        except:
+            self.send_success_email("Update Import Data Faild", "The Data of BareBoats has been Faild")
 
     def bareboasts_sych_boat_images(self, duration):
         import requests
@@ -278,7 +288,7 @@ class BareBoats_sych:
                         print(pictures_inner.attrib['link'])
                         sqls_images = "INSERT INTO `boat_images` (`boat_id`, `image_url`, `position`) VALUES (%s, %s, %s);"
                         images_vals = (
-                        boat.attrib['id_boat'], pictures_inner.attrib['link'], pictures_inner.attrib['position'])
+                            boat.attrib['id_boat'], pictures_inner.attrib['link'], pictures_inner.attrib['position'])
                         mycursor.execute(sqls_images, images_vals)
                         conn.commit()
 
@@ -347,8 +357,8 @@ class BareBoats_sych:
                         print(price_val.attrib['amount'])
                         sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
                         price_vals = (
-                        boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'],
-                        price_val.attrib['amount'], price_val.attrib['unitamount'])
+                            boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'],
+                            price_val.attrib['amount'], price_val.attrib['unitamount'])
                         mycursor.execute(sqls_price, price_vals)
                         conn.commit()
 
