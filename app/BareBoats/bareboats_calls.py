@@ -192,10 +192,17 @@ class BareBoats:
 
                 rv = cursor.fetchall()
                 json_data = []
-                for result in rv:
-                    content = {"image": result[2]}
-                    json_data.append(content)
-                return jsonify(json_data)
+                content_obg = {}
+                for id, result in enumerate(rv):
+
+                    if(result[3] == "header") :
+                        content_obg['header'] = result[2]
+                    else:
+                        content_obg['image_'+str(id)] = result[2]
+
+
+                    json_data.append(content_obg)
+                return jsonify(content_obg)
 
         except Error as e:
             return (e)
