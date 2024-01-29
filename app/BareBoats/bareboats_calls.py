@@ -111,7 +111,7 @@ class BareBoats:
                     rv = cursor.fetchall()
 
                     html = "<ul>"
-                    
+
                     for result in rv:
                         html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
                     html = html + "</ul>"
