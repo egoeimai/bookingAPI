@@ -45,9 +45,9 @@ def bareboats():
     action = request.args.get("action", None)
     boatid = request.args.get("boatid", None)
     if action:
-        if action == "get_bare_plan":
+        if action == "get_bare_plan" and boatid:
             bare_boat_plan = BareBoats()
-            return bare_boat_plan.get_bareboat_plans()
+            return bare_boat_plan.get_bareboat_plans(boatid)
 
         if action == "get_bare_boat" and boatid:
             bare_boat = BareBoats()

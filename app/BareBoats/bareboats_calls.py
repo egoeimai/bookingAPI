@@ -8,13 +8,13 @@ class BareBoats:
     def __init__(self):
         pass
 
-    def get_bareboat_plans(self):
+    def get_bareboat_plans(self, boatid):
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
                                  password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                cursor.execute('SELECT * FROM `bare_boat_plans` WHERE `plan_url` is NOT NULL;')
+                cursor.execute('SELECT * FROM `bare_boat_plans` WHERE `plan_url` is NOT NULL AND boat_id=' + boatid)
 
                 rv = cursor.fetchall()
                 json_data = []
@@ -179,7 +179,7 @@ class BareBoats:
         except Error as e:
             return (e)
 
-    #Get All Bare Boats Characteristics
+    #Get All Bare Boats Images
     def get_bareboat_images_boat(self, boatid):
 
         try:
