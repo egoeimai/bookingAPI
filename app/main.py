@@ -87,7 +87,6 @@ def getboat_prices_import():
     """Start a background task with the specified duration."""
     executor = concurrent.futures.ThreadPoolExecutor()
     future = executor.submit(bare_boat_plan.baraboats_sych_prices, duration)
-    print(future.result())
     task_status[1] = {"status": "running"}
 
     return jsonify({"message": "Background task started", "task_id": 1})
@@ -105,7 +104,14 @@ def get_task_status(task_id):
 @app.route('/getboat_amenities_import/',  methods=['GET'])
 def getboat_amenities_import():
     bare_boat_plan = BareBoats_sych()
-    return bare_boat_plan.baraboats_sych_amenities()
+    duration = 10
+    """Start a background task with the specified duration."""
+    executor = concurrent.futures.ThreadPoolExecutor()
+    future = executor.submit(bare_boat_plan.baraboats_sych_amenities, duration)
+    task_status[1] = {"status": "running"}
+    return jsonify({"message": "Background task started", "task_id": 1})
+
+
 @app.route('/getboat_amenities/',  methods=['GET'])
 def getboat_amenities():
     bare_boat_plan = BareBoats()
