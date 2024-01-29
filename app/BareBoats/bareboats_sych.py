@@ -74,7 +74,7 @@ class BareBoats_sych:
                     conn.commit()
         return "success"
 
-    def baraboats_sych_amenities(self):
+    def baraboats_sych_amenities(self, duration):
         token = ""
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
@@ -140,7 +140,7 @@ class BareBoats_sych:
                         mycursor.execute(sqls_characteristic, characteristic_vals)
                         conn.commit()
 
-            return "success"
+        return "success"
 
     def bareboats_sych_boat_extras(self):
         token = ""

@@ -60,59 +60,30 @@ class BareBoats:
                 cursor.execute('SELECT * FROM boats')
                 boats = cursor.fetchall()
                 json_data = []
+
+
+                cursor.execute('SELECT DISTINCT `topic` FROM `boat_characteristics_bare`')
+                topics = cursor.fetchall();
+
                 for boat in boats:
-                    content = ""
-                    cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                        boat[2]) + '" and topic = "Layout";')
-                    rv = cursor.fetchall()
+                    content_obg = []
+                    for  idx, topic in enumerate(topics):
+                        cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
+                            boat[2]) + '" and topic = "' + topic[0] + '";')
+                        rv = cursor.fetchall()
 
-                    html = "<ul>"
-                    for result in rv:
-                        html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
-                    html = html + "</ul>"
+                        html = "<ul>"
+                        for result in rv:
+                            html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
+                        html = html + "</ul>"
 
-                    cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                        boat[2]) + '" and topic = "Amenities";')
-                    rv = cursor.fetchall()
-                    amenities = "<ul>"
-                    for result in rv:
-                        amenities = amenities + "<li>" + result[3] + "</li>"
-                    amenities = amenities + "</ul>"
+                        content_obg.append({topic[0]: html})
+                    print(content_obg)
+                    json_data.append(json.dumps(content_obg))
 
-                    cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                        boat[2]) + '" and topic = "Characteristics";')
-                    rv = cursor.fetchall()
-                    Characteristics = "<ul>"
-                    for result in rv:
-                        Characteristics = Characteristics + "<li>" + result[3] + " : " + result[4] + " " + result[
-                            5] + "</li>"
-                    Characteristics = Characteristics + "</ul>"
 
-                    cursor.execute(
-                        'SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                            boat[2]) + '" and topic = "Inventory";')
-                    rv = cursor.fetchall()
-                    Inventory = "<ul>"
-                    for result in rv:
-                        Inventory = Inventory + "<li>" + result[3] + "</li>"
-                    Inventory = Inventory + "</ul>"
 
-                    cursor.execute(
-                        'SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                            boat[2]) + '" and topic = "Safety Equipment";')
-                    rv = cursor.fetchall()
-                    Safety_Equipment = "<ul>"
-                    for result in rv:
-                        Safety_Equipment = Safety_Equipment + "<li>" + result[3] + "</li>"
-                    Safety_Equipment = Safety_Equipment + "</ul>"
 
-                    cursor.execute('SELECT plan_url FROM `bare_boat_plans` WHERE `boat_id` = "' + str(boat[2]) + '";')
-                    rv_plan = cursor.fetchall()
-
-                    content = {"id": boat[2], "layout": html, "amenities": amenities,
-                               "Characteristics": Characteristics, "Inventory": Inventory,
-                               "Safety_Equipment": Safety_Equipment, "plans": rv_plan[0]}
-                    json_data.append(content)
 
             return jsonify(json_data)
 
@@ -129,64 +100,27 @@ class BareBoats:
 
                 json_data = []
 
-                content = ""
-                cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                    boatid) + '" and topic = "Layout";')
-                rv = cursor.fetchall()
-
-                html = "<ul>"
-                for result in rv:
-                    html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
-                html = html + "</ul>"
-
-                cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                    boatid) + '" and topic = "Amenities";')
-                rv = cursor.fetchall()
-                amenities = "<ul>"
-                for result in rv:
-                    amenities = amenities + "<li>" + result[3] + "</li>"
-                amenities = amenities + "</ul>"
-
-                cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                    boatid) + '" and topic = "Characteristics";')
-                rv = cursor.fetchall()
-                Characteristics = "<ul>"
-                for result in rv:
-                    Characteristics = Characteristics + "<li>" + result[3] + " : " + result[4] + " " + result[
-                        5] + "</li>"
-                Characteristics = Characteristics + "</ul>"
-
-                cursor.execute(
-                    'SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                        boatid) + '" and topic = "Inventory";')
-                rv = cursor.fetchall()
-                Inventory = "<ul>"
-                for result in rv:
-                    Inventory = Inventory + "<li>" + result[3] + "</li>"
-                Inventory = Inventory + "</ul>"
-
-                cursor.execute(
-                    'SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
-                        boatid) + '" and topic = "Safety Equipment";')
-                rv = cursor.fetchall()
-                Safety_Equipment = "<ul>"
-                for result in rv:
-                    Safety_Equipment = Safety_Equipment + "<li>" + result[3] + "</li>"
-                Safety_Equipment = Safety_Equipment + "</ul>"
-
-                cursor.execute('SELECT plan_url FROM `bare_boat_plans` WHERE `boat_id` = "' + str(boatid) + '";')
-                rv_plan = cursor.fetchall()
-                if (len(rv_plan) > 0):
-                    plan = rv_plan[0]
-                else:
-                    plan = ""
+                cursor.execute('SELECT DISTINCT `topic` FROM `boat_characteristics_bare`')
+                topics = cursor.fetchall();
 
 
-                content = {"id": boatid, "layout": html, "amenities": amenities, "Characteristics": Characteristics,
-                           "Inventory": Inventory, "Safety_Equipment": Safety_Equipment, "plans": plan}
-                json_data.append(content)
+                content_obg = {}
+                for idx, topic in enumerate(topics):
+                    cursor.execute('SELECT * FROM `boat_characteristics_bare` WHERE `boat_id` = "' + str(
+                        boatid) + '" and topic = "' + topic[0] + '";')
+                    rv = cursor.fetchall()
 
-            return jsonify(json_data)
+                    html = "<ul>"
+                    
+                    for result in rv:
+                        html = html + "<li>" + result[3] + " : " + result[4] + "</li>"
+                    html = html + "</ul>"
+
+                    content_obg[topic[0]] = html
+                print(content_obg)
+
+            j = json.dumps(content_obg)
+            return jsonify(content_obg)
 
         except Error as e:
             return (e)

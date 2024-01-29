@@ -87,6 +87,7 @@ def getboat_prices_import():
     """Start a background task with the specified duration."""
     executor = concurrent.futures.ThreadPoolExecutor()
     future = executor.submit(bare_boat_plan.baraboats_sych_prices, duration)
+    print(future.result())
     task_status[1] = {"status": "running"}
 
     return jsonify({"message": "Background task started", "task_id": 1})
@@ -108,6 +109,8 @@ def getboat_amenities_import():
     """Start a background task with the specified duration."""
     executor = concurrent.futures.ThreadPoolExecutor()
     future = executor.submit(bare_boat_plan.baraboats_sych_amenities, duration)
+    #print(future.result())
+
     task_status[1] = {"status": "running"}
     return jsonify({"message": "Background task started", "task_id": 1})
 
