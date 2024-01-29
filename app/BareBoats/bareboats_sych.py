@@ -143,7 +143,7 @@ class BareBoats_sych:
 
         return "success"
 
-    def bareboats_sych_boat_extras(self):
+    def bareboats_sych_boat_extras(self, duration):
         token = ""
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',

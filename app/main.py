@@ -124,9 +124,16 @@ def getboat_amenities():
 
 @app.route('/getboat_extras_import/',  methods=['GET'])
 def getboat_extras_import():
-
     bare_boat_plan = BareBoats_sych()
-    return bare_boat_plan.bareboats_sych_boat_extras()
+    duration = 10
+    """Start a background task with the specified duration."""
+    executor = concurrent.futures.ThreadPoolExecutor()
+    future = executor.submit(bare_boat_plan.bareboats_sych_boat_extras, duration)
+    # print(future.result())
+
+    task_status[1] = {"status": "running"}
+    return jsonify({"message": "Background task started", "task_id": 1})
+
 
 
 @app.route('/getboat_images_import/',  methods=['GET'])
