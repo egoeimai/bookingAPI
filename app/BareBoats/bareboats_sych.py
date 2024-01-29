@@ -7,6 +7,7 @@ import json
 from app.crew_boats_update import crew_update
 import smtplib, ssl
 
+
 class BareBoats_sych:
     def __init__(self):
         pass
@@ -214,7 +215,7 @@ class BareBoats_sych:
             conn.commit()
         return "success"
 
-    def bareboasts_sych_boat_images(self):
+    def bareboasts_sych_boat_images(self, duration):
         import requests
         import mysql.connector as mysql
         from mysql.connector import Error
@@ -266,19 +267,26 @@ class BareBoats_sych:
         response = requests.request("GET", reqUrl, data=payload, headers=headersList)
         import xml.etree.ElementTree as ET
         xml = ET.fromstring(response.text)
-        for boat in xml.findall('boat'):
-            images = boat.findall('picts')
-            print(type(images))
-            for pictures in images:
-                images_inner = pictures.findall('pict')
-                for pictures_inner in images_inner:
-                    print(pictures_inner.attrib['link'])
-                    sqls_images = "INSERT INTO `boat_images` (`boat_id`, `image_url`) VALUES (%s, %s);"
-                    images_vals = (boat.attrib['id_boat'], pictures_inner.attrib['link'])
-                    mycursor.execute(sqls_images, images_vals)
-                    conn.commit()
+        try:
 
-        return "success"
+            for boat in xml.findall('boat'):
+                images = boat.findall('picts')
+                print(type(images))
+                for pictures in images:
+                    images_inner = pictures.findall('pict')
+                    for pictures_inner in images_inner:
+                        print(pictures_inner.attrib['link'])
+                        sqls_images = "INSERT INTO `boat_images` (`boat_id`, `image_url`, `position`) VALUES (%s, %s, %s);"
+                        images_vals = (
+                        boat.attrib['id_boat'], pictures_inner.attrib['link'], pictures_inner.attrib['position'])
+                        mycursor.execute(sqls_images, images_vals)
+                        conn.commit()
+
+            self.send_success_email("Update Import Images", "The Images of BareBoats has been updated")
+            print("Background task completed.")
+
+        except:
+            self.send_success_email("Update Import Images Faild", "The Images of BareBoats has been Faild")
 
     def baraboats_sych_prices(self, duration):
         token = ""
@@ -338,7 +346,9 @@ class BareBoats_sych:
                     for price_val in price_inner:
                         print(price_val.attrib['amount'])
                         sqls_price = "INSERT INTO `boat_prices` (`boat_id`, `datestart`, `dateend`, `amount`, `unitamount`) VALUES (%s, %s, %s, %s, %s);"
-                        price_vals = (boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'], price_val.attrib['amount'], price_val.attrib['unitamount'])
+                        price_vals = (
+                        boat.attrib['id_boat'], price_val.attrib['datestart'], price_val.attrib['dateend'],
+                        price_val.attrib['amount'], price_val.attrib['unitamount'])
                         mycursor.execute(sqls_price, price_vals)
                         conn.commit()
 
@@ -346,10 +356,6 @@ class BareBoats_sych:
             print("Background task completed.")
         except:
             self.send_success_email("Update Import Prices Faild", "The prices of BareBoats has been Faild")
-
-
-
-
 
     def send_success_email(self, subject_t, text):
         import smtplib
@@ -374,5 +380,3 @@ class BareBoats_sych:
         connection.login(username, password)
         connection.send_message(mimemsg)
         connection.quit()
-
-
