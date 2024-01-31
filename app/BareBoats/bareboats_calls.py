@@ -2,7 +2,7 @@ import json
 import mysql.connector as mysql
 from flask import jsonify
 from mysql.connector import Error
-from bareboats_sych import BareBoats_sych
+from app.BareBoats.bareboats_sych import BareBoats_sych
 
 
 class BareBoats:
