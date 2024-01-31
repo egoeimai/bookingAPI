@@ -2,6 +2,7 @@ import json
 import mysql.connector as mysql
 from flask import jsonify
 from mysql.connector import Error
+from bareboats_sych import BareBoats_sych
 
 
 class BareBoats:
@@ -124,6 +125,8 @@ class BareBoats:
                 print(content_obg)
 
             j = json.dumps(content_obg)
+            logs = BareBoats_sych()
+            logs.sedna_logs_import("Synch Amenities: "+boatid, "Amenities import to Website")
             return jsonify(content_obg)
 
         except Error as e:

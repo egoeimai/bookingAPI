@@ -12,6 +12,24 @@ class BareBoats_sych:
     def __init__(self):
         pass
 
+    def sedna_logs_import(self, action, description):
+        token = ""
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                cursor.execute("select database();")
+                record = cursor.fetchone()
+                print("You're connected to database: ", record)
+                sqls_plans = "INSERT INTO `sedna_logs` (`action`, `description`) VALUES (%s, %s);"
+                plans_vals = (action, description)
+                cursor.execute(sqls_plans, plans_vals)
+                conn.commit()
+        except Error as e:
+            print(e)
+
+
     def bareboats_sych_plans(self):
         token = ""
         try:
@@ -141,8 +159,9 @@ class BareBoats_sych:
                                                    characteristic_list.attrib['unit'], hash(characteristic_list))
                             mycursor.execute(sqls_characteristic, characteristic_vals)
                             conn.commit()
-
+            self.bareboats_sych_plans()
             self.send_success_email("Update Import Data", "The Data of BareBoats has been updated")
+            self.sedna_logs_import("Update Import Data", "The Data of BareBoats has been updated")
             print("Background task completed.")
 
         except:
@@ -219,7 +238,8 @@ class BareBoats_sych:
                     mycursor.execute(sql_bases, val_bases)
 
                 conn.commit()
-            self.send_success_email("Update Import Data", "The Data of BareBoats has been updated")
+            self.send_success_email("Update Import Boats", "Boats from SEDNA has been updated")
+            self.sedna_logs_import("Update Import Boats", "Boats from SEDNA has been updated")
             print("Background task completed.")
 
         except:
@@ -293,6 +313,7 @@ class BareBoats_sych:
                         conn.commit()
 
             self.send_success_email("Update Import Images", "The Images of BareBoats has been updated")
+            self.sedna_logs_import("Update Import Images", "The Images of BareBoats has been updated")
             print("Background task completed.")
 
         except:
@@ -363,6 +384,7 @@ class BareBoats_sych:
                         conn.commit()
 
             self.send_success_email("Update Import Prices", "The prices of BareBoats has been updated")
+            self.sedna_logs_import("Update Import Prices", "The prices of BareBoats has been updated")
             print("Background task completed.")
         except:
             self.send_success_email("Update Import Prices Faild", "The prices of BareBoats has been Faild")
