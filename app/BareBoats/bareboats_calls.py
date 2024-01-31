@@ -15,14 +15,13 @@ class BareBoats:
                                  password='sd5w2V!0')
             if conn.is_connected():
                 cursor = conn.cursor()
-                cursor.execute("SELECT * FROM `sedna_logs` LIMIT 50 ORDER BY `sedna_logs`.`create_at` DESC")
+                cursor.execute("SELECT * FROM `sedna_logs` ORDER BY `sedna_logs`.`create_at` DESC LIMIT 50")
                 row_headers = [x[0] for x in cursor.description]  # this will extract row headers
                 rv = cursor.fetchall()
                 json_data = []
                 for result in rv:
                     json_data.append(dict(zip(row_headers, result)))
-                return json.dumps(json_data)
-
+                return jsonify(json_data)
         except Error as e:
             return (e)
 
