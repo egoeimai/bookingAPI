@@ -1040,6 +1040,25 @@ def import_boat():
 
     return "success"
 
+@app.route('/remove_boat/',  methods=['GET'])
+def import_boat():
+    boatid = request.args.get("boat_id", None)
+    name = request.args.get("title", None)
+    try:
+        conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                             password='sd5w2V!0')
+        if conn.is_connected():
+            cursor = conn.cursor()
+            sql = 'DELETE FROM `crew_boats_select` WHERE `crew_id` = ' + boatid
+
+            cursor.execute(sql)
+            conn.commit();
+
+    except:
+        pass
+
+    return "success"
+
 
 @app.route('/search_boat_by_slug/', methods=['GET'])
 def search_boat_by_slug():
