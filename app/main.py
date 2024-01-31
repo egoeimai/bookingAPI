@@ -40,6 +40,12 @@ def html_decode(s):
 
 
 """ BareBoats Sychronize """
+
+@app.route('/sednalogs/',  methods=['GET'])
+def sednalogs():
+    bare_logs = BareBoats()
+    return bare_logs.get_logs()
+
 @app.route('/bareboats/',  methods=['GET'])
 def bareboats():
     action = request.args.get("action", None)

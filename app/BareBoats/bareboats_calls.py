@@ -9,6 +9,25 @@ class BareBoats:
     def __init__(self):
         pass
 
+    def get_logs(self):
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                cursor.execute("SELECT * FROM `sedna_logs` LIMIT 50 ORDER BY `sedna_logs`.`create_at` DESC")
+                row_headers = [x[0] for x in cursor.description]  # this will extract row headers
+                rv = cursor.fetchall()
+                json_data = []
+                for result in rv:
+                    json_data.append(dict(zip(row_headers, result)))
+                return json.dumps(json_data)
+
+        except Error as e:
+            return (e)
+
+
+
     def get_bareboat_plans(self, boatid):
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
@@ -23,6 +42,8 @@ class BareBoats:
                     content = {"boat_id": result[1], "plan_url": result[2]}
                     json_data.append(content)
                 json_output = json.dumps(rv)
+                logs = BareBoats_sych()
+                logs.sedna_logs_import("Synch Plan: " + boatid, "Plan import to Website")
                 return jsonify( json_data)
 
         except Error as e:
@@ -44,6 +65,8 @@ class BareBoats:
                     content = {"id_opt": result[1], "id_opt_bt": result[2], "name": result[3], "price": result[4],
                                "per": result[5]}
                     json_data.append(content)
+                    logs = BareBoats_sych()
+                    logs.sedna_logs_import("Synch Data: " + boatid, "Data import to Website")
 
                 return jsonify(json_data)
 
@@ -177,6 +200,8 @@ class BareBoats:
                                "std_model": result[14], "builder": result[15], "widthboat_feet": result[16],
                                "bt_comment": result[17], "port": result[21], "port_id": result[22]}
                     json_data.append(content)
+                    logs = BareBoats_sych()
+                    logs.sedna_logs_import("Synch Data: " + boatid, "Data import to Website")
                 return jsonify(json_data)
 
         except Error as e:
@@ -205,6 +230,8 @@ class BareBoats:
 
 
                     json_data.append(content_obg)
+                    logs = BareBoats_sych()
+                    logs.sedna_logs_import("Synch Images: " + boatid, "Images import to Website")
                 return jsonify(content_obg)
 
         except Error as e:
