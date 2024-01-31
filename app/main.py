@@ -1041,7 +1041,7 @@ def import_boat():
     return "success"
 
 @app.route('/remove_boat/',  methods=['GET'])
-def import_boat():
+def remove_boat():
     boatid = request.args.get("boat_id", None)
     name = request.args.get("title", None)
     try:
