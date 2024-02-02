@@ -404,7 +404,7 @@ class BareBoats_sych:
         mail_body = text
         mimemsg = MIMEMultipart()
         mimemsg['From'] = mail_from
-        mimemsg['To'] = "nziozas@gmail.com"
+        mimemsg['To'] = "fyly@fyly.gr"
         mimemsg['Subject'] = mail_subject
         mimemsg.attach(MIMEText(mail_body, 'plain'))
         connection = smtplib.SMTP(host='smtp.office365.com', port=587)

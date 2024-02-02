@@ -46,6 +46,11 @@ def sednalogs():
     bare_logs = BareBoats()
     return bare_logs.get_logs()
 
+@app.route('/crewedlogs/',  methods=['GET'])
+def crewedlogs():
+    bare_logs = BareBoats()
+    return bare_logs.get_logs()
+
 @app.route('/bareboats/',  methods=['GET'])
 def bareboats():
     action = request.args.get("action", None)

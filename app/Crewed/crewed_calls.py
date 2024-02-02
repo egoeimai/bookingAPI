@@ -10,6 +10,23 @@ class CrewedBoats:
     def __init__(self):
         pass
 
+    def crew_logs_import(self, action, description):
+        token = ""
+        try:
+            conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
+                                 password='sd5w2V!0')
+            if conn.is_connected():
+                cursor = conn.cursor()
+                cursor.execute("select database();")
+                record = cursor.fetchone()
+                print("You're connected to database: ", record)
+                sqls_plans = "INSERT INTO `crew_logs` (`action`, `description`) VALUES (%s, %s);"
+                plans_vals = (action, description)
+                cursor.execute(sqls_plans, plans_vals)
+                conn.commit()
+        except Error as e:
+            print(e)
+
     def import_all_crew_boasts(self):
         try:
             conn = mysql.connect(host='db39.grserver.gr', database='user7313393746_booking', user='fyly',
