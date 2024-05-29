@@ -262,7 +262,7 @@ def get_crewd_boat():
                            "crewtitle": result[35], "crewnation": result[36], "crewborn": result[37],
                            "crewtext": result[38], "image1": result[39], "image2": result[40], "image3": result[41], "image4": result[42], "image5": result[43], "image6": result[44], "image7": result[45], "image8": result[46], "image9": result[47], "image10": result[48], "video_url": result[54],
                            "description": result[16], "price_details": result[17], "locations_details": result[18],
-                           "broker_notes": result[19], "yachtOtherPickup": result[151], "yachtSummerArea": result[152], "yachtPrefPickup": result[151]}
+                           "broker_notes": result[19], "yachtRefit": result[20], "yachtOtherPickup": result[151], "yachtSummerArea": result[152], "yachtPrefPickup": result[151]}
                 json_data.append(content)
         return jsonify(json_data)
 
