@@ -256,13 +256,13 @@ def get_crewd_boat():
                 content = {"name": result[1], "id": result[3], "bt_type": result[2], "widthboat": result[6],
                            "widthboatft": result[7], "cabins": result[10], "nbper": result[9], "buildyear": result[8],
                            "builder": result[14], "crew": result[11], "lowprice": result[12], "highprice": result[13],
-                           "mainimage": result[23], "extraimages": result[24], "port": result[15],
-                           "num_crew": result[29], "captainname": result[30], "captainnation": result[31],
-                           "captainborn": result[32], "captainlang": result[33], "crewname": result[34],
-                           "crewtitle": result[35], "crewnation": result[36], "crewborn": result[37],
-                           "crewtext": result[38], "image1": result[39], "image2": result[40], "image3": result[41], "image4": result[42], "image5": result[43], "image6": result[44], "image7": result[45], "image8": result[46], "image9": result[47], "image10": result[48], "video_url": result[54],
+                           "mainimage": result[24], "extraimages": result[25], "port": result[15],
+                           "num_crew": result[30], "captainname": result[31], "captainnation": result[32],
+                           "captainborn": result[33], "captainlang": result[34], "crewname": result[35],
+                           "crewtitle": result[36], "crewnation": result[37], "crewborn": result[38],
+                           "crewtext": result[39], "image1": result[40], "image2": result[41], "image3": result[42], "image4": result[43], "image5": result[44], "image6": result[45], "image7": result[46], "image8": result[47], "image9": result[48], "image10": result[49], "video_url": result[55],
                            "description": result[16], "price_details": result[17], "locations_details": result[18],
-                           "broker_notes": result[19], "yachtRefit": result[20], "yachtOtherPickup": result[151], "yachtSummerArea": result[152], "yachtPrefPickup": result[151]}
+                           "broker_notes": result[19], "yachtRefit": result[20], "yachtOtherPickup": result[152], "yachtSummerArea": result[153], "yachtPrefPickup": result[152]}
                 json_data.append(content)
         return jsonify(json_data)
 
